@@ -1,0 +1,2004 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Biblioteca</title>
+
+<link
+    rel="stylesheet"
+    href="estilos.css"
+>
+
+<style>
+
+:root {
+    --celeste-fundacion: #009ddc;
+    --celeste-oscuro: #008fc8;
+    --celeste-suave: #eaf7fc;
+    --fondo: #f4f7f9;
+    --blanco: #ffffff;
+    --texto: #263238;
+    --texto-suave: #66727a;
+    --borde: #dfe7eb;
+    --sombra: 0 3px 12px rgba(31, 52, 63, 0.08);
+}
+
+
+/* =========================================
+   CARGA INICIAL
+========================================= */
+
+body.sistema-cargando {
+    visibility: hidden;
+}
+
+
+/* =========================================
+   FONDO GENERAL
+========================================= */
+
+body {
+    background: var(--fondo);
+    color: var(--texto);
+}
+
+
+/* =========================================
+   PANTALLA DE ACCESO
+========================================= */
+
+#pantallaAcceso {
+    background: var(--fondo);
+}
+
+#pantallaAcceso > div {
+    border: 1px solid var(--borde);
+    box-shadow: 0 8px 28px rgba(31, 52, 63, 0.10) !important;
+}
+
+#pantallaAcceso > div > div:first-child {
+    color: var(--celeste-fundacion);
+}
+
+#pantallaAcceso h1 {
+    color: var(--celeste-fundacion);
+}
+
+#pantallaAcceso p {
+    color: var(--texto-suave) !important;
+}
+
+#pantallaAcceso input {
+    border-color: #cfd9de !important;
+    outline: none;
+}
+
+#pantallaAcceso input:focus {
+    border-color: var(--celeste-fundacion) !important;
+    box-shadow: 0 0 0 3px rgba(0, 157, 220, 0.12);
+}
+
+#botonIngresar {
+    background: var(--celeste-fundacion) !important;
+    color: white !important;
+    transition: 0.2s ease;
+}
+
+#botonIngresar:hover {
+    background: var(--celeste-oscuro) !important;
+}
+
+
+/* =========================================
+   ENCABEZADO
+========================================= */
+
+.encabezado {
+    background: var(--celeste-fundacion) !important;
+    color: white !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+
+.encabezado-contenido {
+    min-height: 90px;
+
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+}
+
+
+/* =========================================
+   MARCA CENTRADA
+========================================= */
+
+.marca {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 13px;
+
+    text-align: left;
+}
+
+
+.icono-marca {
+    width: 47px;
+    height: 47px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.16);
+
+    border: 1px solid rgba(255, 255, 255, 0.32);
+
+    border-radius: 11px;
+
+    font-size: 29px;
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.10);
+}
+
+
+.marca h1 {
+    margin: 0;
+
+    color: white !important;
+
+    font-size: 24px;
+
+    font-weight: 750;
+
+    line-height: 1.1;
+}
+
+
+.marca p {
+    margin: 3px 0 0;
+
+    color: white !important;
+
+    font-size: 12px;
+
+    font-weight: 400;
+
+    opacity: 0.96;
+}
+
+
+/* =========================================
+   BOTON CERRAR SESION
+========================================= */
+
+#botonCerrarSesion {
+    color: white !important;
+
+    border-color: rgba(255,255,255,0.42) !important;
+
+    transition: 0.2s ease;
+
+    position: absolute;
+
+    right: 18px;
+
+    margin-left: 0 !important;
+}
+
+#botonCerrarSesion:hover {
+    background: rgba(255,255,255,0.15) !important;
+}
+
+
+/* =========================================
+   CONTENEDOR
+========================================= */
+
+.contenedor {
+    max-width: 1180px;
+
+    margin: 20px auto 30px;
+
+    padding: 0 18px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   ESTADISTICAS
+========================================= */
+
+.estadisticas {
+    display: grid !important;
+
+    grid-template-columns:
+        repeat(4, minmax(145px, 175px));
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-bottom: 14px;
+}
+
+
+.tarjeta-estadistica {
+    background: white !important;
+
+    border: 1px solid var(--borde);
+
+    border-radius: 9px;
+
+    width: 100%;
+
+    min-height: 96px;
+
+    padding: 11px 10px !important;
+
+    box-sizing: border-box;
+
+    box-shadow: var(--sombra);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
+}
+
+
+.tarjeta-estadistica:hover {
+    transform: translateY(-2px);
+
+    border-color: #a9dced;
+
+    box-shadow:
+        0 5px 15px rgba(0, 157, 220, 0.10);
+}
+
+
+.estadistica-icono {
+    width: 36px;
+    height: 36px;
+
+    margin-bottom: 5px;
+
+    border-radius: 9px;
+
+    background: var(--celeste-suave);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 19px;
+}
+
+
+.estadistica-numero {
+    font-size: 22px !important;
+
+    font-weight: 750;
+
+    color: var(--celeste-fundacion);
+
+    line-height: 1;
+
+    margin-bottom: 3px;
+}
+
+
+.estadistica-texto {
+    color: var(--texto-suave);
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    line-height: 1.2;
+}
+
+
+/* =========================================
+   SECCIONES
+========================================= */
+
+.seccion {
+    background: white;
+
+    border: 1px solid var(--borde);
+
+    border-radius: 10px;
+
+    margin-bottom: 14px;
+
+    box-shadow: var(--sombra);
+
+    overflow: hidden;
+}
+
+
+.seccion-titulo {
+    margin: 0 !important;
+
+    padding: 11px 17px !important;
+
+    background: #fbfcfd;
+
+    border-bottom: 1px solid var(--borde);
+
+    color: #34434b;
+
+    font-size: 15px !important;
+
+    font-weight: 700;
+}
+
+
+.seccion-contenido {
+    padding: 16px;
+}
+
+
+/* =========================================
+   ACCIONES PRINCIPALES
+========================================= */
+
+.acciones-principales {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
+
+    padding: 12px;
+}
+
+
+.accion {
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-height: 70px;
+
+    padding: 12px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid var(--borde);
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: var(--texto);
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+
+.accion:hover {
+    transform: translateY(-2px);
+
+    border-color: #9ed9ed;
+
+    background: #fbfeff;
+
+    box-shadow:
+        0 5px 14px rgba(0, 157, 220, 0.10);
+}
+
+
+.accion-icono {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+
+    border-radius: 9px;
+
+    background: var(--celeste-suave);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+
+.accion-contenido {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+    min-width: 0;
+}
+
+
+.accion-contenido strong {
+    font-size: 13px;
+
+    color: #263238;
+}
+
+
+.accion-contenido span {
+    font-size: 11px;
+
+    line-height: 1.3;
+
+    color: var(--texto-suave);
+}
+
+
+/* =========================================
+   OCULTAR FLECHAS
+========================================= */
+
+.accion-flecha,
+.opcion-flecha {
+    display: none !important;
+}
+
+
+/* =========================================
+   ADMINISTRACION
+========================================= */
+
+.administracion {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    padding: 12px;
+}
+
+
+.opcion {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-height: 73px;
+
+    padding: 12px;
+
+    box-sizing: border-box;
+
+    background: #ffffff;
+
+    border: 1px solid var(--borde);
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    color: var(--texto);
+
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+
+.opcion:hover {
+    transform: translateY(-2px);
+
+    border-color: #9ed9ed;
+
+    background: #fbfeff;
+
+    box-shadow:
+        0 5px 14px rgba(0, 157, 220, 0.10);
+}
+
+
+.opcion-icono {
+    width: 40px;
+    height: 40px;
+
+    min-width: 40px;
+
+    border-radius: 9px;
+
+    background: var(--celeste-suave);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+
+.opcion-contenido {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+    min-width: 0;
+}
+
+
+.opcion-contenido strong {
+    font-size: 13px;
+
+    color: #263238;
+}
+
+
+.opcion-contenido span {
+    font-size: 11px;
+
+    line-height: 1.3;
+
+    color: var(--texto-suave);
+}
+
+
+/* =========================================
+   INFORMACION
+========================================= */
+
+.mensaje-inicio {
+    background: var(--celeste-suave) !important;
+
+    border: 1px solid #ccebf6;
+
+    border-left: 4px solid var(--celeste-fundacion);
+
+    border-radius: 9px;
+
+    padding: 12px 17px;
+
+    margin-top: 2px;
+
+    margin-bottom: 14px;
+}
+
+
+.mensaje-inicio strong {
+    color: #087ca9;
+
+    font-size: 13px;
+}
+
+
+.mensaje-inicio p {
+    color: #52636b;
+
+    font-size: 12px;
+
+    margin: 4px 0 0;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================
+   PIE
+========================================= */
+
+footer {
+    color: #7a878e;
+
+    font-size: 11px;
+
+    padding: 10px 0 20px;
+
+    text-align: center;
+
+    line-height: 1.6;
+}
+
+
+footer .version {
+    display: block;
+
+    color: #7a878e;
+
+    font-size: 10px;
+}
+
+
+footer .creditos {
+    display: block;
+
+    color: #87939a;
+
+    font-size: 10px;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 950px) {
+
+    .estadisticas {
+        grid-template-columns:
+            repeat(2, minmax(145px, 175px));
+    }
+
+
+    .acciones-principales {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .administracion {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media (max-width: 650px) {
+
+    .contenedor {
+        margin-top: 14px;
+
+        padding: 0 12px;
+    }
+
+
+    /*
+       En celular el encabezado pasa a dos niveles.
+       Así el botón Cerrar sesión nunca se encima
+       con Biblioteca.
+    */
+
+    .encabezado-contenido {
+        min-height: auto;
+
+        padding: 12px 12px 11px;
+
+        box-sizing: border-box;
+
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+
+    .marca {
+        position: static;
+
+        gap: 8px;
+
+        text-align: center;
+
+        justify-content: center;
+
+        width: 100%;
+    }
+
+
+    .marca h1 {
+        font-size: 19px;
+    }
+
+
+    .marca p {
+        font-size: 10px;
+
+        margin-top: 2px;
+    }
+
+
+    .icono-marca {
+        width: 42px;
+        height: 42px;
+
+        font-size: 25px;
+    }
+
+
+    #botonCerrarSesion {
+        position: static;
+
+        right: auto;
+
+        margin: 0 !important;
+
+        transform: none;
+
+        padding: 8px 10px !important;
+
+        font-size: 12px !important;
+    }
+
+
+    .estadisticas {
+        grid-template-columns:
+            repeat(2, minmax(130px, 165px));
+
+        gap: 9px;
+    }
+
+
+    .tarjeta-estadistica {
+        min-height: 91px;
+
+        padding: 9px !important;
+    }
+
+
+    .estadistica-icono {
+        width: 34px;
+        height: 34px;
+
+        font-size: 18px;
+
+        margin-bottom: 4px;
+    }
+
+
+    .estadistica-numero {
+        font-size: 20px !important;
+    }
+
+
+    .administracion {
+        grid-template-columns: 1fr;
+
+        gap: 8px;
+    }
+
+
+    .accion,
+    .opcion {
+        min-height: 66px;
+
+        padding: 11px;
+    }
+
+
+    .accion-icono,
+    .opcion-icono {
+        width: 37px;
+        height: 37px;
+
+        min-width: 37px;
+
+        font-size: 18px;
+    }
+
+}
+
+
+/* =========================================
+   CELULAR PEQUEÑO
+========================================= */
+
+@media (max-width: 420px) {
+
+    .estadisticas {
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 8px;
+    }
+
+
+    .tarjeta-estadistica {
+        min-height: 88px;
+    }
+
+
+    .marca {
+        gap: 6px;
+    }
+
+
+    .marca h1 {
+        font-size: 17px;
+    }
+
+
+    .marca p {
+        font-size: 9px;
+    }
+
+
+    .encabezado-contenido {
+        min-height: auto;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body class="sistema-cargando">
+
+
+<!-- =========================================
+     PANTALLA DE ACCESO
+========================================= -->
+
+<div
+    id="pantallaAcceso"
+    style="
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        box-sizing: border-box;
+    "
+>
+
+    <div
+        style="
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border-radius: 14px;
+            padding: 32px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+            text-align: center;
+        "
+    >
+
+        <div
+            style="
+                font-size: 48px;
+                margin-bottom: 10px;
+            "
+        >
+            📚
+        </div>
+
+        <h1
+            style="
+                margin: 0 0 8px 0;
+            "
+        >
+            Biblioteca
+        </h1>
+
+        <p
+            style="
+                margin: 0 0 28px 0;
+                color: #666;
+            "
+        >
+            Sistema de control de préstamos
+        </p>
+
+
+        <form id="formularioAcceso">
+
+            <div
+                style="
+                    text-align: left;
+                    margin-bottom: 16px;
+                "
+            >
+
+                <label
+                    for="correo"
+                    style="
+                        display: block;
+                        margin-bottom: 6px;
+                        font-weight: 600;
+                    "
+                >
+                    Correo electrónico
+                </label>
+
+                <input
+                    type="email"
+                    id="correo"
+                    autocomplete="username"
+                    required
+                    placeholder="Ingresa tu correo"
+                    style="
+                        width: 100%;
+                        box-sizing: border-box;
+                        padding: 12px;
+                        border: 1px solid #ccc;
+                        border-radius: 8px;
+                        font-size: 15px;
+                    "
+                >
+
+            </div>
+
+
+            <div
+                style="
+                    text-align: left;
+                    margin-bottom: 18px;
+                "
+            >
+
+                <label
+                    for="contrasena"
+                    style="
+                        display: block;
+                        margin-bottom: 6px;
+                        font-weight: 600;
+                    "
+                >
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="contrasena"
+                    autocomplete="current-password"
+                    required
+                    placeholder="Ingresa tu contraseña"
+                    style="
+                        width: 100%;
+                        box-sizing: border-box;
+                        padding: 12px;
+                        border: 1px solid #ccc;
+                        border-radius: 8px;
+                        font-size: 15px;
+                    "
+                >
+
+            </div>
+
+
+            <div
+                id="mensajeAcceso"
+                style="
+                    display: none;
+                    margin-bottom: 16px;
+                    padding: 10px;
+                    border-radius: 8px;
+                    background: #f8d7da;
+                    color: #842029;
+                    font-size: 14px;
+                "
+            ></div>
+
+
+            <button
+                type="submit"
+                id="botonIngresar"
+                style="
+                    width: 100%;
+                    padding: 12px;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    font-weight: 600;
+                "
+            >
+                Ingresar
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     CONTENIDO DE LA BIBLIOTECA
+========================================= -->
+
+<div id="contenidoBiblioteca" style="display: none;">
+
+
+    <!-- =========================================
+         ENCABEZADO
+========================================= -->
+
+    <header class="encabezado">
+
+        <div class="encabezado-contenido">
+
+            <div class="marca">
+
+                <div class="icono-marca">
+                    📚
+                </div>
+
+                <div>
+
+                    <h1>
+                        Biblioteca
+                    </h1>
+
+                    <p>
+                        Sistema de control de préstamos
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="botonCerrarSesion"
+                style="
+                    margin-left: auto;
+                    padding: 9px 15px;
+                    border: 1px solid rgba(255,255,255,0.35);
+                    border-radius: 8px;
+                    background: transparent;
+                    color: inherit;
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: 600;
+                    white-space: nowrap;
+                "
+            >
+                Cerrar sesión
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         CONTENIDO PRINCIPAL
+========================================= -->
+
+    <main class="contenedor">
+
+
+        <!-- ESTADISTICAS -->
+
+        <section class="estadisticas">
+
+
+            <div class="tarjeta-estadistica">
+
+                <div class="estadistica-icono">
+                    📚
+                </div>
+
+                <div
+                    class="estadistica-numero"
+                    id="totalLibros"
+                >
+                    0
+                </div>
+
+                <div class="estadistica-texto">
+                    Libros
+                </div>
+
+            </div>
+
+
+
+            <div class="tarjeta-estadistica">
+
+                <div class="estadistica-icono">
+                    📖
+                </div>
+
+                <div
+                    class="estadistica-numero"
+                    id="totalDisponibles"
+                >
+                    0
+                </div>
+
+                <div class="estadistica-texto">
+                    Disponibles
+                </div>
+
+            </div>
+
+
+
+            <div class="tarjeta-estadistica">
+
+                <div class="estadistica-icono">
+                    📕
+                </div>
+
+                <div
+                    class="estadistica-numero"
+                    id="totalPrestados"
+                >
+                    0
+                </div>
+
+                <div class="estadistica-texto">
+                    Prestados
+                </div>
+
+            </div>
+
+
+
+            <div class="tarjeta-estadistica">
+
+                <div class="estadistica-icono">
+                    ⏰
+                </div>
+
+                <div
+                    class="estadistica-numero"
+                    id="totalVencidos"
+                >
+                    0
+                </div>
+
+                <div class="estadistica-texto">
+                    Vencidos
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ACCIONES PRINCIPALES -->
+
+        <section class="seccion">
+
+            <h2 class="seccion-titulo">
+                Acciones principales
+            </h2>
+
+
+            <div class="acciones-principales">
+
+
+                <a
+                    href="prestamos.html"
+                    class="accion"
+                >
+
+                    <div class="accion-icono">
+                        📖
+                    </div>
+
+                    <div class="accion-contenido">
+
+                        <strong>
+                            Nuevo préstamo
+                        </strong>
+
+                        <span>
+                            Registrar un nuevo préstamo de libro
+                        </span>
+
+                    </div>
+
+                    <div class="accion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="devoluciones.html"
+                    class="accion"
+                >
+
+                    <div class="accion-icono">
+                        ↩️
+                    </div>
+
+                    <div class="accion-contenido">
+
+                        <strong>
+                            Registrar devolución
+                        </strong>
+
+                        <span>
+                            Registrar el regreso de un libro
+                        </span>
+
+                    </div>
+
+                    <div class="accion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="buscar.html"
+                    class="accion"
+                >
+
+                    <div class="accion-icono">
+                        🔎
+                    </div>
+
+                    <div class="accion-contenido">
+
+                        <strong>
+                            Buscar
+                        </strong>
+
+                        <span>
+                            Consultar personas, familias y préstamos
+                        </span>
+
+                    </div>
+
+                    <div class="accion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="materiales.html"
+                    class="accion"
+                    data-rol="USUARIO ADMINISTRADOR"
+                >
+
+                    <div class="accion-icono">
+                        📦
+                    </div>
+
+                    <div class="accion-contenido">
+
+                        <strong>
+                            Materiales
+                        </strong>
+
+                        <span>
+                            Registrar y administrar materiales
+                        </span>
+
+                    </div>
+
+                    <div class="accion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ADMINISTRACION -->
+
+        <section
+            class="seccion"
+            id="seccionAdministracion"
+        >
+
+            <h2 class="seccion-titulo">
+                Administración
+            </h2>
+
+
+            <div class="administracion">
+
+
+                <a
+                    href="libros.html"
+                    class="opcion"
+                    data-rol="USUARIO ADMINISTRADOR"
+                >
+
+                    <div class="opcion-icono">
+                        📚
+                    </div>
+
+                    <div class="opcion-contenido">
+
+                        <strong>
+                            Libros
+                        </strong>
+
+                        <span>
+                            Registrar y administrar los libros
+                        </span>
+
+                    </div>
+
+                    <div class="opcion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="familias.html"
+                    class="opcion"
+                    data-rol="ADMINISTRADOR"
+                >
+
+                    <div class="opcion-icono">
+                        👨‍👩‍👧
+                    </div>
+
+                    <div class="opcion-contenido">
+
+                        <strong>
+                            Familias
+                        </strong>
+
+                        <span>
+                            Consultar la base de afiliados
+                        </span>
+
+                    </div>
+
+                    <div class="opcion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="colaboradores.html"
+                    class="opcion"
+                    data-rol="ADMINISTRADOR"
+                >
+
+                    <div class="opcion-icono">
+                        👤
+                    </div>
+
+                    <div class="opcion-contenido">
+
+                        <strong>
+                            Colaboradores
+                        </strong>
+
+                        <span>
+                            Consultar la base de colaboradores
+                        </span>
+
+                    </div>
+
+                    <div class="opcion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="reportes.html"
+                    class="opcion"
+                    data-rol="ADMINISTRADOR"
+                >
+
+                    <div class="opcion-icono">
+                        📊
+                    </div>
+
+                    <div class="opcion-contenido">
+
+                        <strong>
+                            Reportes
+                        </strong>
+
+                        <span>
+                            Consultar estadísticas e historial
+                        </span>
+
+                    </div>
+
+                    <div class="opcion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="respaldo.html"
+                    class="opcion"
+                    data-rol="ADMINISTRADOR"
+                >
+
+                    <div class="opcion-icono">
+                        💾
+                    </div>
+
+                    <div class="opcion-contenido">
+
+                        <strong>
+                            Respaldo
+                        </strong>
+
+                        <span>
+                            Crear o restaurar una copia de seguridad
+                        </span>
+
+                    </div>
+
+                    <div class="opcion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="administracion.html"
+                    class="opcion"
+                    data-rol="ADMINISTRADOR"
+                >
+
+                    <div class="opcion-icono">
+                        ⚙️
+                    </div>
+
+                    <div class="opcion-contenido">
+
+                        <strong>
+                            Administración
+                        </strong>
+
+                        <span>
+                            Configuración y diagnóstico del sistema
+                        </span>
+
+                    </div>
+
+                    <div class="opcion-flecha">
+                        →
+                    </div>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- INFORMACION -->
+
+        <section class="mensaje-inicio">
+
+            <strong>
+                💡 Información
+            </strong>
+
+            <p>
+                Utiliza las opciones del sistema para
+                administrar los libros y controlar sus
+                préstamos y devoluciones.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- PIE -->
+
+    <footer>
+
+        <span>
+            Sistema de Biblioteca
+        </span>
+
+        <span class="version">
+            Versión 1.0
+        </span>
+
+        <span class="creditos">
+            Desarrollado por Saúl Velásquez
+        </span>
+
+    </footer>
+
+</div>
+
+
+
+<!-- =========================================
+     SUPABASE
+========================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
+
+<script src="auth.js?v=1002"></script>
+
+
+
+<script>
+
+const pantallaAcceso =
+    document.getElementById("pantallaAcceso");
+
+const contenidoBiblioteca =
+    document.getElementById("contenidoBiblioteca");
+
+const formularioAcceso =
+    document.getElementById("formularioAcceso");
+
+const correo =
+    document.getElementById("correo");
+
+const contrasena =
+    document.getElementById("contrasena");
+
+const botonIngresar =
+    document.getElementById("botonIngresar");
+
+const botonCerrarSesion =
+    document.getElementById("botonCerrarSesion");
+
+const mensajeAcceso =
+    document.getElementById("mensajeAcceso");
+
+
+
+/* =========================================
+   APLICAR PERMISOS
+========================================= */
+
+function aplicarPermisosMenu(rol) {
+
+    const rolNormalizado =
+        String(rol || "")
+            .trim()
+            .toUpperCase();
+
+
+    const opciones =
+        document.querySelectorAll(
+            "[data-rol]"
+        );
+
+
+    opciones.forEach(
+        function(opcion) {
+
+            const rolesPermitidos =
+                opcion
+                    .getAttribute(
+                        "data-rol"
+                    )
+                    .split(" ")
+                    .map(
+                        function(item) {
+
+                            return item
+                                .trim()
+                                .toUpperCase();
+
+                        }
+                    );
+
+
+            if (
+                rolesPermitidos.includes(
+                    rolNormalizado
+                )
+            ) {
+
+                opcion.style.display = "";
+
+            } else {
+
+                opcion.style.display = "none";
+
+            }
+
+        }
+    );
+
+
+    const seccionAdministracion =
+        document.getElementById(
+            "seccionAdministracion"
+        );
+
+
+    if (seccionAdministracion) {
+
+        const opcionesVisibles =
+            seccionAdministracion
+                .querySelectorAll(
+                    ".opcion:not([style*='display: none'])"
+                );
+
+
+        if (
+            opcionesVisibles.length === 0
+        ) {
+
+            seccionAdministracion.style.display =
+                "none";
+
+        } else {
+
+            seccionAdministracion.style.display =
+                "";
+
+        }
+
+    }
+
+}
+
+
+
+/* =========================================
+   MOSTRAR BIBLIOTECA
+========================================= */
+
+async function mostrarBiblioteca() {
+
+    const autorizado =
+        await window.protegerPagina();
+
+
+    if (!autorizado) {
+
+        mostrarError(
+            "No fue posible validar la sesión del usuario."
+        );
+
+
+        document.body.classList.remove(
+            "sistema-cargando"
+        );
+
+
+        return;
+
+    }
+
+
+    aplicarPermisosMenu(
+        window.rolUsuario
+    );
+
+
+    pantallaAcceso.style.display =
+        "none";
+
+    contenidoBiblioteca.style.display =
+        "block";
+
+
+    const scriptApp =
+        document.createElement(
+            "script"
+        );
+
+
+    scriptApp.src =
+        "app.js";
+
+
+    document.body.appendChild(
+        scriptApp
+    );
+
+
+    document.body.classList.remove(
+        "sistema-cargando"
+    );
+
+}
+
+
+
+/* =========================================
+   MOSTRAR ERROR
+========================================= */
+
+function mostrarError(
+    mensaje
+) {
+
+    mensajeAcceso.textContent =
+        mensaje;
+
+    mensajeAcceso.style.display =
+        "block";
+
+}
+
+
+
+/* =========================================
+   COMPROBAR SESION
+========================================= */
+
+async function comprobarSesion() {
+
+    const {
+        data: { session },
+        error
+    } =
+        await supabaseClient.auth.getSession();
+
+
+    if (error) {
+
+        console.error(
+            "Error al comprobar la sesión:",
+            error
+        );
+
+
+        mostrarError(
+            "No se pudo comprobar la sesión."
+        );
+
+
+        document.body.classList.remove(
+            "sistema-cargando"
+        );
+
+
+        return;
+
+    }
+
+
+    if (session) {
+
+        await mostrarBiblioteca();
+
+    } else {
+
+        pantallaAcceso.style.display =
+            "flex";
+
+        contenidoBiblioteca.style.display =
+            "none";
+
+
+        document.body.classList.remove(
+            "sistema-cargando"
+        );
+
+    }
+
+}
+
+
+
+/* =========================================
+   INICIAR SESION
+========================================= */
+
+formularioAcceso.addEventListener(
+    "submit",
+    async function(evento) {
+
+        evento.preventDefault();
+
+
+        mensajeAcceso.style.display =
+            "none";
+
+
+        botonIngresar.disabled =
+            true;
+
+
+        botonIngresar.textContent =
+            "Ingresando...";
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth
+                .signInWithPassword({
+
+                    email:
+                        correo.value.trim(),
+
+                    password:
+                        contrasena.value
+
+                });
+
+
+        if (error) {
+
+            console.error(
+                "Error de inicio de sesión:",
+                error
+            );
+
+
+            mostrarError(
+                "El correo o la contraseña no son correctos."
+            );
+
+
+            botonIngresar.disabled =
+                false;
+
+
+            botonIngresar.textContent =
+                "Ingresar";
+
+
+            return;
+
+        }
+
+
+        if (data.session) {
+
+            await mostrarBiblioteca();
+
+        }
+
+    }
+);
+
+
+
+/* =========================================
+   CERRAR SESION
+========================================= */
+
+botonCerrarSesion.addEventListener(
+    "click",
+    async function() {
+
+        botonCerrarSesion.disabled =
+            true;
+
+
+        botonCerrarSesion.textContent =
+            "Cerrando sesión...";
+
+
+        const {
+            error
+        } =
+            await supabaseClient.auth
+                .signOut();
+
+
+        if (error) {
+
+            console.error(
+                "Error al cerrar sesión:",
+                error
+            );
+
+
+            botonCerrarSesion.disabled =
+                false;
+
+
+            botonCerrarSesion.textContent =
+                "Cerrar sesión";
+
+
+            alert(
+                "No se pudo cerrar la sesión. Intenta nuevamente."
+            );
+
+
+            return;
+
+        }
+
+
+        window.location.reload();
+
+    }
+);
+
+
+
+/* =========================================
+   INICIAR
+========================================= */
+
+comprobarSesion();
+
+</script>
+
+</body>
+
+</html>

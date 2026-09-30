@@ -1,0 +1,4893 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - Biblioteca</title>
+
+    <style>
+        html {
+            visibility: hidden;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f8;
+            color: #263238;
+        }
+
+        /* =====================================================
+           ENCABEZADO
+        ===================================================== */
+
+        header {
+            background: #009ddc;
+            color: white;
+            padding: 16px 20px;
+        }
+
+        .encabezado-contenido {
+            max-width: 1100px;
+            margin: auto;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .encabezado-marca {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            text-align: center;
+        }
+
+        .encabezado-icono {
+            font-size: 27px;
+        }
+
+        .encabezado-texto {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .encabezado-texto strong {
+            font-size: 23px;
+            line-height: 1.2;
+        }
+
+        .encabezado-texto span {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .boton-volver {
+            display: inline-block;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.16);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            padding: 8px 13px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .boton-volver:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* =====================================================
+           CONTENEDOR
+        ===================================================== */
+
+        .contenedor {
+            width: min(1100px, calc(100% - 30px));
+            margin: 18px auto 35px;
+        }
+
+        /* =====================================================
+           SECCIONES
+        ===================================================== */
+
+        .seccion {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .seccion-titulo {
+            background: #fafafa;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 11px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .seccion-contenido {
+            padding: 14px;
+        }
+
+        .descripcion-seccion {
+            margin: 0 0 11px;
+            color: #607d8b;
+            line-height: 1.4;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           RESUMEN SUPERIOR
+        ===================================================== */
+
+        .resumen-superior {
+            display: grid;
+            grid-template-columns: 1fr 1.45fr;
+            gap: 14px;
+        }
+
+        .resumen-superior .seccion {
+            margin-bottom: 0;
+        }
+
+        .grid-informacion {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .dato {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 9px 10px;
+            background: #fafafa;
+            min-width: 0;
+        }
+
+        .dato-label {
+            display: block;
+            font-size: 11px;
+            color: #78909c;
+            margin-bottom: 3px;
+        }
+
+        .dato-valor {
+            display: block;
+            font-weight: bold;
+            color: #263238;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        /* =====================================================
+           ESTADÍSTICAS
+        ===================================================== */
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .tarjeta-estadistica {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 12px 6px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .tarjeta-estadistica strong {
+            display: block;
+            font-size: 22px;
+            color: #374151;
+            margin-bottom: 3px;
+        }
+
+        .tarjeta-estadistica span {
+            font-size: 11px;
+            color: #607d8b;
+        }
+
+        /* =====================================================
+           CONTROL DEL SISTEMA
+        ===================================================== */
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+            gap: 12px;
+            align-items: start;
+        }
+
+        .subseccion {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .subseccion-titulo {
+            background: #fafafa;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 10px 13px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .subseccion-contenido {
+            padding: 11px;
+        }
+
+        /* =====================================================
+           TABLAS
+        ===================================================== */
+
+        .tabla-contenedor {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 620px;
+        }
+
+        th {
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 11px;
+            text-align: left;
+            padding: 8px 9px;
+            border-bottom: 1px solid #d1d5db;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 8px 9px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* =====================================================
+           ACCIONES DE USUARIOS
+        ===================================================== */
+
+        .acciones-usuario {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+            min-width: 235px;
+        }
+
+        .boton-accion {
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            border-radius: 6px;
+            padding: 5px 7px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .boton-accion:hover {
+            background: #f3f4f6;
+            border-color: #b9c0c8;
+        }
+
+        .boton-accion-rol {
+            color: #3730a3;
+        }
+
+        .boton-accion-password {
+            color: #0369a1;
+        }
+
+        .boton-accion-eliminar {
+            color: #991b1b;
+            border-color: #fecaca;
+        }
+
+        .boton-accion-eliminar:hover {
+            background: #fff1f2;
+            border-color: #fca5a5;
+        }
+
+        .boton-accion-eliminar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f9fafb;
+        }
+
+        /* =====================================================
+           DIAGNÓSTICO
+        ===================================================== */
+
+        .diagnostico-ok {
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .diagnostico-error {
+            color: #991b1b;
+            font-weight: bold;
+        }
+
+        .diagnostico-cargando {
+            color: #607d8b;
+        }
+
+        /* =====================================================
+           INTEGRIDAD
+        ===================================================== */
+
+        .integridad-lista {
+            display: grid;
+            gap: 6px;
+        }
+
+        .integridad-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 8px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .integridad-item strong {
+            font-size: 11.5px;
+            line-height: 1.3;
+        }
+
+        .integridad-estado {
+            font-size: 10px;
+            font-weight: bold;
+            white-space: nowrap;
+            text-align: right;
+        }
+
+        .integridad-correcta {
+            color: #166534;
+        }
+
+        .integridad-observacion {
+            color: #92400e;
+        }
+
+        /* =====================================================
+           SITIOS
+        ===================================================== */
+
+        .sitios {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .sitio {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 10px 7px;
+            text-align: center;
+            background: #fafafa;
+            min-width: 0;
+        }
+
+        .sitio-codigo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 3px;
+        }
+
+        .sitio-nombre {
+            font-size: 10.5px;
+            color: #607d8b;
+            line-height: 1.3;
+        }
+
+        /* =====================================================
+           USUARIOS Y PERMISOS
+        ===================================================== */
+
+        .usuarios-preparacion {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .tarjeta-rol {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 11px 12px;
+            background: #fafafa;
+        }
+
+        .tarjeta-rol h3 {
+            margin: 0 0 5px;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .tarjeta-rol p {
+            margin: 0 0 7px;
+            color: #607d8b;
+            line-height: 1.35;
+            font-size: 11.5px;
+        }
+
+        .tarjeta-rol ul {
+            margin: 0;
+            padding-left: 17px;
+            color: #4b5563;
+            line-height: 1.4;
+            font-size: 11.5px;
+        }
+
+        .usuarios-barra {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 11px;
+        }
+
+        .usuarios-resumen {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .usuario-resumen {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 9px 6px;
+            text-align: center;
+            background: #fafafa;
+        }
+
+        .usuario-resumen strong {
+            display: block;
+            font-size: 19px;
+            color: #374151;
+            margin-bottom: 2px;
+        }
+
+        .usuario-resumen span {
+            color: #607d8b;
+            font-size: 10.5px;
+        }
+
+        .acciones-usuarios {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .usuarios-cargando,
+        .usuarios-vacio {
+            text-align: center;
+            color: #607d8b;
+            padding: 17px;
+        }
+
+        .estado-preparacion {
+            margin-top: 10px;
+            padding: 9px 10px;
+            border-radius: 7px;
+            background: #f3f4f6;
+            color: #607d8b;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* =====================================================
+           DATOS DE LA APLICACIÓN
+        ===================================================== */
+
+        .aplicacion-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .aplicacion-dato {
+            border: 1px solid #e0e0e0;
+            border-radius: 7px;
+            padding: 10px;
+            background: #fafafa;
+        }
+
+        .aplicacion-dato .dato-label {
+            margin-bottom: 3px;
+        }
+
+        .aplicacion-dato .dato-valor {
+            font-size: 12px;
+        }
+
+        .credito-desarrollador {
+            margin-top: 10px;
+            border: 1px solid #dceaf0;
+            border-radius: 8px;
+            background: #f7fbfd;
+            padding: 11px 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .credito-texto {
+            min-width: 0;
+        }
+
+        .credito-texto strong {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .credito-texto span {
+            display: block;
+            color: #607d8b;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .credito-icono {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        /* =====================================================
+           BOTONES
+        ===================================================== */
+
+        .boton {
+            border: none;
+            border-radius: 7px;
+            padding: 8px 14px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .boton-principal {
+            background: #009ddc;
+            color: white;
+        }
+
+        .boton-principal:hover {
+            background: #008bc4;
+        }
+
+        .boton-secundario {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .boton-secundario:hover {
+            background: #d1d5db;
+        }
+
+        .boton-rojo {
+            background: #b91c1c;
+            color: white;
+        }
+
+        .boton-rojo:hover {
+            background: #991b1b;
+        }
+
+        /* =====================================================
+           SESIÓN
+        ===================================================== */
+
+        .sesion-acciones {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 11px;
+        }
+
+        /* =====================================================
+           ESTADOS
+        ===================================================== */
+
+        .estado-activo,
+        .estado-inactivo,
+        .rol-administrador,
+        .rol-usuario {
+            display: inline-block;
+            padding: 3px 7px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .estado-activo {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .estado-inactivo {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .rol-administrador {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .rol-usuario {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        /* =====================================================
+           PIE
+        ===================================================== */
+
+        .pie {
+            text-align: center;
+            color: #607d8b;
+            font-size: 11px;
+            padding: 15px;
+        }
+
+        /* =====================================================
+           MODALES
+        ===================================================== */
+
+        .modal-fondo {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(38, 50, 56, 0.48);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-fondo.visible {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            width: min(500px, 100%);
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .modal-grande {
+            width: min(560px, 100%);
+        }
+
+        .modal-cabecera {
+            background: #009ddc;
+            color: white;
+            padding: 14px 18px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .modal-cuerpo {
+            padding: 19px 18px;
+            color: #374151;
+            line-height: 1.5;
+            font-size: 13px;
+        }
+
+        .modal-pie {
+            padding: 12px 18px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        /* =====================================================
+           CAJA DE MENSAJE
+        ===================================================== */
+
+        #modalMensaje {
+            background: rgba(38, 50, 56, 0.42);
+        }
+
+        #modalMensaje .modal {
+            width: min(430px, 100%);
+            border: 1px solid #dceaf0;
+            border-radius: 10px;
+            box-shadow: 0 16px 38px rgba(38, 50, 56, 0.22);
+        }
+
+        #modalMensaje .modal-cabecera {
+            background: #009ddc;
+            padding: 13px 17px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        #modalMensaje .modal-cuerpo {
+            padding: 18px 20px;
+            background: white;
+            color: #374151;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.55;
+            white-space: pre-line;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #modalMensaje .modal-pie {
+            padding: 11px 16px 14px;
+            background: #f7fbfd;
+            border-top: 1px solid #dceaf0;
+            justify-content: center;
+        }
+
+        #modalMensaje .modal-pie .boton-principal {
+            min-width: 90px;
+            padding: 8px 18px;
+        }
+
+        /* =====================================================
+           MODAL ELIMINAR
+        ===================================================== */
+
+        #modalEliminar {
+            background: rgba(38, 50, 56, 0.42);
+        }
+
+        #modalEliminar .modal {
+            width: min(430px, 100%);
+            border: 1px solid #dceaf0;
+            border-radius: 10px;
+            box-shadow: 0 16px 38px rgba(38, 50, 56, 0.22);
+        }
+
+        #modalEliminar .modal-cabecera {
+            background: #009ddc;
+            color: white;
+            padding: 13px 17px;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        #modalEliminar .modal-cuerpo {
+            padding: 18px 20px;
+            background: white;
+            color: #374151;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        #modalEliminar .confirmacion-icono {
+            font-size: 30px;
+            margin-bottom: 7px;
+        }
+
+        #modalEliminar .confirmacion-titulo {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+        #modalEliminar .confirmacion-texto {
+            color: #607d8b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        #modalEliminar .usuario-eliminar {
+            margin-top: 12px;
+            padding: 9px 11px;
+            background: #f7fbfd;
+            border: 1px solid #dceaf0;
+            border-radius: 7px;
+            color: #374151;
+            font-size: 12px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        #modalEliminar .modal-pie {
+            padding: 11px 16px 14px;
+            background: #f7fbfd;
+            border-top: 1px solid #dceaf0;
+            justify-content: center;
+        }
+
+        #modalEliminar .boton-cancelar {
+            background: #e5e7eb;
+            color: #374151;
+            min-width: 95px;
+        }
+
+        #modalEliminar .boton-cancelar:hover {
+            background: #d1d5db;
+        }
+
+        #modalEliminar .boton-confirmar-eliminar {
+            background: #009ddc;
+            color: white;
+            min-width: 95px;
+        }
+
+        #modalEliminar .boton-confirmar-eliminar:hover {
+            background: #008bc4;
+        }
+
+        .formulario {
+            display: grid;
+            gap: 13px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .campo label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            padding: 9px 10px;
+            font-size: 13px;
+            color: #1f2937;
+            background: white;
+            outline: none;
+        }
+
+        .campo input:focus,
+        .campo select:focus {
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.12);
+        }
+
+        .formulario-nota {
+            background: #f3f4f6;
+            border-radius: 7px;
+            padding: 10px;
+            color: #4b5563;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .error-formulario {
+            display: none;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 7px;
+            padding: 10px;
+            font-size: 12px;
+        }
+
+        .error-formulario.visible {
+            display: block;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 950px) {
+
+            .resumen-superior {
+                grid-template-columns: 1fr;
+            }
+
+            .resumen-superior .seccion {
+                margin-bottom: 14px;
+            }
+
+            .control-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .sitios {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .aplicacion-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            header {
+                padding: 12px 15px;
+            }
+
+            .encabezado-contenido {
+                flex-direction: column;
+                gap: 8px;
+                padding: 2px 0;
+            }
+
+            .encabezado-marca {
+                width: 100%;
+            }
+
+            .encabezado-icono {
+                font-size: 24px;
+            }
+
+            .encabezado-texto strong {
+                font-size: 21px;
+            }
+
+            .encabezado-texto span {
+                font-size: 11px;
+            }
+
+            .boton-volver {
+                position: static;
+                transform: none;
+                margin: 0;
+            }
+
+            .contenedor {
+                width: min(100% - 20px, 1100px);
+                margin-top: 14px;
+            }
+
+            .estadisticas {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .usuarios-preparacion {
+                grid-template-columns: 1fr;
+            }
+
+            .usuarios-barra {
+                grid-template-columns: 1fr;
+            }
+
+            .acciones-usuarios {
+                justify-content: flex-start;
+            }
+
+            .acciones-usuarios .boton {
+                width: 100%;
+            }
+
+            .sitios {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .credito-desarrollador {
+                align-items: flex-start;
+            }
+
+            .sesion-acciones {
+                flex-direction: column;
+            }
+
+            .sesion-acciones .boton {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .grid-informacion,
+            .estadisticas,
+            .usuarios-resumen,
+            .sitios,
+            .aplicacion-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .seccion-contenido {
+                padding: 12px;
+            }
+
+            .seccion-titulo {
+                padding: 11px 13px;
+                font-size: 15px;
+            }
+
+            .sitio-nombre {
+                font-size: 10px;
+            }
+
+            .usuario-resumen {
+                padding: 8px 5px;
+            }
+
+            .usuario-resumen strong {
+                font-size: 18px;
+            }
+
+            .usuario-resumen span {
+                font-size: 10px;
+            }
+
+            .credito-desarrollador {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="encabezado-contenido">
+
+        <div class="encabezado-marca">
+
+            <div class="encabezado-icono">
+                ⚙️
+            </div>
+
+            <div class="encabezado-texto">
+                <strong>Administración</strong>
+                <span>Configuración y control del sistema</span>
+            </div>
+
+        </div>
+
+        <button
+            type="button"
+            class="boton-volver"
+            onclick="volverAtras()">
+            Volver al inicio
+        </button>
+
+    </div>
+</header>
+
+
+<main class="contenedor">
+
+
+    <!-- =====================================================
+         RESUMEN SUPERIOR
+    ====================================================== -->
+
+    <div class="resumen-superior">
+
+        <section class="seccion">
+
+            <div class="seccion-titulo">
+                Información del sistema
+            </div>
+
+            <div class="seccion-contenido">
+
+                <div class="grid-informacion">
+
+                    <div class="dato">
+                        <span class="dato-label">
+                            Sistema
+                        </span>
+
+                        <span class="dato-valor">
+                            Biblioteca
+                        </span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-label">
+                            Base de datos
+                        </span>
+
+                        <span class="dato-valor">
+                            Supabase
+                        </span>
+                    </div>
+
+                    <div class="dato">
+                        <span class="dato-label">
+                            Estado
+                        </span>
+
+                        <span class="dato-valor">
+                            Operativo
+                        </span>
+                    </div>
+
+                    <div class="dato">
+                        <span
+                            class="dato-label">
+                            Usuario actual
+                        </span>
+
+                        <span
+                            id="usuarioActual"
+                            class="dato-valor">
+                            Comprobando...
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="seccion">
+
+            <div class="seccion-titulo">
+                Estadísticas generales
+            </div>
+
+            <div class="seccion-contenido">
+
+                <div class="estadisticas">
+
+                    <div class="tarjeta-estadistica">
+                        <strong id="estadisticaLibros">
+                            0
+                        </strong>
+
+                        <span>
+                            Libros
+                        </span>
+                    </div>
+
+                    <div class="tarjeta-estadistica">
+                        <strong id="estadisticaAfiliados">
+                            0
+                        </strong>
+
+                        <span>
+                            Afiliados
+                        </span>
+                    </div>
+
+                    <div class="tarjeta-estadistica">
+                        <strong id="estadisticaColaboradores">
+                            0
+                        </strong>
+
+                        <span>
+                            Colaboradores
+                        </span>
+                    </div>
+
+                    <div class="tarjeta-estadistica">
+                        <strong id="estadisticaPrestamos">
+                            0
+                        </strong>
+
+                        <span>
+                            Préstamos
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTROL DEL SISTEMA
+    ====================================================== -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Control del sistema
+        </div>
+
+        <div class="seccion-contenido">
+
+            <div class="control-grid">
+
+
+                <div class="subseccion">
+
+                    <div class="subseccion-titulo">
+                        Diagnóstico del sistema
+                    </div>
+
+                    <div class="subseccion-contenido">
+
+                        <p class="descripcion-seccion">
+                            Comprobación básica de las tablas principales utilizadas por el sistema.
+                        </p>
+
+                        <div class="tabla-contenedor">
+
+                            <table>
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Elemento</th>
+                                        <th>Estado</th>
+                                        <th>Registros</th>
+                                        <th>Observación</th>
+                                    </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <tr>
+                                        <td>Afiliados</td>
+
+                                        <td
+                                            id="diagnosticoAfiliadosEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoAfiliadosCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoAfiliadosMensaje">
+                                            -
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Libros</td>
+
+                                        <td
+                                            id="diagnosticoLibrosEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoLibrosCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoLibrosMensaje">
+                                            -
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Colaboradores</td>
+
+                                        <td
+                                            id="diagnosticoColaboradoresEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoColaboradoresCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoColaboradoresMensaje">
+                                            -
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Préstamos</td>
+
+                                        <td
+                                            id="diagnosticoPrestamosEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoPrestamosCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoPrestamosMensaje">
+                                            -
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Usuarios</td>
+
+                                        <td
+                                            id="diagnosticoUsuariosEstado"
+                                            class="diagnostico-cargando">
+                                            Comprobando...
+                                        </td>
+
+                                        <td id="diagnosticoUsuariosCantidad">
+                                            -
+                                        </td>
+
+                                        <td id="diagnosticoUsuariosMensaje">
+                                            -
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="subseccion">
+
+                    <div class="subseccion-titulo">
+                        Integridad de datos
+                    </div>
+
+                    <div class="subseccion-contenido">
+
+                        <p class="descripcion-seccion">
+                            Revisiones básicas para detectar situaciones que podrían afectar el funcionamiento del sistema.
+                        </p>
+
+                        <div class="integridad-lista">
+
+                            <div class="integridad-item">
+                                <strong>
+                                    Libros con código repetido
+                                </strong>
+
+                                <span
+                                    id="integridadCodigosLibros"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
+                            </div>
+
+                            <div class="integridad-item">
+                                <strong>
+                                    Afiliados con PersonaId repetido
+                                </strong>
+
+                                <span
+                                    id="integridadPersonaId"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
+                            </div>
+
+                            <div class="integridad-item">
+                                <strong>
+                                    Familias sin identificador
+                                </strong>
+
+                                <span
+                                    id="integridadFamiliaId"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
+                            </div>
+
+                            <div class="integridad-item">
+                                <strong>
+                                    Libros sin estado
+                                </strong>
+
+                                <span
+                                    id="integridadLibrosEstado"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
+                            </div>
+
+                            <div class="integridad-item">
+                                <strong>
+                                    Afiliados sin estado
+                                </strong>
+
+                                <span
+                                    id="integridadAfiliadosEstado"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
+                            </div>
+
+                            <div class="integridad-item">
+                                <strong>
+                                    Colaboradores sin estado
+                                </strong>
+
+                                <span
+                                    id="integridadColaboradoresEstado"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
+                            </div>
+
+                            <div class="integridad-item">
+                                <strong>
+                                    Préstamos sin código de libro
+                                </strong>
+
+                                <span
+                                    id="integridadPrestamosLibro"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
+                            </div>
+
+                            <div class="integridad-item">
+                                <strong>
+                                    Usuarios sin rol
+                                </strong>
+
+                                <span
+                                    id="integridadUsuariosRol"
+                                    class="integridad-estado">
+                                    Comprobando...
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SITIOS
+    ====================================================== -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Sitios
+        </div>
+
+        <div class="seccion-contenido">
+
+            <div class="sitios">
+
+                <div class="sitio">
+                    <div class="sitio-codigo">F</div>
+                    <div class="sitio-nombre">
+                        Antigua Guatemala
+                    </div>
+                </div>
+
+                <div class="sitio">
+                    <div class="sitio-codigo">M</div>
+                    <div class="sitio-nombre">
+                        San Miguel Milpas Altas
+                    </div>
+                </div>
+
+                <div class="sitio">
+                    <div class="sitio-codigo">R</div>
+                    <div class="sitio-nombre">
+                        San Rafael el Arado
+                    </div>
+                </div>
+
+                <div class="sitio">
+                    <div class="sitio-codigo">N</div>
+                    <div class="sitio-nombre">
+                        Nueva Esperanza
+                    </div>
+                </div>
+
+                <div class="sitio">
+                    <div class="sitio-codigo">Z</div>
+                    <div class="sitio-nombre">
+                        Zapote
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         USUARIOS Y PERMISOS
+    ====================================================== -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Usuarios y permisos
+        </div>
+
+        <div class="seccion-contenido">
+
+            <p class="descripcion-seccion">
+                Usuarios registrados en el sistema y rol asignado a cada cuenta.
+            </p>
+
+
+            <div class="usuarios-preparacion">
+
+                <div class="tarjeta-rol">
+
+                    <h3>
+                        👤 Usuario
+                    </h3>
+
+                    <p>
+                        Perfil para las tareas cotidianas de la biblioteca.
+                    </p>
+
+                    <ul>
+                        <li>Registrar libros</li>
+                        <li>Registrar préstamos</li>
+                        <li>Registrar devoluciones</li>
+                        <li>Buscar información</li>
+                        <li>Consultar información necesaria</li>
+                    </ul>
+
+                </div>
+
+
+                <div class="tarjeta-rol">
+
+                    <h3>
+                        🛠️ Administrador
+                    </h3>
+
+                    <p>
+                        Perfil con acceso completo para administrar el sistema.
+                    </p>
+
+                    <ul>
+                        <li>Acceso a todos los módulos</li>
+                        <li>Importar información desde Excel</li>
+                        <li>Administrar familias y afiliados</li>
+                        <li>Administrar libros y colaboradores</li>
+                        <li>Consultar y descargar reportes</li>
+                        <li>Realizar respaldos y restauraciones</li>
+                        <li>Administrar usuarios y permisos</li>
+                    </ul>
+
+                </div>
+
+            </div>
+
+
+            <div class="usuarios-barra">
+
+                <div class="usuarios-resumen">
+
+                    <div class="usuario-resumen">
+                        <strong id="totalUsuarios">0</strong>
+                        <span>Usuarios registrados</span>
+                    </div>
+
+                    <div class="usuario-resumen">
+                        <strong id="usuariosAdministradores">0</strong>
+                        <span>Administradores</span>
+                    </div>
+
+                    <div class="usuario-resumen">
+                        <strong id="usuariosActivos">0</strong>
+                        <span>Usuarios activos</span>
+                    </div>
+
+                </div>
+
+
+                <div class="acciones-usuarios">
+
+                    <button
+                        type="button"
+                        class="boton boton-principal"
+                        onclick="abrirModalNuevoUsuario()">
+                        + Nuevo usuario
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="tabla-contenedor">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Estado</th>
+                            <th>Fecha de registro</th>
+                            <th>Acciones</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tablaUsuarios">
+
+                        <tr>
+                            <td
+                                colspan="6"
+                                class="usuarios-cargando">
+                                Cargando usuarios...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <div class="estado-preparacion">
+
+                <strong>Estado:</strong>
+                La gestión de usuarios está conectada con Supabase.
+                Las acciones de rol, contraseña y eliminación se procesan
+                mediante funciones seguras del sistema.
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         DATOS DE LA APLICACIÓN Y CRÉDITOS
+    ====================================================== -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Información de la aplicación
+        </div>
+
+        <div class="seccion-contenido">
+
+            <div class="aplicacion-grid">
+
+                <div class="aplicacion-dato">
+
+                    <span class="dato-label">
+                        Aplicación
+                    </span>
+
+                    <span class="dato-valor">
+                        Sistema de Biblioteca
+                    </span>
+
+                </div>
+
+
+                <div class="aplicacion-dato">
+
+                    <span class="dato-label">
+                        Versión
+                    </span>
+
+                    <span class="dato-valor">
+                        1.0
+                    </span>
+
+                </div>
+
+
+                <div class="aplicacion-dato">
+
+                    <span class="dato-label">
+                        Base de datos
+                    </span>
+
+                    <span class="dato-valor">
+                        Supabase
+                    </span>
+
+                </div>
+
+
+                <div class="aplicacion-dato">
+
+                    <span class="dato-label">
+                        Tecnologías
+                    </span>
+
+                    <span class="dato-valor">
+                        HTML, CSS y JavaScript
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="credito-desarrollador">
+
+                <div class="credito-texto">
+
+                    <strong>
+                        👨‍💻 Desarrollado por Saúl Velásquez
+                    </strong>
+
+                    <span>
+                        Sistema desarrollado para facilitar el control,
+                        administración y seguimiento de los préstamos
+                        de la biblioteca.
+                    </span>
+
+                </div>
+
+                <div class="credito-icono">
+                    📚
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SESIÓN ACTUAL
+    ====================================================== -->
+
+    <section class="seccion">
+
+        <div class="seccion-titulo">
+            Sesión actual
+        </div>
+
+        <div class="seccion-contenido">
+
+            <div class="grid-informacion">
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Usuario
+                    </span>
+
+                    <span
+                        id="usuarioActualSesion"
+                        class="dato-valor">
+                        Comprobando...
+                    </span>
+
+                </div>
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Estado
+                    </span>
+
+                    <span class="dato-valor">
+                        Sesión activa
+                    </span>
+
+                </div>
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Acceso
+                    </span>
+
+                    <span
+                        id="rolActual"
+                        class="dato-valor">
+                        Comprobando...
+                    </span>
+
+                </div>
+
+                <div class="dato">
+
+                    <span class="dato-label">
+                        Base de datos
+                    </span>
+
+                    <span class="dato-valor">
+                        Conectada
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="sesion-acciones">
+
+                <button
+                    type="button"
+                    class="boton boton-secundario"
+                    onclick="volverAtras()">
+                    Volver al inicio
+                </button>
+
+                <button
+                    type="button"
+                    class="boton boton-rojo"
+                    onclick="cerrarSesion()">
+                    Cerrar sesión
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<div class="pie">
+    Sistema de Biblioteca · Versión 1.0 · Desarrollado por Saúl Velásquez
+</div>
+
+
+<!-- =====================================================
+     MODAL GENERAL
+====================================================== -->
+
+<div
+    id="modalMensaje"
+    class="modal-fondo">
+
+    <div class="modal">
+
+        <div
+            class="modal-cabecera"
+            id="modalTitulo">
+            Administración
+        </div>
+
+        <div
+            class="modal-cuerpo"
+            id="modalMensajeTexto">
+            Información
+        </div>
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-principal"
+                onclick="cerrarModal()">
+                Aceptar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL ELIMINAR USUARIO
+====================================================== -->
+
+<div
+    id="modalEliminar"
+    class="modal-fondo">
+
+    <div class="modal">
+
+        <div class="modal-cabecera">
+            Confirmar eliminación
+        </div>
+
+        <div class="modal-cuerpo">
+
+            <div class="confirmacion-icono">
+                🗑️
+            </div>
+
+            <span class="confirmacion-titulo">
+                ¿Deseas eliminar este usuario?
+            </span>
+
+            <div class="confirmacion-texto">
+                Esta acción eliminará su cuenta de acceso
+                y su registro de usuario.
+                <br>
+                Esta acción no se puede deshacer.
+            </div>
+
+            <div
+                id="usuarioEliminarTexto"
+                class="usuario-eliminar">
+                Usuario seleccionado
+            </div>
+
+        </div>
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-cancelar"
+                onclick="cerrarModalEliminar()">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton boton-confirmar-eliminar"
+                onclick="confirmarEliminarUsuario()">
+                Eliminar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL NUEVO USUARIO
+====================================================== -->
+
+<div
+    id="modalNuevoUsuario"
+    class="modal-fondo">
+
+    <div class="modal modal-grande">
+
+        <div class="modal-cabecera">
+            Nuevo usuario
+        </div>
+
+        <div class="modal-cuerpo">
+
+            <form
+                id="formNuevoUsuario"
+                class="formulario"
+                onsubmit="guardarNuevoUsuario(event)">
+
+                <div class="campo">
+
+                    <label for="nuevoUsuarioNombre">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nuevoUsuarioNombre"
+                        placeholder="Nombre completo"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="nuevoUsuarioCorreo">
+                        Correo
+                    </label>
+
+                    <input
+                        type="email"
+                        id="nuevoUsuarioCorreo"
+                        placeholder="correo@ejemplo.com"
+                        autocomplete="off"
+                        required>
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="nuevoUsuarioRol">
+                        Rol
+                    </label>
+
+                    <select
+                        id="nuevoUsuarioRol"
+                        required>
+
+                        <option value="Usuario">
+                            Usuario
+                        </option>
+
+                        <option value="Administrador">
+                            Administrador
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="nuevoUsuarioEstado">
+                        Estado
+                    </label>
+
+                    <select
+                        id="nuevoUsuarioEstado"
+                        required>
+
+                        <option value="Activo">
+                            Activo
+                        </option>
+
+                        <option value="Inactivo">
+                            Inactivo
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="formulario-nota">
+
+                    La cuenta de acceso se crea mediante Supabase Auth.
+                    La contraseña inicial se solicitará de forma segura
+                    al continuar con la creación del usuario.
+
+                </div>
+
+                <div
+                    id="errorFormularioUsuario"
+                    class="error-formulario">
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-secundario"
+                onclick="cerrarModalNuevoUsuario()">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton boton-principal"
+                onclick="guardarNuevoUsuario()">
+                Continuar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL CAMBIAR ROL
+====================================================== -->
+
+<div
+    id="modalCambiarRol"
+    class="modal-fondo">
+
+    <div class="modal">
+
+        <div class="modal-cabecera">
+            Cambiar rol
+        </div>
+
+        <div class="modal-cuerpo">
+
+            <div class="formulario">
+
+                <div
+                    id="nombreUsuarioRol"
+                    class="formulario-nota">
+                    Usuario seleccionado
+                </div>
+
+                <div class="campo">
+
+                    <label for="nuevoRolUsuario">
+                        Nuevo rol
+                    </label>
+
+                    <select id="nuevoRolUsuario">
+
+                        <option value="Usuario">
+                            Usuario
+                        </option>
+
+                        <option value="Administrador">
+                            Administrador
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div
+                    id="errorCambiarRol"
+                    class="error-formulario">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-secundario"
+                onclick="cerrarModalCambiarRol()">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton boton-principal"
+                onclick="guardarCambioRol()">
+                Guardar cambio
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MODAL CAMBIAR CONTRASEÑA
+====================================================== -->
+
+<div
+    id="modalCambiarContrasena"
+    class="modal-fondo">
+
+    <div class="modal">
+
+        <div class="modal-cabecera">
+            Cambiar contraseña
+        </div>
+
+        <div class="modal-cuerpo">
+
+            <div class="formulario">
+
+                <div
+                    id="nombreUsuarioContrasena"
+                    class="formulario-nota">
+                    Usuario seleccionado
+                </div>
+
+                <div class="campo">
+
+                    <label for="nuevaContrasena">
+                        Nueva contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="nuevaContrasena"
+                        placeholder="Mínimo 6 caracteres"
+                        autocomplete="new-password">
+
+                </div>
+
+                <div class="campo">
+
+                    <label for="confirmarContrasena">
+                        Confirmar contraseña
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmarContrasena"
+                        placeholder="Repite la contraseña"
+                        autocomplete="new-password">
+
+                </div>
+
+                <div class="formulario-nota">
+
+                    La contraseña se actualiza directamente en
+                    Supabase Auth. No se almacena en la tabla
+                    de usuarios.
+
+                </div>
+
+                <div
+                    id="errorCambiarContrasena"
+                    class="error-formulario">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="modal-pie">
+
+            <button
+                type="button"
+                class="boton boton-secundario"
+                onclick="cerrarModalCambiarContrasena()">
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="boton boton-principal"
+                onclick="guardarCambioContrasena()">
+                Cambiar contraseña
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     SUPABASE
+====================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="auth.js?v=1002"></script>
+
+<script>
+
+let usuarioSesionActual = null;
+let perfilUsuarioActual = null;
+
+window.administracionAutorizado = false;
+
+let usuarioGestionActual = null;
+
+let datosAdministracion = {
+    afiliados: [],
+    libros: [],
+    colaboradores: [],
+    prestamos: [],
+    usuarios: []
+};
+
+
+/* =========================================================
+   FUNCIONES GENERALES
+========================================================= */
+
+function normalizar(valor) {
+
+    if (valor === null || valor === undefined) {
+        return "";
+    }
+
+    return String(valor)
+        .trim()
+        .toUpperCase();
+
+}
+
+
+function obtenerValor(objeto, campo, valorPredeterminado = "") {
+
+    if (!objeto) {
+        return valorPredeterminado;
+    }
+
+    if (
+        objeto[campo] === null ||
+        objeto[campo] === undefined
+    ) {
+        return valorPredeterminado;
+    }
+
+    return objeto[campo];
+
+}
+
+
+function esEstadoActivo(valor) {
+
+    return normalizar(valor) === "ACTIVO";
+
+}
+
+
+function esEstadoInactivo(valor) {
+
+    return normalizar(valor) === "INACTIVO";
+
+}
+
+
+function escapeHtml(valor) {
+
+    if (
+        valor === null ||
+        valor === undefined
+    ) {
+        return "";
+    }
+
+    return String(valor)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function formatearFecha(fecha) {
+
+    if (!fecha) {
+        return "-";
+    }
+
+    const fechaObjeto = new Date(fecha);
+
+    if (Number.isNaN(fechaObjeto.getTime())) {
+        return String(fecha);
+    }
+
+    return fechaObjeto.toLocaleDateString(
+        "es-GT",
+        {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        }
+    );
+
+}
+
+
+/* =========================================================
+   MODAL GENERAL
+========================================================= */
+
+function mostrarModal(titulo, mensaje) {
+
+    document.getElementById("modalTitulo").textContent = titulo;
+
+    document.getElementById("modalMensajeTexto").textContent = mensaje;
+
+    document
+        .getElementById("modalMensaje")
+        .classList.add("visible");
+
+}
+
+
+function cerrarModal() {
+
+    document
+        .getElementById("modalMensaje")
+        .classList.remove("visible");
+
+}
+
+
+/* =========================================================
+   MODAL ELIMINAR USUARIO
+========================================================= */
+
+let usuarioPendienteEliminar = null;
+
+
+function abrirModalEliminar(
+    usuarioId,
+    nombre,
+    correo
+) {
+
+    if (!usuarioId) {
+
+        mostrarModal(
+            "Error",
+            "No se encontró el identificador del usuario."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        String(usuarioId) ===
+        String(
+            usuarioSesionActual &&
+            usuarioSesionActual.id
+        )
+    ) {
+
+        mostrarModal(
+            "Operación no permitida",
+            "No puedes eliminar el usuario con el que estás conectado actualmente."
+        );
+
+        return;
+
+    }
+
+
+    usuarioPendienteEliminar = {
+        id: usuarioId,
+        nombre: nombre || "",
+        correo: correo || ""
+    };
+
+
+    const elemento =
+        document.getElementById(
+            "usuarioEliminarTexto"
+        );
+
+
+    if (elemento) {
+
+        elemento.textContent =
+            nombre +
+            (correo
+                ? " · " + correo
+                : "");
+
+    }
+
+
+    document
+        .getElementById("modalEliminar")
+        .classList.add("visible");
+
+}
+
+
+function cerrarModalEliminar() {
+
+    document
+        .getElementById("modalEliminar")
+        .classList.remove("visible");
+
+    usuarioPendienteEliminar = null;
+
+}
+
+
+async function confirmarEliminarUsuario() {
+
+    if (!usuarioPendienteEliminar) {
+
+        cerrarModalEliminar();
+
+        return;
+
+    }
+
+
+    const usuario =
+        usuarioPendienteEliminar;
+
+
+    cerrarModalEliminar();
+
+
+    mostrarModal(
+        "Eliminando usuario",
+        "Espera un momento mientras se elimina la cuenta de " +
+        usuario.nombre +
+        "..."
+    );
+
+
+    try {
+
+        await ejecutarGestionUsuario(
+            "eliminar",
+            {
+                usuarioId: usuario.id
+            }
+        );
+
+
+        await recargarInformacionUsuarios();
+
+
+        mostrarModal(
+            "Usuario eliminado",
+            "El usuario " +
+            usuario.nombre +
+            " fue eliminado correctamente."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error eliminando usuario:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible eliminar el usuario",
+            error.message ||
+            "Ocurrió un error al eliminar la cuenta."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MODAL NUEVO USUARIO
+========================================================= */
+
+function abrirModalNuevoUsuario() {
+
+    const formulario =
+        document.getElementById("formNuevoUsuario");
+
+    if (formulario) {
+        formulario.reset();
+    }
+
+    const error =
+        document.getElementById("errorFormularioUsuario");
+
+    if (error) {
+        error.textContent = "";
+        error.classList.remove("visible");
+    }
+
+    document
+        .getElementById("modalNuevoUsuario")
+        .classList.add("visible");
+
+    setTimeout(function() {
+
+        const nombre =
+            document.getElementById("nuevoUsuarioNombre");
+
+        if (nombre) {
+            nombre.focus();
+        }
+
+    }, 100);
+
+}
+
+
+function cerrarModalNuevoUsuario() {
+
+    document
+        .getElementById("modalNuevoUsuario")
+        .classList.remove("visible");
+
+}
+
+
+/* =========================================================
+   CREAR USUARIO
+========================================================= */
+
+async function guardarNuevoUsuario(evento) {
+
+    if (evento) {
+        evento.preventDefault();
+    }
+
+    const nombreElemento =
+        document.getElementById("nuevoUsuarioNombre");
+
+    const correoElemento =
+        document.getElementById("nuevoUsuarioCorreo");
+
+    const rolElemento =
+        document.getElementById("nuevoUsuarioRol");
+
+    const estadoElemento =
+        document.getElementById("nuevoUsuarioEstado");
+
+    const elementoError =
+        document.getElementById("errorFormularioUsuario");
+
+
+    if (
+        !nombreElemento ||
+        !correoElemento ||
+        !rolElemento ||
+        !estadoElemento
+    ) {
+
+        mostrarModal(
+            "Error",
+            "No fue posible encontrar los campos del formulario."
+        );
+
+        return;
+    }
+
+
+    const nombre =
+        nombreElemento.value.trim();
+
+    const correo =
+        correoElemento.value
+            .trim()
+            .toLowerCase();
+
+    const rol =
+        rolElemento.value;
+
+    const estado =
+        estadoElemento.value;
+
+
+    if (!nombre) {
+
+        mostrarErrorFormulario(
+            "Es necesario ingresar el nombre del usuario."
+        );
+
+        return;
+    }
+
+
+    if (!correo) {
+
+        mostrarErrorFormulario(
+            "Es necesario ingresar el correo electrónico."
+        );
+
+        return;
+    }
+
+
+    if (!correo.includes("@")) {
+
+        mostrarErrorFormulario(
+            "El correo electrónico no parece tener un formato válido."
+        );
+
+        return;
+    }
+
+
+    if (
+        rol !== "Usuario" &&
+        rol !== "Administrador"
+    ) {
+
+        mostrarErrorFormulario(
+            "Selecciona un rol válido."
+        );
+
+        return;
+    }
+
+
+    if (
+        estado !== "Activo" &&
+        estado !== "Inactivo"
+    ) {
+
+        mostrarErrorFormulario(
+            "Selecciona un estado válido."
+        );
+
+        return;
+    }
+
+
+    if (elementoError) {
+        elementoError.textContent = "";
+        elementoError.classList.remove("visible");
+    }
+
+
+    const contraseña =
+        window.prompt(
+            "Escribe la contraseña inicial para el nuevo usuario.\n\nDebe tener al menos 6 caracteres."
+        );
+
+
+    if (contraseña === null) {
+        return;
+    }
+
+
+    if (!contraseña.trim()) {
+
+        mostrarErrorFormulario(
+            "Es necesario ingresar una contraseña."
+        );
+
+        return;
+    }
+
+
+    if (contraseña.length < 6) {
+
+        mostrarErrorFormulario(
+            "La contraseña debe tener al menos 6 caracteres."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const resultadoSesion =
+            await supabaseClient.auth.getSession();
+
+
+        if (resultadoSesion.error) {
+
+            console.error(
+                "Error obteniendo sesión:",
+                resultadoSesion.error
+            );
+
+            throw new Error(
+                "No fue posible comprobar la sesión actual."
+            );
+        }
+
+
+        const session =
+            resultadoSesion.data.session;
+
+
+        if (!session) {
+
+            throw new Error(
+                "No existe una sesión activa. Cierra sesión y vuelve a ingresar."
+            );
+        }
+
+
+        cerrarModalNuevoUsuario();
+
+
+        mostrarModal(
+            "Creando usuario",
+            "Espera un momento mientras se crea la cuenta de " +
+            nombre +
+            "..."
+        );
+
+
+        const resultado =
+            await supabaseClient.functions.invoke(
+                "crear-usuario",
+                {
+                    body: {
+                        nombre: nombre,
+                        correo: correo,
+                        contraseña: contraseña,
+                        rol: rol,
+                        estado: estado
+                    }
+                }
+            );
+
+
+        const data =
+            resultado.data;
+
+        const error =
+            resultado.error;
+
+
+        if (error) {
+
+            console.error(
+                "Error de Edge Function:",
+                error
+            );
+
+
+            let mensajeError =
+                error.message ||
+                "No fue posible comunicarse con la función crear-usuario.";
+
+
+            if (
+                error.context &&
+                typeof error.context.json === "function"
+            ) {
+
+                try {
+
+                    const respuestaError =
+                        await error.context.json();
+
+
+                    if (
+                        respuestaError &&
+                        respuestaError.mensaje
+                    ) {
+
+                        mensajeError =
+                            respuestaError.mensaje;
+
+                    }
+
+                } catch (errorLectura) {
+
+                    console.warn(
+                        "No fue posible leer el detalle del error:",
+                        errorLectura
+                    );
+
+                }
+
+            }
+
+
+            throw new Error(
+                mensajeError
+            );
+        }
+
+
+        if (
+            !data ||
+            data.ok !== true
+        ) {
+
+            throw new Error(
+                data &&
+                data.mensaje
+                    ? data.mensaje
+                    : "No fue posible crear el usuario."
+            );
+        }
+
+
+        await cargarUsuarios();
+
+        actualizarUsuarios();
+
+        actualizarDiagnosticoBase();
+
+        await revisarIntegridad();
+
+
+        mostrarModal(
+            "Usuario creado",
+            "El usuario " +
+            nombre +
+            " fue creado correctamente.\n\n" +
+            "Correo: " +
+            correo +
+            "\n" +
+            "Rol: " +
+            rol +
+            "\n" +
+            "Estado: " +
+            estado
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error al crear usuario:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible crear el usuario",
+            error.message ||
+            "Ocurrió un error al intentar crear la cuenta."
+        );
+
+    }
+
+}
+
+
+function mostrarErrorFormulario(mensaje) {
+
+    const elemento =
+        document.getElementById(
+            "errorFormularioUsuario"
+        );
+
+    if (!elemento) {
+        return;
+    }
+
+    elemento.textContent = mensaje;
+
+    elemento.classList.add("visible");
+
+}
+
+
+/* =========================================================
+   GESTIÓN DE USUARIOS
+========================================================= */
+
+function obtenerUsuarioPorId(usuarioId) {
+
+    return datosAdministracion.usuarios.find(
+        function(usuario) {
+            return String(usuario.id) ===
+                String(usuarioId);
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CAMBIAR ROL
+========================================================= */
+
+function abrirModalCambiarRol(
+    usuarioId,
+    nombre,
+    rolActual
+) {
+
+    usuarioGestionActual = {
+        id: usuarioId,
+        nombre: nombre,
+        rol: rolActual
+    };
+
+
+    const nombreElemento =
+        document.getElementById(
+            "nombreUsuarioRol"
+        );
+
+
+    const rolElemento =
+        document.getElementById(
+            "nuevoRolUsuario"
+        );
+
+
+    const errorElemento =
+        document.getElementById(
+            "errorCambiarRol"
+        );
+
+
+    if (nombreElemento) {
+
+        nombreElemento.textContent =
+            "Usuario: " +
+            nombre;
+
+    }
+
+
+    if (rolElemento) {
+
+        rolElemento.value =
+            normalizar(rolActual) ===
+            "ADMINISTRADOR"
+                ? "Administrador"
+                : "Usuario";
+
+    }
+
+
+    if (errorElemento) {
+
+        errorElemento.textContent = "";
+
+        errorElemento.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    document
+        .getElementById("modalCambiarRol")
+        .classList.add("visible");
+
+}
+
+
+function cerrarModalCambiarRol() {
+
+    document
+        .getElementById("modalCambiarRol")
+        .classList.remove("visible");
+
+    usuarioGestionActual = null;
+
+}
+
+
+async function guardarCambioRol() {
+
+    if (!usuarioGestionActual) {
+
+        mostrarModal(
+            "Error",
+            "No se encontró el usuario seleccionado."
+        );
+
+        return;
+    }
+
+
+    const rolElemento =
+        document.getElementById(
+            "nuevoRolUsuario"
+        );
+
+
+    const errorElemento =
+        document.getElementById(
+            "errorCambiarRol"
+        );
+
+
+    const nuevoRol =
+        rolElemento
+            ? rolElemento.value
+            : "";
+
+
+    if (
+        nuevoRol !== "Usuario" &&
+        nuevoRol !== "Administrador"
+    ) {
+
+        if (errorElemento) {
+
+            errorElemento.textContent =
+                "Selecciona un rol válido.";
+
+            errorElemento.classList.add(
+                "visible"
+            );
+
+        }
+
+        return;
+    }
+
+
+    const usuarioId =
+        usuarioGestionActual.id;
+
+    const nombre =
+        usuarioGestionActual.nombre;
+
+
+    cerrarModalCambiarRol();
+
+
+    mostrarModal(
+        "Actualizando rol",
+        "Espera un momento mientras se actualiza el rol de " +
+        nombre +
+        "..."
+    );
+
+
+    try {
+
+        await ejecutarGestionUsuario(
+            "cambiar_rol",
+            {
+                usuarioId: usuarioId,
+                rol: nuevoRol
+            }
+        );
+
+
+        await recargarInformacionUsuarios();
+
+
+        mostrarModal(
+            "Rol actualizado",
+            "El rol de " +
+            nombre +
+            " fue cambiado correctamente a " +
+            nuevoRol +
+            "."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cambiando rol:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible cambiar el rol",
+            error.message ||
+            "Ocurrió un error al cambiar el rol."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CAMBIAR CONTRASEÑA
+========================================================= */
+
+function abrirModalCambiarContrasena(
+    usuarioId,
+    nombre
+) {
+
+    usuarioGestionActual = {
+        id: usuarioId,
+        nombre: nombre
+    };
+
+
+    const nombreElemento =
+        document.getElementById(
+            "nombreUsuarioContrasena"
+        );
+
+
+    const nueva =
+        document.getElementById(
+            "nuevaContrasena"
+        );
+
+
+    const confirmar =
+        document.getElementById(
+            "confirmarContrasena"
+        );
+
+
+    const error =
+        document.getElementById(
+            "errorCambiarContrasena"
+        );
+
+
+    if (nombreElemento) {
+
+        nombreElemento.textContent =
+            "Usuario: " +
+            nombre;
+
+    }
+
+
+    if (nueva) {
+        nueva.value = "";
+    }
+
+
+    if (confirmar) {
+        confirmar.value = "";
+    }
+
+
+    if (error) {
+
+        error.textContent = "";
+
+        error.classList.remove(
+            "visible"
+        );
+
+    }
+
+
+    document
+        .getElementById("modalCambiarContrasena")
+        .classList.add("visible");
+
+
+    setTimeout(function() {
+
+        if (nueva) {
+            nueva.focus();
+        }
+
+    }, 100);
+
+}
+
+
+function cerrarModalCambiarContrasena() {
+
+    document
+        .getElementById("modalCambiarContrasena")
+        .classList.remove("visible");
+
+    usuarioGestionActual = null;
+
+}
+
+
+async function guardarCambioContrasena() {
+
+    if (!usuarioGestionActual) {
+
+        mostrarModal(
+            "Error",
+            "No se encontró el usuario seleccionado."
+        );
+
+        return;
+    }
+
+
+    const nueva =
+        document.getElementById(
+            "nuevaContrasena"
+        );
+
+
+    const confirmar =
+        document.getElementById(
+            "confirmarContrasena"
+        );
+
+
+    const errorElemento =
+        document.getElementById(
+            "errorCambiarContrasena"
+        );
+
+
+    const contraseña =
+        nueva
+            ? nueva.value
+            : "";
+
+
+    const confirmacion =
+        confirmar
+            ? confirmar.value
+            : "";
+
+
+    if (!contraseña) {
+
+        mostrarErrorGestionContrasena(
+            "Es necesario ingresar una nueva contraseña."
+        );
+
+        return;
+    }
+
+
+    if (contraseña.length < 6) {
+
+        mostrarErrorGestionContrasena(
+            "La contraseña debe tener al menos 6 caracteres."
+        );
+
+        return;
+    }
+
+
+    if (contraseña !== confirmacion) {
+
+        mostrarErrorGestionContrasena(
+            "Las contraseñas no coinciden."
+        );
+
+        return;
+    }
+
+
+    const usuarioId =
+        usuarioGestionActual.id;
+
+    const nombre =
+        usuarioGestionActual.nombre;
+
+
+    cerrarModalCambiarContrasena();
+
+
+    mostrarModal(
+        "Actualizando contraseña",
+        "Espera un momento mientras se actualiza la contraseña de " +
+        nombre +
+        "..."
+    );
+
+
+    try {
+
+        await ejecutarGestionUsuario(
+            "cambiar_contrasena",
+            {
+                usuarioId: usuarioId,
+                contraseña: contraseña
+            }
+        );
+
+
+        mostrarModal(
+            "Contraseña actualizada",
+            "La contraseña de " +
+            nombre +
+            " fue actualizada correctamente."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error cambiando contraseña:",
+            error
+        );
+
+
+        mostrarModal(
+            "No fue posible cambiar la contraseña",
+            error.message ||
+            "Ocurrió un error al cambiar la contraseña."
+        );
+
+    }
+
+}
+
+
+function mostrarErrorGestionContrasena(
+    mensaje
+) {
+
+    const elemento =
+        document.getElementById(
+            "errorCambiarContrasena"
+        );
+
+
+    if (!elemento) {
+        return;
+    }
+
+
+    elemento.textContent =
+        mensaje;
+
+
+    elemento.classList.add(
+        "visible"
+    );
+
+}
+
+
+/* =========================================================
+   ELIMINAR USUARIO
+========================================================= */
+
+async function eliminarUsuario(
+    usuarioId,
+    nombre,
+    correo
+) {
+
+    abrirModalEliminar(
+        usuarioId,
+        nombre,
+        correo
+    );
+
+}
+
+
+/* =========================================================
+   LLAMAR EDGE FUNCTION gestionar-usuario
+========================================================= */
+
+async function ejecutarGestionUsuario(
+    accion,
+    datos = {}
+) {
+
+    const resultadoSesion =
+        await supabaseClient.auth.getSession();
+
+
+    if (resultadoSesion.error) {
+
+        throw new Error(
+            "No fue posible comprobar la sesión actual."
+        );
+
+    }
+
+
+    const session =
+        resultadoSesion.data.session;
+
+
+    if (!session) {
+
+        throw new Error(
+            "No existe una sesión activa."
+        );
+
+    }
+
+
+    const cuerpo = {
+        accion: accion,
+        ...datos
+    };
+
+
+    const resultado =
+        await supabaseClient.functions.invoke(
+            "gestionar-usuario",
+            {
+                body: cuerpo
+            }
+        );
+
+
+    const data =
+        resultado.data;
+
+    const error =
+        resultado.error;
+
+
+    if (error) {
+
+        console.error(
+            "Error de gestionar-usuario:",
+            error
+        );
+
+
+        let mensajeError =
+            error.message ||
+            "No fue posible comunicarse con la función gestionar-usuario.";
+
+
+        if (
+            error.context &&
+            typeof error.context.json === "function"
+        ) {
+
+            try {
+
+                const respuestaError =
+                    await error.context.json();
+
+
+                if (
+                    respuestaError &&
+                    respuestaError.mensaje
+                ) {
+
+                    mensajeError =
+                        respuestaError.mensaje;
+
+                }
+
+            } catch (errorLectura) {
+
+                console.warn(
+                    "No fue posible leer el detalle del error:",
+                    errorLectura
+                );
+
+            }
+
+        }
+
+
+        throw new Error(
+            mensajeError
+        );
+
+    }
+
+
+    if (
+        !data ||
+        data.ok !== true
+    ) {
+
+        throw new Error(
+            data &&
+            data.mensaje
+                ? data.mensaje
+                : "La operación no pudo completarse."
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+/* =========================================================
+   RECARGAR INFORMACIÓN DE USUARIOS
+========================================================= */
+
+async function recargarInformacionUsuarios() {
+
+    await cargarUsuarios();
+
+    actualizarUsuarios();
+
+    actualizarDiagnosticoBase();
+
+    await revisarIntegridad();
+
+}
+
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+function volverAtras() {
+
+    window.location.href = "index.html";
+
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+========================================================= */
+
+function actualizarInformacion() {
+
+    const correo =
+        usuarioSesionActual &&
+        usuarioSesionActual.email
+            ? usuarioSesionActual.email
+            : "Usuario autenticado";
+
+
+    const usuarioActual =
+        document.getElementById("usuarioActual");
+
+    const usuarioActualSesion =
+        document.getElementById(
+            "usuarioActualSesion"
+        );
+
+
+    if (usuarioActual) {
+        usuarioActual.textContent = correo;
+    }
+
+
+    if (usuarioActualSesion) {
+        usuarioActualSesion.textContent = correo;
+    }
+
+
+    const rolActual =
+        document.getElementById("rolActual");
+
+
+    if (rolActual) {
+        rolActual.textContent = "Administrador";
+    }
+
+
+}
+
+
+/* =========================================================
+   CARGA PRINCIPAL
+========================================================= */
+
+async function cargarTodo() {
+
+    try {
+
+        await Promise.all([
+            cargarAfiliados(),
+            cargarLibros(),
+            cargarColaboradores(),
+            cargarPrestamos(),
+            cargarUsuarios()
+        ]);
+
+
+        actualizarEstadisticas();
+
+        actualizarUsuarios();
+
+        actualizarDiagnosticoBase();
+
+        await revisarIntegridad();
+
+    } catch (error) {
+
+        console.error(
+            "Error al cargar administración:",
+            error
+        );
+
+        mostrarModal(
+            "Error",
+            "No fue posible cargar toda la información de administración. Revisa la consola para conocer el detalle."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AFILIADOS
+========================================================= */
+
+async function cargarAfiliados() {
+
+    const registros = [];
+
+    let desde = 0;
+
+    const cantidad = 1000;
+
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("afiliados")
+            .select("*")
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+            break;
+        }
+
+
+        registros.push(...data);
+
+
+        if (
+            data.length < cantidad
+        ) {
+            break;
+        }
+
+
+        desde += cantidad;
+
+    }
+
+
+    datosAdministracion.afiliados =
+        registros;
+
+}
+
+
+/* =========================================================
+   LIBROS
+========================================================= */
+
+async function cargarLibros() {
+
+    const registros = [];
+
+    let desde = 0;
+
+    const cantidad = 1000;
+
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("libros")
+            .select("*")
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+            break;
+        }
+
+
+        registros.push(...data);
+
+
+        if (
+            data.length < cantidad
+        ) {
+            break;
+        }
+
+
+        desde += cantidad;
+
+    }
+
+
+    datosAdministracion.libros =
+        registros;
+
+}
+
+
+/* =========================================================
+   COLABORADORES
+========================================================= */
+
+async function cargarColaboradores() {
+
+    const registros = [];
+
+    let desde = 0;
+
+    const cantidad = 1000;
+
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("colaboradores")
+            .select("*")
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+            break;
+        }
+
+
+        registros.push(...data);
+
+
+        if (
+            data.length < cantidad
+        ) {
+            break;
+        }
+
+
+        desde += cantidad;
+
+    }
+
+
+    datosAdministracion.colaboradores =
+        registros;
+
+}
+
+
+/* =========================================================
+   PRÉSTAMOS
+========================================================= */
+
+async function cargarPrestamos() {
+
+    const registros = [];
+
+    let desde = 0;
+
+    const cantidad = 1000;
+
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("prestamos")
+            .select("*")
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+            break;
+        }
+
+
+        registros.push(...data);
+
+
+        if (
+            data.length < cantidad
+        ) {
+            break;
+        }
+
+
+        desde += cantidad;
+
+    }
+
+
+    datosAdministracion.prestamos =
+        registros;
+
+}
+
+
+/* =========================================================
+   USUARIOS
+========================================================= */
+
+async function cargarUsuarios() {
+
+    const registros = [];
+
+    let desde = 0;
+
+    const cantidad = 1000;
+
+
+    while (true) {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("usuarios")
+            .select(`
+                id,
+                correo,
+                nombre,
+                rol,
+                estado,
+                fechaRegistro
+            `)
+            .order(
+                "nombre",
+                {
+                    ascending: true,
+                    nullsFirst: false
+                }
+            )
+            .range(
+                desde,
+                desde + cantidad - 1
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+            break;
+        }
+
+
+        registros.push(...data);
+
+
+        if (
+            data.length < cantidad
+        ) {
+            break;
+        }
+
+
+        desde += cantidad;
+
+    }
+
+
+    datosAdministracion.usuarios =
+        registros;
+
+}
+
+
+/* =========================================================
+   ESTADÍSTICAS
+========================================================= */
+
+function actualizarEstadisticas() {
+
+    document.getElementById(
+        "estadisticaLibros"
+    ).textContent =
+        datosAdministracion.libros.length;
+
+
+    document.getElementById(
+        "estadisticaAfiliados"
+    ).textContent =
+        datosAdministracion.afiliados.length;
+
+
+    document.getElementById(
+        "estadisticaColaboradores"
+    ).textContent =
+        datosAdministracion.colaboradores.length;
+
+
+    document.getElementById(
+        "estadisticaPrestamos"
+    ).textContent =
+        datosAdministracion.prestamos.length;
+
+}
+
+
+/* =========================================================
+   TABLA DE USUARIOS
+========================================================= */
+
+function actualizarUsuarios() {
+
+    const tabla =
+        document.getElementById(
+            "tablaUsuarios"
+        );
+
+
+    const usuarios =
+        datosAdministracion.usuarios;
+
+
+    document.getElementById(
+        "totalUsuarios"
+    ).textContent =
+        usuarios.length;
+
+
+    const administradores =
+        usuarios.filter(function(usuario) {
+
+            return normalizar(usuario.rol) ===
+                "ADMINISTRADOR";
+
+        });
+
+
+    const activos =
+        usuarios.filter(function(usuario) {
+
+            return normalizar(usuario.estado) ===
+                "ACTIVO";
+
+        });
+
+
+    document.getElementById(
+        "usuariosAdministradores"
+    ).textContent =
+        administradores.length;
+
+
+    document.getElementById(
+        "usuariosActivos"
+    ).textContent =
+        activos.length;
+
+
+    if (!usuarios.length) {
+
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="6" class="usuarios-vacio">
+                    No hay usuarios registrados.
+                </td>
+            </tr>
+        `;
+
+        return;
+
+    }
+
+
+    tabla.innerHTML =
+        usuarios.map(function(usuario) {
+
+            const rol =
+                obtenerValor(
+                    usuario,
+                    "rol",
+                    "-"
+                );
+
+
+            const estado =
+                obtenerValor(
+                    usuario,
+                    "estado",
+                    "-"
+                );
+
+
+            const nombre =
+                obtenerValor(
+                    usuario,
+                    "nombre",
+                    "-"
+                );
+
+
+            const correo =
+                obtenerValor(
+                    usuario,
+                    "correo",
+                    "-"
+                );
+
+
+            const id =
+                obtenerValor(
+                    usuario,
+                    "id",
+                    ""
+                );
+
+
+            const claseRol =
+                normalizar(rol) ===
+                "ADMINISTRADOR"
+                    ? "rol-administrador"
+                    : "rol-usuario";
+
+
+            const claseEstado =
+                normalizar(estado) ===
+                "ACTIVO"
+                    ? "estado-activo"
+                    : "estado-inactivo";
+
+
+            const esUsuarioActual =
+                String(id) ===
+                String(
+                    usuarioSesionActual &&
+                    usuarioSesionActual.id
+                );
+
+
+            const botonEliminar =
+                esUsuarioActual
+                    ? `
+                        <button
+                            type="button"
+                            class="boton-accion boton-accion-eliminar"
+                            disabled
+                            title="No puedes eliminar tu propia cuenta">
+                            🗑️ Eliminar
+                        </button>
+                    `
+                    : `
+                        <button
+                            type="button"
+                            class="boton-accion boton-accion-eliminar"
+                            onclick="eliminarUsuario(
+                                '${escapeHtml(String(id))}',
+                                '${escapeHtml(String(nombre))}',
+                                '${escapeHtml(String(correo))}'
+                            )">
+                            🗑️ Eliminar
+                        </button>
+                    `;
+
+
+            return `
+                <tr>
+
+                    <td>
+                        ${escapeHtml(nombre)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(correo)}
+                    </td>
+
+                    <td>
+                        <span class="${claseRol}">
+                            ${escapeHtml(rol)}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="${claseEstado}">
+                            ${escapeHtml(estado)}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            formatearFecha(
+                                usuario.fechaRegistro
+                            )
+                        )}
+                    </td>
+
+                    <td>
+
+                        <div class="acciones-usuario">
+
+                            <button
+                                type="button"
+                                class="boton-accion boton-accion-rol"
+                                onclick="abrirModalCambiarRol(
+                                    '${escapeHtml(String(id))}',
+                                    '${escapeHtml(String(nombre))}',
+                                    '${escapeHtml(String(rol))}'
+                                )">
+                                🔄 Rol
+                            </button>
+
+                            <button
+                                type="button"
+                                class="boton-accion boton-accion-password"
+                                onclick="abrirModalCambiarContrasena(
+                                    '${escapeHtml(String(id))}',
+                                    '${escapeHtml(String(nombre))}'
+                                )">
+                                🔑 Contraseña
+                            </button>
+
+                            ${botonEliminar}
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            `;
+
+        }).join("");
+
+}
+
+
+/* =========================================================
+   DIAGNÓSTICO
+========================================================= */
+
+function actualizarFilaDiagnostico(
+    nombre,
+    cantidad,
+    correcto,
+    mensaje
+) {
+
+    const mapa = {
+        "Afiliados": "Afiliados",
+        "Libros": "Libros",
+        "Colaboradores": "Colaboradores",
+        "Préstamos": "Prestamos",
+        "Usuarios": "Usuarios"
+    };
+
+
+    const clave =
+        mapa[nombre];
+
+
+    if (!clave) {
+        return;
+    }
+
+
+    const estado =
+        document.getElementById(
+            "diagnostico" +
+            clave +
+            "Estado"
+        );
+
+
+    const cantidadElemento =
+        document.getElementById(
+            "diagnostico" +
+            clave +
+            "Cantidad"
+        );
+
+
+    const mensajeElemento =
+        document.getElementById(
+            "diagnostico" +
+            clave +
+            "Mensaje"
+        );
+
+
+    if (estado) {
+
+        estado.textContent =
+            correcto
+                ? "Correcto"
+                : "Revisar";
+
+        estado.className =
+            correcto
+                ? "diagnostico-ok"
+                : "diagnostico-error";
+
+    }
+
+
+    if (cantidadElemento) {
+        cantidadElemento.textContent =
+            cantidad;
+    }
+
+
+    if (mensajeElemento) {
+        mensajeElemento.textContent =
+            mensaje;
+    }
+
+}
+
+
+function actualizarDiagnosticoBase() {
+
+    actualizarFilaDiagnostico(
+        "Afiliados",
+        datosAdministracion.afiliados.length,
+        true,
+        "Tabla disponible."
+    );
+
+
+    actualizarFilaDiagnostico(
+        "Libros",
+        datosAdministracion.libros.length,
+        true,
+        "Tabla disponible."
+    );
+
+
+    actualizarFilaDiagnostico(
+        "Colaboradores",
+        datosAdministracion.colaboradores.length,
+        true,
+        "Tabla disponible."
+    );
+
+
+    actualizarFilaDiagnostico(
+        "Préstamos",
+        datosAdministracion.prestamos.length,
+        true,
+        "Tabla disponible."
+    );
+
+
+    actualizarFilaDiagnostico(
+        "Usuarios",
+        datosAdministracion.usuarios.length,
+        true,
+        "Tabla disponible."
+    );
+
+}
+
+
+/* =========================================================
+   INTEGRIDAD
+========================================================= */
+
+function establecerIntegridad(
+    id,
+    correcto,
+    mensaje
+) {
+
+    const elemento =
+        document.getElementById(id);
+
+
+    if (!elemento) {
+        return;
+    }
+
+
+    elemento.textContent =
+        mensaje;
+
+
+    elemento.className =
+        correcto
+            ? "integridad-estado integridad-correcta"
+            : "integridad-estado integridad-observacion";
+
+}
+
+
+async function revisarIntegridad() {
+
+    const libros =
+        datosAdministracion.libros;
+
+    const afiliados =
+        datosAdministracion.afiliados;
+
+    const colaboradores =
+        datosAdministracion.colaboradores;
+
+    const prestamos =
+        datosAdministracion.prestamos;
+
+    const usuarios =
+        datosAdministracion.usuarios;
+
+
+    const codigos =
+        libros
+            .map(function(libro) {
+                return normalizar(
+                    libro.codigoLibro
+                );
+            })
+            .filter(Boolean);
+
+
+    const codigosUnicos =
+        new Set(codigos);
+
+
+    establecerIntegridad(
+        "integridadCodigosLibros",
+        codigos.length === codigosUnicos.size,
+        codigos.length === codigosUnicos.size
+            ? "Correcto"
+            : "Se encontraron códigos repetidos"
+    );
+
+
+    const personaIds =
+        afiliados
+            .map(function(afiliado) {
+                return normalizar(
+                    afiliado.PersonaId
+                );
+            })
+            .filter(Boolean);
+
+
+    const personaIdsUnicos =
+        new Set(personaIds);
+
+
+    establecerIntegridad(
+        "integridadPersonaId",
+        personaIds.length === personaIdsUnicos.size,
+        personaIds.length === personaIdsUnicos.size
+            ? "Correcto"
+            : "Se encontraron PersonaId repetidos"
+    );
+
+
+    const familiasSinId =
+        afiliados.filter(function(afiliado) {
+
+            return !String(
+                obtenerValor(
+                    afiliado,
+                    "FamiliaId",
+                    ""
+                )
+            ).trim();
+
+        }).length;
+
+
+    establecerIntegridad(
+        "integridadFamiliaId",
+        familiasSinId === 0,
+        familiasSinId === 0
+            ? "Correcto"
+            : familiasSinId +
+              " registros sin FamiliaId"
+    );
+
+
+    const librosSinEstado =
+        libros.filter(function(libro) {
+
+            return !String(
+                obtenerValor(
+                    libro,
+                    "estado",
+                    ""
+                )
+            ).trim();
+
+        }).length;
+
+
+    establecerIntegridad(
+        "integridadLibrosEstado",
+        librosSinEstado === 0,
+        librosSinEstado === 0
+            ? "Correcto"
+            : librosSinEstado +
+              " libros sin estado"
+    );
+
+
+    const afiliadosSinEstado =
+        afiliados.filter(function(afiliado) {
+
+            return !String(
+                obtenerValor(
+                    afiliado,
+                    "estado",
+                    ""
+                )
+            ).trim();
+
+        }).length;
+
+
+    establecerIntegridad(
+        "integridadAfiliadosEstado",
+        afiliadosSinEstado === 0,
+        afiliadosSinEstado === 0
+            ? "Correcto"
+            : afiliadosSinEstado +
+              " afiliados sin estado"
+    );
+
+
+    const colaboradoresSinEstado =
+        colaboradores.filter(function(colaborador) {
+
+            return !String(
+                obtenerValor(
+                    colaborador,
+                    "estado",
+                    ""
+                )
+            ).trim();
+
+        }).length;
+
+
+    establecerIntegridad(
+        "integridadColaboradoresEstado",
+        colaboradoresSinEstado === 0,
+        colaboradoresSinEstado === 0
+            ? "Correcto"
+            : colaboradoresSinEstado +
+              " colaboradores sin estado"
+    );
+
+
+    const prestamosSinLibro =
+        prestamos.filter(function(prestamo) {
+
+            return !String(
+                obtenerValor(
+                    prestamo,
+                    "codigoLibro",
+                    ""
+                )
+            ).trim();
+
+        }).length;
+
+
+    establecerIntegridad(
+        "integridadPrestamosLibro",
+        prestamosSinLibro === 0,
+        prestamosSinLibro === 0
+            ? "Correcto"
+            : prestamosSinLibro +
+              " préstamos sin código de libro"
+    );
+
+
+    const usuariosSinRol =
+        usuarios.filter(function(usuario) {
+
+            return !String(
+                obtenerValor(
+                    usuario,
+                    "rol",
+                    ""
+                )
+            ).trim();
+
+        }).length;
+
+
+    establecerIntegridad(
+        "integridadUsuariosRol",
+        usuariosSinRol === 0,
+        usuariosSinRol === 0
+            ? "Correcto"
+            : usuariosSinRol +
+              " usuarios sin rol"
+    );
+
+}
+
+
+/* =========================================================
+   CERRAR SESIÓN
+========================================================= */
+
+async function cerrarSesion() {
+
+    try {
+
+        const {
+            error
+        } = await supabaseClient.auth.signOut();
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        window.location.href =
+            "index.html";
+
+
+    } catch (error) {
+
+        console.error(
+            "Error al cerrar sesión:",
+            error
+        );
+
+
+        mostrarModal(
+            "Error",
+            "No fue posible cerrar la sesión correctamente."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLIC FUERA DE LOS MODALES
+========================================================= */
+
+document
+    .getElementById("modalMensaje")
+    .addEventListener(
+        "click",
+        function(evento) {
+
+            if (
+                evento.target ===
+                this
+            ) {
+                cerrarModal();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("modalEliminar")
+    .addEventListener(
+        "click",
+        function(evento) {
+
+            if (
+                evento.target ===
+                this
+            ) {
+                cerrarModalEliminar();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("modalNuevoUsuario")
+    .addEventListener(
+        "click",
+        function(evento) {
+
+            if (
+                evento.target ===
+                this
+            ) {
+                cerrarModalNuevoUsuario();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("modalCambiarRol")
+    .addEventListener(
+        "click",
+        function(evento) {
+
+            if (
+                evento.target ===
+                this
+            ) {
+                cerrarModalCambiarRol();
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("modalCambiarContrasena")
+    .addEventListener(
+        "click",
+        function(evento) {
+
+            if (
+                evento.target ===
+                this
+            ) {
+                cerrarModalCambiarContrasena();
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   AUTENTICACIÓN Y PERMISOS
+========================================================= */
+
+window.administracionAuth =
+    (async function protegerAdministracion() {
+
+        try {
+
+            const autorizado =
+                await window.protegerPagina();
+
+
+            if (!autorizado) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return false;
+
+            }
+
+
+            if (!window.esAdministrador()) {
+
+                window.location.replace(
+                    "index.html"
+                );
+
+                return false;
+
+            }
+
+
+            usuarioSesionActual =
+                window.usuarioSesion;
+
+
+            perfilUsuarioActual =
+                window.perfilUsuario;
+
+
+            const elementoUsuario =
+                document.getElementById(
+                    "usuarioActual"
+                );
+
+
+            if (elementoUsuario) {
+
+                elementoUsuario.textContent =
+                    usuarioSesionActual.email ||
+                    "Usuario autenticado";
+
+            }
+
+
+            const elementoRol =
+                document.getElementById(
+                    "rolActual"
+                );
+
+
+            if (elementoRol) {
+
+                elementoRol.textContent =
+                    "Administrador";
+
+            }
+
+
+            window.administracionAutorizado =
+                true;
+
+
+            actualizarInformacion();
+
+
+            document
+                .documentElement
+                .style
+                .visibility = "visible";
+
+
+            await cargarTodo();
+
+
+            return true;
+
+
+        } catch (error) {
+
+            console.error(
+                "Error de autenticación o permisos:",
+                error
+            );
+
+
+            window.location.replace(
+                "index.html"
+            );
+
+
+            return false;
+
+        }
+
+    })();
+
+</script>
+
+</body>
+</html>
