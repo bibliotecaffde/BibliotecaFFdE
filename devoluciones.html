@@ -1,1217 +1,1142 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Devoluciones - Biblioteca</title>
 
-```
-<style>
-    html {
-        visibility: hidden;
-        scroll-behavior: smooth;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f4f8fb;
-        color: #263238;
-    }
-
-    header {
-        background: #009ddc;
-        color: white;
-        padding: 16px 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        min-height: 74px;
-    }
-
-    .encabezado-izquierdo {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .titulo-encabezado {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        pointer-events: none;
-    }
-
-    .titulo-encabezado-principal {
-        font-size: 21px;
-        font-weight: 800;
-        margin: 0;
-    }
-
-    .boton-volver {
-        background: rgba(255, 255, 255, 0.16);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        padding: 9px 14px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 600;
-        position: relative;
-        z-index: 2;
-        margin-left: auto;
-    }
-
-    .boton-volver:hover {
-        background: rgba(255, 255, 255, 0.25);
-    }
-
-    main {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 24px;
-    }
-
-    .resumen {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(180px, 260px));
-        justify-content: center;
-        gap: 14px;
-        margin-bottom: 20px;
-    }
-
-    .tarjeta {
-        background: white;
-        border: 1px solid #dfeaf0;
-        border-radius: 9px;
-        padding: 15px;
-        text-align: center;
-        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
-    }
-
-    .tarjeta-titulo {
-        color: #607d8b;
-        font-size: 12px;
-        margin-bottom: 7px;
-    }
-
-    .tarjeta-numero {
-        font-size: 24px;
-        font-weight: bold;
-        color: #009ddc;
-    }
-
-    .contenedor-busqueda {
-        background: white;
-        border: 1px solid #dfeaf0;
-        border-radius: 9px;
-        padding: 15px;
-        margin-bottom: 18px;
-        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
-    }
-
-    .fila-busqueda {
-        display: flex;
-        gap: 8px;
-    }
-
-    .campo-busqueda {
-        flex: 1;
-        min-width: 250px;
-        padding: 9px 11px;
-        border: 1px solid #cfd8dc;
-        border-radius: 6px;
-        font-size: 13px;
-    }
-
-    .campo-busqueda:focus {
-        outline: none;
-        border-color: #009ddc;
-        box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
-    }
-
-    .filtro-select {
-        width: 170px;
-        padding: 9px 11px;
-        border: 1px solid #cfd8dc;
-        border-radius: 6px;
-        font-size: 13px;
-        background: white;
-        color: #263238;
-    }
-
-    .filtro-select:focus {
-        outline: none;
-        border-color: #009ddc;
-        box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
-    }
-
-    .boton {
-        border: none;
-        border-radius: 6px;
-        padding: 9px 14px;
-        cursor: pointer;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .boton-buscar {
-        background: #009ddc;
-        color: white;
-    }
-
-    .boton-buscar:hover {
-        background: #008bc4;
-    }
-
-    .boton-limpiar {
-        background: #eaf3f7;
-        color: #455a64;
-    }
-
-    .boton-limpiar:hover {
-        background: #d8e8ee;
-    }
-
-    /* ==============================
-       BOTONES DE TIPO
-    ============================== */
-
-    .botones-tipo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        margin-top: 9px;
-    }
-
-    .boton-tipo {
-        min-width: 125px;
-        border: 1px solid #cfd8dc;
-        background: white;
-        color: #546e7a;
-        border-radius: 6px;
-        padding: 8px 16px;
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: 600;
-    }
-
-    .boton-tipo:hover {
-        background: #eaf7fc;
-        border-color: #009ddc;
-        color: #009ddc;
-    }
-
-    .boton-tipo.activo {
-        background: #009ddc;
-        border-color: #009ddc;
-        color: white;
-    }
-
-    .tabla-contenedor {
-        background: white;
-        border: 1px solid #dfeaf0;
-        border-radius: 9px;
-        overflow-x: auto;
-        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 1200px;
-    }
-
-    thead {
-        background: #eaf7fc;
-    }
-
-    th {
-        padding: 10px 9px;
-        text-align: center;
-        font-size: 12px;
-        color: #455a64;
-        border-bottom: 1px solid #d5eaf2;
-        white-space: nowrap;
-    }
-
-    td {
-        padding: 9px;
-        border-bottom: 1px solid #edf2f4;
-        font-size: 12px;
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    td.nombre-columna,
-    td.libro-columna {
-        text-align: left;
-    }
-
-    tbody tr:hover {
-        background: #f7fcfe;
-    }
-
-    .badge {
-        display: inline-block;
-        padding: 4px 7px;
-        border-radius: 12px;
-        font-size: 10px;
-        font-weight: bold;
-    }
-
-    .badge-prestado {
-        background: #fff3cd;
-        color: #856404;
-    }
-
-    .badge-colaborador {
-        background: #e3f2fd;
-        color: #1565c0;
-    }
-
-    .badge-afiliado {
-        background: #f3e5f5;
-        color: #6a1b9a;
-    }
-
-    .badge-biblioteca {
-        background: #e8f5e9;
-        color: #2e7d32;
-    }
-
-    .acciones {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-        white-space: nowrap;
-    }
-
-    .btn-accion {
-        border: none;
-        border-radius: 5px;
-        padding: 6px 9px;
-        font-size: 11px;
-        cursor: pointer;
-        color: white;
-    }
-
-    .btn-devolver {
-        background: #009ddc;
-    }
-
-    .btn-devolver:hover {
-        background: #008bc4;
-    }
-
-    .btn-eliminar {
-        background: #c62828;
-    }
-
-    .btn-eliminar:hover {
-        background: #8e0000;
-    }
-
-    .sin-resultados {
-        padding: 30px;
-        text-align: center;
-        color: #78909c;
-        font-size: 13px;
-    }
-
-    .paginacion {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        padding: 15px;
-        background: white;
-        border-top: 1px solid #e0edf2;
-    }
-
-    .boton-pagina {
-        background: #009ddc;
-        color: white;
-        border: none;
-        padding: 7px 11px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 11px;
-    }
-
-    .boton-pagina:hover:not(:disabled) {
-        background: #008bc4;
-    }
-
-    .boton-pagina:disabled {
-        background: #cfd8dc;
-        cursor: not-allowed;
-    }
-
-    .informacion-pagina {
-        font-size: 11px;
-        color: #607d8b;
-    }
-
-    footer {
-        text-align: center;
-        padding: 20px;
-        color: #90a4ae;
-        font-size: 11px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 18px;
-        flex-wrap: wrap;
-    }
-
-    footer .version,
-    footer .creditos {
-        color: #90a4ae;
-    }
-
-    /* ==============================
-       MODAL DE DETALLE
-    ============================== */
-
-    .modal-detalle {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        padding: 15px;
-        z-index: 9999;
-    }
-
-    .modal-detalle.mostrar {
-        display: flex;
-    }
-
-    .detalle {
-        width: 100%;
-        max-width: 650px;
-        max-height: 88vh;
-        overflow-y: auto;
-        background: white;
-        border-radius: 9px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-    }
-
-    .detalle-cabecera {
-        background: #009ddc;
-        color: white;
-        padding: 11px 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: sticky;
-        top: 0;
-        z-index: 2;
-    }
-
-    .detalle-cabecera h2 {
-        margin: 0;
-        font-size: 15px;
-    }
-
-    .btn-cerrar {
-        background: transparent;
-        color: white;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-        line-height: 1;
-    }
-
-    .detalle-contenido {
-        padding: 15px 17px;
-    }
-
-    .detalle-tipo {
-        margin-bottom: 12px;
-    }
-
-    .detalle-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
-
-    .detalle-item {
-        background: #f7fbfd;
-        border: 1px solid #e3edf1;
-        border-radius: 6px;
-        padding: 8px 10px;
-    }
-
-    .detalle-etiqueta {
-        font-size: 10px;
-        color: #78909c;
-        margin-bottom: 3px;
-    }
-
-    .detalle-valor {
-        font-size: 13px;
-        color: #263238;
-        font-weight: 600;
-        word-break: break-word;
-    }
-
-    .campo-detalle {
-        margin-top: 13px;
-    }
-
-    .campo-detalle label {
-        display: block;
-        font-size: 11px;
-        color: #546e7a;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
-
-    .campo-detalle select,
-    .campo-detalle textarea {
-        width: 100%;
-        border: 1px solid #cfd8dc;
-        border-radius: 6px;
-        padding: 8px 9px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 13px;
-    }
-
-    .campo-detalle select:focus,
-    .campo-detalle textarea:focus {
-        outline: none;
-        border-color: #009ddc;
-        box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
-    }
-
-    .campo-detalle textarea {
-        min-height: 65px;
-        resize: vertical;
-    }
-
-    .advertencia {
-        background: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffe69c;
-        border-radius: 6px;
-        padding: 9px 10px;
-        margin-top: 12px;
-        font-size: 11px;
-        display: none;
-    }
-
-    .advertencia.mostrar {
-        display: block;
-    }
-
-    .confirmacion-eliminar {
-        background: #ffebee;
-        color: #b71c1c;
-        border: 1px solid #ffcdd2;
-        border-radius: 6px;
-        padding: 9px 10px;
-        margin-top: 12px;
-        font-size: 11px;
-        display: none;
-    }
-
-    .confirmacion-eliminar.mostrar {
-        display: block;
-    }
-
-    .detalle-acciones {
-        display: flex;
-        justify-content: flex-end;
-        gap: 7px;
-        margin-top: 15px;
-        padding-top: 12px;
-        border-top: 1px solid #e7eef1;
-    }
-
-    .btn-modal {
-        border: none;
-        border-radius: 6px;
-        padding: 8px 12px;
-        font-size: 12px;
-        cursor: pointer;
-        font-weight: 600;
-    }
-
-    .btn-cancelar {
-        background: #eaf3f7;
-        color: #455a64;
-    }
-
-    .btn-cancelar:hover {
-        background: #d8e8ee;
-    }
-
-    .btn-confirmar-devolucion {
-        background: #009ddc;
-        color: white;
-    }
-
-    .btn-confirmar-devolucion:hover {
-        background: #008bc4;
-    }
-
-    .btn-confirmar-eliminar {
-        background: #c62828;
-        color: white;
-    }
-
-    .btn-confirmar-eliminar:hover {
-        background: #8e0000;
-    }
-
-    .mensaje {
-        padding: 10px 12px;
-        border-radius: 6px;
-        margin-bottom: 15px;
-        font-size: 12px;
-        display: none;
-    }
-
-    .mensaje.exito {
-        background: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-    }
-
-    .mensaje.error {
-        background: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-    }
-
-    .mensaje.mostrar {
-        display: block;
-    }
-
-    @media (max-width: 900px) {
-
-        main {
-            padding: 15px;
+    <style>
+        html {
+            visibility: hidden;
+            scroll-behavior: smooth;
         }
 
-        .resumen {
-            grid-template-columns: 1fr;
+        * {
+            box-sizing: border-box;
         }
 
-        .fila-busqueda {
-            flex-wrap: wrap;
-        }
-
-        .campo-busqueda {
-            width: 100%;
-            min-width: 100%;
-        }
-
-        .filtro-select {
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .detalle-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .detalle {
-            max-height: 92vh;
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f8fb;
+            color: #263238;
         }
 
         header {
+            background: #009ddc;
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            min-height: 74px;
+        }
+
+        .encabezado-izquierdo {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-    }
-
-    @media (max-width: 600px) {
-
-        header {
-            padding: 14px 15px;
+        .titulo-encabezado {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
         }
 
         .titulo-encabezado-principal {
-            font-size: 18px;
+            font-size: 21px;
+            font-weight: 800;
+            margin: 0;
         }
 
         .boton-volver {
-            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.16);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 9px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+            margin-left: auto;
+        }
+
+        .boton-volver:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .resumen {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(180px, 260px));
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .tarjeta {
+            background: white;
+            border: 1px solid #dfeaf0;
+            border-radius: 9px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
+        }
+
+        .tarjeta-titulo {
+            color: #607d8b;
             font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .tarjeta-numero {
+            font-size: 24px;
+            font-weight: bold;
+            color: #009ddc;
+        }
+
+        .contenedor-busqueda {
+            background: white;
+            border: 1px solid #dfeaf0;
+            border-radius: 9px;
+            padding: 15px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
+        }
+
+        .fila-busqueda {
+            display: flex;
+            gap: 8px;
+        }
+
+        .campo-busqueda {
+            flex: 1;
+            min-width: 250px;
+            padding: 9px 11px;
+            border: 1px solid #cfd8dc;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .campo-busqueda:focus,
+        .filtro-select:focus {
+            outline: none;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
+        }
+
+        .filtro-select {
+            width: 170px;
+            padding: 9px 11px;
+            border: 1px solid #cfd8dc;
+            border-radius: 6px;
+            font-size: 13px;
+            background: white;
+            color: #263238;
+        }
+
+        .boton {
+            border: none;
+            border-radius: 6px;
+            padding: 9px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .boton-buscar {
+            background: #009ddc;
+            color: white;
+        }
+
+        .boton-buscar:hover {
+            background: #008bc4;
+        }
+
+        .boton-limpiar {
+            background: #eaf3f7;
+            color: #455a64;
+        }
+
+        .boton-limpiar:hover {
+            background: #d8e8ee;
+        }
+
+        .botones-tipo {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .boton-tipo {
+            border: 1px solid #cfd8dc;
+            background: white;
+            color: #546e7a;
+            border-radius: 6px;
+            padding: 8px 22px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 125px;
+        }
+
+        .boton-tipo:hover {
+            background: #eaf7fc;
+            border-color: #009ddc;
+            color: #009ddc;
+        }
+
+        .boton-tipo.activo {
+            background: #009ddc;
+            border-color: #009ddc;
+            color: white;
+        }
+
+        .tabla-contenedor {
+            background: white;
+            border: 1px solid #dfeaf0;
+            border-radius: 9px;
+            overflow-x: auto;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.03);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1250px;
+        }
+
+        thead {
+            background: #eaf7fc;
+        }
+
+        th {
+            padding: 10px 9px;
+            text-align: center;
+            font-size: 12px;
+            color: #455a64;
+            border-bottom: 1px solid #d5eaf2;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 9px;
+            border-bottom: 1px solid #edf2f4;
+            font-size: 12px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td.nombre-columna,
+        td.libro-columna {
+            text-align: left;
+        }
+
+        tbody tr:hover {
+            background: #f7fcfe;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 7px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .badge-prestado {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-vencido {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .badge-colaborador {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .badge-afiliado {
+            background: #f3e5f5;
+            color: #6a1b9a;
+        }
+
+        .badge-biblioteca {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .acciones {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .btn-accion {
+            border: none;
+            border-radius: 5px;
+            padding: 6px 9px;
+            font-size: 11px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .btn-devolver {
+            background: #009ddc;
+        }
+
+        .btn-devolver:hover {
+            background: #008bc4;
+        }
+
+        .btn-eliminar {
+            background: #c62828;
+        }
+
+        .btn-eliminar:hover {
+            background: #8e0000;
+        }
+
+        .sin-resultados {
+            padding: 30px;
+            text-align: center;
+            color: #78909c;
+            font-size: 13px;
+        }
+
+        .paginacion {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e0edf2;
+        }
+
+        .boton-pagina {
+            background: #009ddc;
+            color: white;
+            border: none;
+            padding: 7px 11px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .boton-pagina:hover:not(:disabled) {
+            background: #008bc4;
+        }
+
+        .boton-pagina:disabled {
+            background: #cfd8dc;
+            cursor: not-allowed;
+        }
+
+        .informacion-pagina {
+            font-size: 11px;
+            color: #607d8b;
         }
 
         footer {
-            flex-direction: column;
-            gap: 5px;
+            text-align: center;
+            padding: 20px;
+            color: #90a4ae;
+            font-size: 11px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
         }
 
-    }
-</style>
-```
+        footer .version,
+        footer .creditos {
+            color: #90a4ae;
+        }
 
+        .modal-detalle {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            z-index: 9999;
+        }
+
+        .modal-detalle.mostrar {
+            display: flex;
+        }
+
+        .detalle {
+            width: 100%;
+            max-width: 650px;
+            max-height: 88vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 9px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .detalle-cabecera {
+            background: #009ddc;
+            color: white;
+            padding: 11px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .detalle-cabecera h2 {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .btn-cerrar {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .detalle-contenido {
+            padding: 15px 17px;
+        }
+
+        .detalle-tipo {
+            margin-bottom: 12px;
+        }
+
+        .detalle-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .detalle-item {
+            background: #f7fbfd;
+            border: 1px solid #e3edf1;
+            border-radius: 6px;
+            padding: 8px 10px;
+        }
+
+        .detalle-etiqueta {
+            font-size: 10px;
+            color: #78909c;
+            margin-bottom: 3px;
+        }
+
+        .detalle-valor {
+            font-size: 13px;
+            color: #263238;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .campo-detalle {
+            margin-top: 13px;
+        }
+
+        .campo-detalle label {
+            display: block;
+            font-size: 11px;
+            color: #546e7a;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .campo-detalle textarea {
+            width: 100%;
+            border: 1px solid #cfd8dc;
+            border-radius: 6px;
+            padding: 8px 9px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 13px;
+        }
+
+        .campo-detalle textarea:focus {
+            outline: none;
+            border-color: #009ddc;
+            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
+        }
+
+        .campo-detalle textarea {
+            min-height: 65px;
+            resize: vertical;
+        }
+
+        .boton-extraviado {
+            border: 1px solid #c62828;
+            background: white;
+            color: #c62828;
+            border-radius: 5px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .boton-extraviado:hover {
+            background: #ffebee;
+        }
+
+        .boton-extraviado.activo {
+            background: #c62828;
+            color: white;
+        }
+
+        .advertencia {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffe69c;
+            border-radius: 6px;
+            padding: 9px 10px;
+            margin-top: 12px;
+            font-size: 11px;
+            display: none;
+        }
+
+        .advertencia.mostrar {
+            display: block;
+        }
+
+        .confirmacion-eliminar {
+            background: #ffebee;
+            color: #b71c1c;
+            border: 1px solid #ffcdd2;
+            border-radius: 6px;
+            padding: 9px 10px;
+            margin-top: 12px;
+            font-size: 11px;
+            display: none;
+        }
+
+        .confirmacion-eliminar.mostrar {
+            display: block;
+        }
+
+        .detalle-acciones {
+            display: flex;
+            justify-content: flex-end;
+            gap: 7px;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #e7eef1;
+        }
+
+        .btn-modal {
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-cancelar {
+            background: #eaf3f7;
+            color: #455a64;
+        }
+
+        .btn-cancelar:hover {
+            background: #d8e8ee;
+        }
+
+        .btn-confirmar-devolucion {
+            background: #009ddc;
+            color: white;
+        }
+
+        .btn-confirmar-devolucion:hover {
+            background: #008bc4;
+        }
+
+        .btn-confirmar-eliminar {
+            background: #c62828;
+            color: white;
+        }
+
+        .btn-confirmar-eliminar:hover {
+            background: #8e0000;
+        }
+
+        .mensaje {
+            padding: 10px 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 12px;
+            display: none;
+        }
+
+        .mensaje.exito {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .mensaje.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .mensaje.mostrar {
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            main {
+                padding: 15px;
+            }
+
+            .resumen {
+                grid-template-columns: 1fr;
+            }
+
+            .fila-busqueda {
+                flex-wrap: wrap;
+            }
+
+            .campo-busqueda {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .filtro-select {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            .detalle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detalle {
+                max-height: 92vh;
+            }
+
+            header {
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 14px 15px;
+            }
+
+            .titulo-encabezado-principal {
+                font-size: 18px;
+            }
+
+            .boton-volver {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
+    <div class="encabezado-izquierdo"></div>
 
-```
-<div class="encabezado-izquierdo"></div>
-
-<div class="titulo-encabezado">
-
-    <div class="titulo-encabezado-principal">
-        Devoluciones
+    <div class="titulo-encabezado">
+        <div class="titulo-encabezado-principal">
+            Devoluciones
+        </div>
     </div>
 
-</div>
-
-<button
-    type="button"
-    class="boton-volver"
-    onclick="window.location.href='index.html'">
-    Volver al inicio
-</button>
-```
-
+    <button
+        type="button"
+        class="boton-volver"
+        onclick="window.location.href='index.html'">
+        Volver al inicio
+    </button>
 </header>
 
 <main>
 
-```
-<div id="mensaje" class="mensaje"></div>
+    <div id="mensaje" class="mensaje"></div>
 
+    <section class="resumen">
 
-<section class="resumen">
+        <div class="tarjeta">
+            <div class="tarjeta-titulo">
+                Préstamos activos
+            </div>
 
-    <div class="tarjeta">
-
-        <div class="tarjeta-titulo">
-            Préstamos activos
+            <div
+                class="tarjeta-numero"
+                id="totalPrestamos">
+                0
+            </div>
         </div>
+
+        <div class="tarjeta">
+            <div class="tarjeta-titulo">
+                Préstamos vencidos
+            </div>
+
+            <div
+                class="tarjeta-numero"
+                id="totalVencidos">
+                0
+            </div>
+        </div>
+
+        <div class="tarjeta">
+            <div class="tarjeta-titulo">
+                Libros disponibles
+            </div>
+
+            <div
+                class="tarjeta-numero"
+                id="totalDisponibles">
+                0
+            </div>
+        </div>
+
+    </section>
+
+    <section class="contenedor-busqueda">
+
+        <div class="fila-busqueda">
+
+            <input
+                type="text"
+                id="buscar"
+                class="campo-busqueda"
+                placeholder="Buscar por familia, persona, colaborador, libro o código..."
+                autocomplete="off">
+
+            <select
+                id="filtroBiblioteca"
+                class="filtro-select">
+
+                <option value="">
+                    Sitio Préstamos
+                </option>
+
+                <option value="F">F</option>
+                <option value="M">M</option>
+                <option value="N">N</option>
+                <option value="R">R</option>
+                <option value="Z">Z</option>
+
+            </select>
+
+            <button
+                type="button"
+                id="btnBuscar"
+                class="boton boton-buscar">
+                🔍 Buscar
+            </button>
+
+            <button
+                type="button"
+                id="btnLimpiar"
+                class="boton boton-limpiar">
+                Limpiar
+            </button>
+
+        </div>
+
+        <div class="botones-tipo">
+
+            <button
+                type="button"
+                id="btnAfiliados"
+                class="boton-tipo">
+                Afiliados
+            </button>
+
+            <button
+                type="button"
+                id="btnColaboradores"
+                class="boton-tipo">
+                Colaboradores
+            </button>
+
+        </div>
+
+    </section>
+
+    <section
+        class="tabla-contenedor"
+        id="seccionTabla">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Familia / Código</th>
+                    <th>Persona / Colaborador</th>
+                    <th>Biblioteca</th>
+                    <th>Sitio Préstamos</th>
+                    <th>Código del libro</th>
+                    <th>Nombre del libro</th>
+                    <th>Préstamo</th>
+                    <th>Devolución</th>
+                    <th>Prestado por</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaPrestamos"></tbody>
+
+        </table>
 
         <div
-            class="tarjeta-numero"
-            id="totalPrestamos">
-            0
+            id="sinResultados"
+            class="sin-resultados"
+            style="display:none;">
+            No se encontraron préstamos.
         </div>
 
-    </div>
+        <div class="paginacion">
 
+            <button
+                type="button"
+                id="botonAnterior"
+                class="boton-pagina">
+                ← Anterior
+            </button>
 
-    <div class="tarjeta">
+            <span
+                id="informacionPagina"
+                class="informacion-pagina">
+                Página 1
+            </span>
 
-        <div class="tarjeta-titulo">
-            Préstamos vencidos
+            <button
+                type="button"
+                id="botonSiguiente"
+                class="boton-pagina">
+                Siguiente →
+            </button>
+
         </div>
 
-        <div
-            class="tarjeta-numero"
-            id="totalVencidos">
-            0
-        </div>
-
-    </div>
-
-
-    <div class="tarjeta">
-
-        <div class="tarjeta-titulo">
-            Libros disponibles
-        </div>
-
-        <div
-            class="tarjeta-numero"
-            id="totalDisponibles">
-            0
-        </div>
-
-    </div>
-
-</section>
-
-
-<section class="contenedor-busqueda">
-
-    <div class="fila-busqueda">
-
-        <input
-            type="text"
-            id="buscar"
-            class="campo-busqueda"
-            placeholder="Buscar por familia, persona, colaborador, libro o código..."
-            autocomplete="off">
-
-
-        <select
-            id="filtroBiblioteca"
-            class="filtro-select">
-
-            <option value="">
-                Sitio Préstamo
-            </option>
-
-            <option value="F">
-                F
-            </option>
-
-            <option value="M">
-                M
-            </option>
-
-            <option value="N">
-                N
-            </option>
-
-            <option value="R">
-                R
-            </option>
-
-            <option value="Z">
-                Z
-            </option>
-
-        </select>
-
-
-        <button
-            type="button"
-            id="btnBuscar"
-            class="boton boton-buscar">
-            🔍 Buscar
-        </button>
-
-
-        <button
-            type="button"
-            id="btnLimpiar"
-            class="boton boton-limpiar">
-            Limpiar
-        </button>
-
-    </div>
-
-
-    <div class="botones-tipo">
-
-        <button
-            type="button"
-            id="btnAfiliados"
-            class="boton-tipo">
-            Afiliados
-        </button>
-
-
-        <button
-            type="button"
-            id="btnColaboradores"
-            class="boton-tipo">
-            Colaboradores
-        </button>
-
-    </div>
-
-</section>
-
-
-<section
-    class="tabla-contenedor"
-    id="seccionTabla">
-
-    <table>
-
-        <thead>
-
-            <tr>
-
-                <th>
-                    Tipo
-                </th>
-
-                <th>
-                    Familia / Código
-                </th>
-
-                <th>
-                    Persona / Colaborador
-                </th>
-
-                <th>
-                    Biblioteca
-                </th>
-
-                <th>
-                    Sitio Préstamo
-                </th>
-
-                <th>
-                    Código del libro
-                </th>
-
-                <th>
-                    Nombre del libro
-                </th>
-
-                <th>
-                    Préstamo
-                </th>
-
-                <th>
-                    Devolución
-                </th>
-
-                <th>
-                    Prestado por
-                </th>
-
-                <th>
-                    Estado
-                </th>
-
-                <th>
-                    Acciones
-                </th>
-
-            </tr>
-
-        </thead>
-
-        <tbody id="tablaPrestamos"></tbody>
-
-    </table>
-
-
-    <div
-        id="sinResultados"
-        class="sin-resultados"
-        style="display:none;">
-        No se encontraron préstamos.
-    </div>
-
-
-    <div class="paginacion">
-
-        <button
-            type="button"
-            id="botonAnterior"
-            class="boton-pagina">
-            ← Anterior
-        </button>
-
-
-        <span
-            id="informacionPagina"
-            class="informacion-pagina">
-            Página 1
-        </span>
-
-
-        <button
-            type="button"
-            id="botonSiguiente"
-            class="boton-pagina">
-            Siguiente →
-        </button>
-
-    </div>
-
-</section>
-```
+    </section>
 
 </main>
 
 <footer>
-
-```
-<span>
-    Sistema de Biblioteca
-</span>
-
-<span class="version">
-    Versión 1.0
-</span>
-
-<span class="creditos">
-    Desarrollado por Saúl Velásquez
-</span>
-```
-
+    <span>Sistema de Biblioteca</span>
+    <span class="version">Versión 1.0</span>
+    <span class="creditos">Desarrollado por Saúl Velásquez</span>
 </footer>
 
 <div
     id="modalDetalle"
     class="modal-detalle">
 
-```
-<div class="detalle">
+    <div class="detalle">
 
-    <div class="detalle-cabecera">
+        <div class="detalle-cabecera">
 
-        <h2 id="tituloDetalle">
-            Detalle del préstamo
-        </h2>
+            <h2 id="tituloDetalle">
+                Detalle del préstamo
+            </h2>
 
-        <button
-            type="button"
-            id="btnCerrarDetalle"
-            class="btn-cerrar">
-            ×
-        </button>
-
-    </div>
-
-
-    <div class="detalle-contenido">
-
-        <div class="detalle-tipo">
-
-            <span
-                id="detalleTipo"
-                class="badge badge-afiliado">
-                Afiliado
-            </span>
+            <button
+                type="button"
+                id="btnCerrarDetalle"
+                class="btn-cerrar">
+                ×
+            </button>
 
         </div>
 
+        <div class="detalle-contenido">
 
-        <div class="detalle-grid">
+            <div class="detalle-tipo">
 
-            <div class="detalle-item">
-
-                <div
-                    class="detalle-etiqueta"
-                    id="etiquetaIdentificacion">
-                    FamiliaId
-                </div>
-
-                <div
-                    class="detalle-valor"
-                    id="detalleIdentificacion">
-                    —
-                </div>
+                <span
+                    id="detalleTipo"
+                    class="badge badge-afiliado">
+                    Afiliado
+                </span>
 
             </div>
 
+            <div class="detalle-grid">
 
-            <div class="detalle-item">
+                <div class="detalle-item">
+                    <div
+                        class="detalle-etiqueta"
+                        id="etiquetaIdentificacion">
+                        FamiliaId
+                    </div>
 
-                <div
-                    class="detalle-etiqueta"
-                    id="etiquetaPersona">
-                    Nombre
+                    <div
+                        class="detalle-valor"
+                        id="detalleIdentificacion">
+                        —
+                    </div>
+                </div>
+
+                <div class="detalle-item">
+                    <div
+                        class="detalle-etiqueta"
+                        id="etiquetaPersona">
+                        Nombre
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detallePersona">
+                        —
+                    </div>
                 </div>
 
                 <div
-                    class="detalle-valor"
-                    id="detallePersona">
-                    —
+                    class="detalle-item"
+                    id="detallePersonaIdContenedor">
+
+                    <div
+                        class="detalle-etiqueta"
+                        id="etiquetaPersonaId">
+                        PersonaId
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detallePersonaId">
+                        —
+                    </div>
+
+                </div>
+
+                <div
+                    class="detalle-item"
+                    id="detalleAreaContenedor">
+
+                    <div class="detalle-etiqueta">
+                        Área
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detalleArea">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <div class="detalle-etiqueta">
+                        Biblioteca
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detalleBiblioteca">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <div class="detalle-etiqueta">
+                        Sitio Préstamos
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detalleSitioPrestamo">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <div class="detalle-etiqueta">
+                        Libro
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detalleLibro">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <div class="detalle-etiqueta">
+                        Código del libro
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detalleCodigo">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <div class="detalle-etiqueta">
+                        Fecha de préstamo
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detalleFechaPrestamo">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <div class="detalle-etiqueta">
+                        Fecha límite
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detalleFechaLimite">
+                        —
+                    </div>
+
+                </div>
+
+                <div class="detalle-item">
+
+                    <div class="detalle-etiqueta">
+                        Prestado por
+                    </div>
+
+                    <div
+                        class="detalle-valor"
+                        id="detallePrestadoPor">
+                        —
+                    </div>
+
                 </div>
 
             </div>
-
 
             <div
-                class="detalle-item"
-                id="detallePersonaIdContenedor">
+                id="contenedorComentario"
+                class="campo-detalle">
 
-                <div
-                    class="detalle-etiqueta"
-                    id="etiquetaPersonaId">
-                    PersonaId
-                </div>
+                <label for="comentarioDevolucion">
+                    Comentario de devolución
+                </label>
 
-                <div
-                    class="detalle-valor"
-                    id="detallePersonaId">
-                    —
-                </div>
+                <textarea
+                    id="comentarioDevolucion"
+                    placeholder="Escriba un comentario si es necesario..."></textarea>
 
             </div>
 
+            <div class="campo-detalle">
+
+                <label>
+                    Estado del libro
+                </label>
+
+                <button
+                    type="button"
+                    id="btnExtraviado"
+                    class="boton-extraviado">
+                    Extraviado
+                </button>
+
+            </div>
 
             <div
-                class="detalle-item"
-                id="detalleAreaContenedor">
+                id="advertenciaExtraviado"
+                class="advertencia">
 
-                <div class="detalle-etiqueta">
-                    Área
-                </div>
-
-                <div
-                    class="detalle-valor"
-                    id="detalleArea">
-                    —
-                </div>
+                ⚠️ El libro será registrado como
+                <strong>Baja</strong>
+                por extravío.
 
             </div>
 
+            <div
+                id="confirmacionEliminar"
+                class="confirmacion-eliminar">
 
-            <div class="detalle-item">
-
-                <div class="detalle-etiqueta">
-                    Biblioteca
-                </div>
-
-                <div
-                    class="detalle-valor"
-                    id="detalleBiblioteca">
-                    —
-                </div>
+                ⚠️ Está a punto de eliminar este registro de préstamo.
+                Esta acción no se puede deshacer.
 
             </div>
 
+            <div class="detalle-acciones">
 
-            <div class="detalle-item">
+                <button
+                    type="button"
+                    id="btnCancelarDetalle"
+                    class="btn-modal btn-cancelar">
+                    Cancelar
+                </button>
 
-                <div class="detalle-etiqueta">
-                    Libro
-                </div>
+                <button
+                    type="button"
+                    id="btnConfirmarDevolucion"
+                    class="btn-modal btn-confirmar-devolucion">
+                    Devolver
+                </button>
 
-                <div
-                    class="detalle-valor"
-                    id="detalleLibro">
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="detalle-item">
-
-                <div class="detalle-etiqueta">
-                    Código del libro
-                </div>
-
-                <div
-                    class="detalle-valor"
-                    id="detalleCodigo">
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="detalle-item">
-
-                <div class="detalle-etiqueta">
-                    Fecha de préstamo
-                </div>
-
-                <div
-                    class="detalle-valor"
-                    id="detalleFechaPrestamo">
-                    —
-                </div>
-
-            </div>
-
-
-            <div class="detalle-item">
-
-                <div class="detalle-etiqueta">
-                    Fecha límite
-                </div>
-
-                <div
-                    class="detalle-valor"
-                    id="detalleFechaLimite">
-                    —
-                </div>
+                <button
+                    type="button"
+                    id="btnConfirmarEliminar"
+                    class="btn-modal btn-confirmar-eliminar"
+                    style="display:none;">
+                    Eliminar
+                </button>
 
             </div>
 
         </div>
-
-
-        <div
-            id="contenedorComentario"
-            class="campo-detalle">
-
-            <label for="comentarioDevolucion">
-                Comentario de devolución
-            </label>
-
-            <textarea
-                id="comentarioDevolucion"
-                placeholder="Escriba un comentario si es necesario..."></textarea>
-
-        </div>
-
-
-        <div
-            id="advertenciaExtraviado"
-            class="advertencia">
-
-            ⚠️ Si selecciona
-            <strong>Extraviado</strong>,
-            el libro quedará registrado como dado de baja.
-
-        </div>
-
-
-        <div
-            id="confirmacionEliminar"
-            class="confirmacion-eliminar">
-
-            ⚠️ Está a punto de eliminar este registro de préstamo.
-            Esta acción no se puede deshacer.
-
-        </div>
-
-
-        <div class="detalle-acciones">
-
-            <button
-                type="button"
-                id="btnCancelarDetalle"
-                class="btn-modal btn-cancelar">
-                Cancelar
-            </button>
-
-
-            <button
-                type="button"
-                id="btnConfirmarDevolucion"
-                class="btn-modal btn-confirmar-devolucion">
-                Devolver
-            </button>
-
-
-            <button
-                type="button"
-                id="btnConfirmarEliminar"
-                class="btn-modal btn-confirmar-eliminar"
-                style="display:none;">
-                Eliminar
-            </button>
-
-        </div>
-
     </div>
-
-</div>
-```
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase.js"></script>
-
 <script src="auth.js"></script>
 
 <script>
@@ -1228,6 +1153,8 @@
     let autenticacionLista = false;
 
     let filtroTipoBoton = "";
+
+    let libroExtraviado = false;
 
 
     function normalizar(valor) {
@@ -1262,18 +1189,6 @@
     }
 
 
-    /*
-     * Normaliza códigos de colaborador.
-     *
-     * Ejemplos:
-     * C099 → C99
-     * c099 → C99
-     * C0099 → C99
-     * C99 → C99
-     *
-     * Esto permite buscar sin tener que
-     * escribir los ceros iniciales.
-     */
     function normalizarCodigoColaborador(valor) {
 
         const texto =
@@ -1364,6 +1279,26 @@
     }
 
 
+    function estaVencido(prestamo) {
+
+        if (!prestamo.fechaDevolucion) {
+            return false;
+        }
+
+        const fechaLimite =
+            new Date(
+                prestamo.fechaDevolucion
+            );
+
+        if (isNaN(fechaLimite.getTime())) {
+            return false;
+        }
+
+        return fechaLimite < new Date();
+
+    }
+
+
     function ordenarPorFechaDescendente(lista) {
 
         return [...lista].sort(
@@ -1419,7 +1354,7 @@
             error: errorLibros
         } = await supabaseClient
             .from("libros")
-            .select("codigoLibro, Biblioteca");
+            .select("codigoLibro, Biblioteca, nombreLibro");
 
 
         if (errorLibros) {
@@ -1443,7 +1378,6 @@
 
             const mapaLibros = {};
 
-
             (libros || []).forEach(
                 libro => {
 
@@ -1451,7 +1385,6 @@
                         normalizarCodigo(
                             libro.codigoLibro
                         );
-
 
                     if (codigo) {
 
@@ -1511,12 +1444,9 @@
         prestamosFiltrados =
             [...prestamos];
 
-
         paginaActual = 1;
 
-
         filtroTipoBoton = "";
-
 
         document.getElementById(
             "btnAfiliados"
@@ -1524,13 +1454,11 @@
             "activo"
         );
 
-
         document.getElementById(
             "btnColaboradores"
         ).classList.remove(
             "activo"
         );
-
 
         mostrarPrestamos();
 
@@ -1564,22 +1492,18 @@
             sinResultados.style.display =
                 "block";
 
-
             document.getElementById(
                 "informacionPagina"
             ).textContent =
                 "Sin resultados";
 
-
             document.getElementById(
                 "botonAnterior"
             ).disabled = true;
 
-
             document.getElementById(
                 "botonSiguiente"
             ).disabled = true;
-
 
             return;
 
@@ -1672,6 +1596,22 @@
                     "—";
 
 
+                const vencido =
+                    estaVencido(prestamo);
+
+
+                const estadoTexto =
+                    vencido
+                        ? "Vencido"
+                        : "Prestado";
+
+
+                const estadoClase =
+                    vencido
+                        ? "badge-vencido"
+                        : "badge-prestado";
+
+
                 const tr =
                     document.createElement("tr");
 
@@ -1731,8 +1671,8 @@
                     </td>
 
                     <td>
-                        <span class="badge badge-prestado">
-                            Prestado
+                        <span class="badge ${estadoClase}">
+                            ${estadoTexto}
                         </span>
                     </td>
 
@@ -1794,10 +1734,9 @@
                     "click",
                     () => {
 
-                        const id =
-                            boton.dataset.id;
-
-                        seleccionarPrestamo(id);
+                        seleccionarPrestamo(
+                            boton.dataset.id
+                        );
 
                     }
                 );
@@ -1815,10 +1754,9 @@
                     "click",
                     () => {
 
-                        const id =
-                            boton.dataset.id;
-
-                        seleccionarPrestamoEliminar(id);
+                        seleccionarPrestamoEliminar(
+                            boton.dataset.id
+                        );
 
                     }
                 );
@@ -1871,6 +1809,8 @@
 
         modoDetalle =
             modo;
+
+        libroExtraviado = false;
 
 
         const colaborador =
@@ -1949,6 +1889,12 @@
             );
 
 
+        const detalleSitioPrestamo =
+            document.getElementById(
+                "detalleSitioPrestamo"
+            );
+
+
         const detalleLibro =
             document.getElementById(
                 "detalleLibro"
@@ -1970,6 +1916,12 @@
         const detalleFechaLimite =
             document.getElementById(
                 "detalleFechaLimite"
+            );
+
+
+        const detallePrestadoPor =
+            document.getElementById(
+                "detallePrestadoPor"
             );
 
 
@@ -2009,28 +1961,42 @@
             );
 
 
+        const btnExtraviado =
+            document.getElementById(
+                "btnExtraviado"
+            );
+
+
+        btnExtraviado.classList.remove(
+            "activo"
+        );
+
+
+        advertencia.classList.remove(
+            "mostrar"
+        );
+
+
         if (modo === "eliminar") {
 
             titulo.textContent =
                 "Eliminar préstamo";
 
-
             btnDevolver.style.display =
                 "none";
-
 
             btnEliminar.style.display =
                 "inline-block";
 
-
             contenedorComentario.style.display =
                 "none";
 
+            btnExtraviado.style.display =
+                "none";
 
             advertencia.classList.remove(
                 "mostrar"
             );
-
 
             confirmacionEliminar.classList.add(
                 "mostrar"
@@ -2041,18 +2007,17 @@
             titulo.textContent =
                 "Registrar devolución";
 
-
             btnDevolver.style.display =
                 "inline-block";
-
 
             btnEliminar.style.display =
                 "none";
 
-
             contenedorComentario.style.display =
                 "block";
 
+            btnExtraviado.style.display =
+                "inline-block";
 
             confirmacionEliminar.classList.remove(
                 "mostrar"
@@ -2066,36 +2031,28 @@
             tipo.textContent =
                 "Colaborador";
 
-
             tipo.className =
                 "badge badge-colaborador";
 
-
             etiquetaIdentificacion.textContent =
                 "Código de colaborador";
-
 
             detalleIdentificacion.textContent =
                 prestamo.CodigoColaborador ||
                 "—";
 
-
             etiquetaPersona.textContent =
                 "Colaborador";
-
 
             detallePersona.textContent =
                 prestamo.NombreColaborador ||
                 "—";
 
-
             detallePersonaIdContenedor.style.display =
                 "none";
 
-
             detalleAreaContenedor.style.display =
                 "block";
-
 
             detalleArea.textContent =
                 prestamo.AreaColaborador ||
@@ -2106,41 +2063,32 @@
             tipo.textContent =
                 "Afiliado";
 
-
             tipo.className =
                 "badge badge-afiliado";
 
-
             etiquetaIdentificacion.textContent =
                 "FamiliaId";
-
 
             detalleIdentificacion.textContent =
                 prestamo.FamiliaId ||
                 "—";
 
-
             etiquetaPersona.textContent =
                 "Persona";
 
-
             const nombreCompleto =
                 `${prestamo.Nombres || ""} ${prestamo.Apellidos || ""}`.trim();
-
 
             detallePersona.textContent =
                 nombreCompleto ||
                 "—";
 
-
             detallePersonaIdContenedor.style.display =
                 "block";
-
 
             detallePersonaId.textContent =
                 prestamo.PersonaId ||
                 "—";
-
 
             detalleAreaContenedor.style.display =
                 "none";
@@ -2150,6 +2098,11 @@
 
         detalleBiblioteca.textContent =
             prestamo.Biblioteca ||
+            "—";
+
+
+        detalleSitioPrestamo.textContent =
+            prestamo.SitioPrestamo ||
             "—";
 
 
@@ -2176,14 +2129,14 @@
             );
 
 
+        detallePrestadoPor.textContent =
+            prestamo.PrestadoPor ||
+            "—";
+
+
         comentario.value =
             prestamo.comentarios ||
             "";
-
-
-        advertencia.classList.remove(
-            "mostrar"
-        );
 
 
         modal.classList.add(
@@ -2202,11 +2155,9 @@
         const prestamo =
             obtenerPrestamoPorId(id);
 
-
         if (!prestamo) {
             return;
         }
-
 
         cargarDetalle(
             prestamo,
@@ -2221,11 +2172,9 @@
         const prestamo =
             obtenerPrestamoPorId(id);
 
-
         if (!prestamo) {
             return;
         }
-
 
         cargarDetalle(
             prestamo,
@@ -2243,13 +2192,14 @@
             "mostrar"
         );
 
-
         document.body.style.overflow =
             "";
 
-
         prestamoSeleccionado =
             null;
+
+        libroExtraviado =
+            false;
 
     }
 
@@ -2388,9 +2338,7 @@
                 if (libro) {
 
                     const estadoLibro =
-                        normalizar(
-                            comentario
-                        ) === "EXTRAVIADO"
+                        libroExtraviado
                             ? "Baja"
                             : "Disponible";
 
@@ -2436,7 +2384,9 @@
 
 
         mostrarMensaje(
-            "La devolución se registró correctamente.",
+            libroExtraviado
+                ? "La devolución se registró y el libro fue dado de baja correctamente."
+                : "La devolución se registró correctamente.",
             "exito"
         );
 
@@ -2627,16 +2577,6 @@
                         );
 
 
-                    /*
-                     * Para la búsqueda del código del
-                     * colaborador se normalizan los
-                     * ceros iniciales.
-                     *
-                     * Ejemplo:
-                     * Registro: C099
-                     * Usuario busca: C99
-                     * Ambos se convierten en C99.
-                     */
                     const textoNormalizado =
                         normalizarCodigoColaborador(
                             texto
@@ -2656,7 +2596,8 @@
                             prestamo.codigoLibro,
                             prestamo.tipoPrestamo,
                             prestamo.Biblioteca,
-                            prestamo.SitioPrestamo
+                            prestamo.SitioPrestamo,
+                            prestamo.PrestadoPor
                         ]
                             .map(
                                 valor =>
@@ -2715,7 +2656,6 @@
 
         paginaActual = 1;
 
-
         mostrarPrestamos();
 
     }
@@ -2741,11 +2681,9 @@
 
             filtroTipoBoton = "";
 
-
             botonAfiliados.classList.remove(
                 "activo"
             );
-
 
             botonColaboradores.classList.remove(
                 "activo"
@@ -2756,12 +2694,10 @@
             filtroTipoBoton =
                 tipo;
 
-
             botonAfiliados.classList.toggle(
                 "activo",
                 tipo === "AFILIADO"
             );
-
 
             botonColaboradores.classList.toggle(
                 "activo",
@@ -3097,6 +3033,33 @@
 
 
     document.getElementById(
+        "btnExtraviado"
+    ).addEventListener(
+        "click",
+        function() {
+
+            libroExtraviado =
+                !libroExtraviado;
+
+
+            this.classList.toggle(
+                "activo",
+                libroExtraviado
+            );
+
+
+            document.getElementById(
+                "advertenciaExtraviado"
+            ).classList.toggle(
+                "mostrar",
+                libroExtraviado
+            );
+
+        }
+    );
+
+
+    document.getElementById(
         "modalDetalle"
     ).addEventListener(
         "click",
@@ -3130,44 +3093,6 @@
             ) {
 
                 cerrarDetalle();
-
-            }
-
-        }
-    );
-
-
-    document.getElementById(
-        "comentarioDevolucion"
-    ).addEventListener(
-        "change",
-        function() {
-
-            const valor =
-                normalizar(
-                    this.value
-                );
-
-
-            const advertencia =
-                document.getElementById(
-                    "advertenciaExtraviado"
-                );
-
-
-            if (
-                valor === "EXTRAVIADO"
-            ) {
-
-                advertencia.classList.add(
-                    "mostrar"
-                );
-
-            } else {
-
-                advertencia.classList.remove(
-                    "mostrar"
-                );
 
             }
 
