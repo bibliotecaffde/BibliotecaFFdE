@@ -1,872 +1,162 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Préstamos - Biblioteca</title>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
     <script src="auth.js"></script>
-
     <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
-            color: #1f2937;
-        }
-
-        .encabezado {
-            background: #009ddc;
-            color: white;
-            padding: 18px 25px;
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .encabezado-izquierda {
-            min-width: 0;
-        }
-
-        .encabezado-textos {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .encabezado h1 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .btn-volver {
-            justify-self: end;
-            background: rgba(255, 255, 255, 0.16);
-            color: white;
-            text-decoration: none;
-            padding: 9px 14px;
-            border-radius: 7px;
-            font-size: 14px;
-            font-weight: 600;
-            border: 1px solid rgba(255, 255, 255, 0.28);
-            transition: background 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .btn-volver:hover {
-            background: rgba(255, 255, 255, 0.26);
-        }
-
-        .contenedor {
-            max-width: 1100px;
-            margin: 24px auto;
-            padding: 0 18px;
-        }
-
-        .seccion {
-            background: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 18px;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-        }
-
-        .seccion h2 {
-            margin: 0 0 16px;
-            font-size: 18px;
-            color: #1f2937;
-            font-weight: 700;
-        }
-
-        .fila-busqueda {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        input {
-            flex: 1;
-            padding: 10px 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 7px;
-            font-size: 14px;
-            color: #1f2937;
-            background: #ffffff;
-            outline: none;
-            transition:
-                border-color 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-        input:focus {
-            border-color: #009ddc;
-            box-shadow: 0 0 0 3px rgba(0, 157, 220, 0.12);
-        }
-
-        button {
-            border: none;
-            border-radius: 7px;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition:
-                opacity 0.2s ease,
-                transform 0.1s ease;
-        }
-
-        button:active {
-            transform: translateY(1px);
-        }
-
-        button:disabled {
-            opacity: .6;
-            cursor: not-allowed;
-        }
-
-        .btn-buscar {
-            background: #009ddc;
-            color: white;
-        }
-
-        .btn-buscar:hover {
-            opacity: 0.9;
-        }
-
-        .mensaje {
-            margin-top: 12px;
-            padding: 10px 12px;
-            border-radius: 7px;
-            display: none;
-            font-size: 13px;
-        }
-
-        .mensaje.exito {
-            display: block;
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-        }
-
-        .mensaje.error {
-            display: block;
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-        }
-
-        .tabla-contenedor {
-            overflow-x: auto;
-            margin-top: 15px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        th {
-            background: #f8fafc;
-            color: #374151;
-            padding: 10px 9px;
-            border-bottom: 1px solid #e5e7eb;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        td {
-            padding: 9px;
-            border-bottom: 1px solid #eef0f2;
-            text-align: center;
-            color: #374151;
-        }
-
-        td.nombre {
-            text-align: left;
-        }
-
-        tbody tr:hover {
-            background: #f8fafc;
-        }
-
-        tr.seleccionada {
-            background: #e8f5e9;
-            border-left: 4px solid #2e7d32;
-        }
-
-        .btn-seleccionar {
-            background: #009ddc;
-            color: white;
-            padding: 6px 10px;
-            font-size: 12px;
-            border-radius: 6px;
-        }
-
-        .btn-seleccionar:hover {
-            opacity: 0.9;
-        }
-
-        .btn-seleccionar.seleccionada {
-            background: #2e7d32;
-        }
-
-        .tipo-solicitante {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .opcion-tipo {
-            flex: 1;
-            border: 1px solid #e5e7eb;
-            background: #f8fafc;
-            color: #374151;
-            padding: 11px 15px;
-            border-radius: 7px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .opcion-tipo:hover {
-            background: #eef7fb;
-            border-color: #b9ddeb;
-        }
-
-        .opcion-tipo.activa {
-            background: #009ddc;
-            color: white;
-            border-color: #009ddc;
-        }
-
-        .libros-seleccionados {
-            margin-top: 15px;
-            display: none;
-        }
-
-        .libros-seleccionados.visible {
-            display: block;
-        }
-
-        .encabezado-libros-seleccionados {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .titulo-libros-seleccionados {
-            font-size: 14px;
-            font-weight: 700;
-            color: #374151;
-        }
-
-        .contador-libros {
-            background: #eaf7fc;
-            color: #007caf;
-            border: 1px solid #c9eaf6;
-            padding: 5px 9px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .lista-libros-seleccionados {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .libro-seleccionado {
-            position: relative;
-            background: #f8fafc;
-            border: 1px solid #dce3e8;
-            border-radius: 8px;
-            padding: 12px 38px 12px 12px;
-            min-height: 82px;
-        }
-
-        .libro-seleccionado-numero {
-            font-size: 11px;
-            color: #007caf;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .libro-seleccionado-codigo {
-            font-size: 12px;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-
-        .libro-seleccionado-nombre {
-            font-size: 13px;
-            color: #1f2937;
-            font-weight: 700;
-            line-height: 1.35;
-        }
-
-        .btn-quitar-libro {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 25px;
-            height: 25px;
-            padding: 0;
-            border-radius: 50%;
-            background: #ffffff;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-            font-size: 15px;
-            line-height: 23px;
-        }
-
-        .btn-quitar-libro:hover {
-            background: #ffebee;
-        }
-
-        .btn-agregar-libro {
-            margin-top: 10px;
-            background: #ffffff;
-            color: #009ddc;
-            border: 1px solid #009ddc;
-            padding: 8px 13px;
-        }
-
-        .btn-agregar-libro:hover {
-            background: #eef9fd;
-        }
-
-        .btn-agregar-libro:disabled {
-            background: #f3f4f6;
-            border-color: #d1d5db;
-            color: #9ca3af;
-        }
-
-        .resumen-prestamo {
-            display: none;
-        }
-
-        .bloque-resumen {
-            border: 1px solid #e1e7eb;
-            border-radius: 9px;
-            overflow: hidden;
-            margin-top: 15px;
-            background: #ffffff;
-        }
-
-        .titulo-bloque {
-            background: #f8fafc;
-            padding: 12px 14px;
-            font-size: 14px;
-            font-weight: bold;
-            color: #374151;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .contenido-resumen {
-            padding: 14px;
-        }
-
-        .datos-persona {
-            display: grid;
-            grid-template-columns: 1fr;
-        }
-
-        /* AJUSTE VISUAL:
-           Datos del afiliado/colaborador más compactos,
-           sin modificar su estructura ni funcionamiento. */
-
-        .tarjeta-persona {
-            background: linear-gradient(
-                to right,
-                #f8fbfd,
-                #ffffff
-            );
-            border: 1px solid #e1e8ec;
-            border-radius: 8px;
-            padding: 11px 12px;
-        }
-
-        .tarjeta-persona-cabecera {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            margin-bottom: 8px;
-        }
-
-        .icono-persona {
-            width: 34px;
-            height: 34px;
-            border-radius: 8px;
-            background: #eaf7fc;
-            color: #009ddc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 17px;
-        }
-
-        .texto-persona h3 {
-            margin: 0;
-            font-size: 14px;
-            color: #1f2937;
-        }
-
-        .texto-persona span {
-            display: block;
-            margin-top: 1px;
-            font-size: 11px;
-            color: #6b7280;
-        }
-
-        .datos-persona-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-        }
-
-        .dato-persona {
-            background: #ffffff;
-            border: 1px solid #edf0f2;
-            border-radius: 7px;
-            padding: 7px 8px;
-        }
-
-        .dato-persona.etiqueta-completa {
-            grid-column: span 2;
-        }
-
-        .dato-persona span:first-child {
-            display: block;
-            font-size: 10px;
-            color: #6b7280;
-            margin-bottom: 2px;
-        }
-
-        .dato-persona span:last-child {
-            display: block;
-            font-size: 12px;
-            color: #1f2937;
-            font-weight: 700;
-            word-break: break-word;
-        }
-
-        .resumen-libros {
-            margin-top: 15px;
-        }
-
-        .resumen-libros-cabecera {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .resumen-libros-titulo {
-            font-size: 14px;
-            font-weight: 700;
-            color: #374151;
-        }
-
-        .resumen-libros-contador {
-            font-size: 12px;
-            color: #007caf;
-            background: #eaf7fc;
-            border: 1px solid #c9eaf6;
-            border-radius: 15px;
-            padding: 5px 9px;
-            font-weight: 700;
-        }
-
-        .lista-resumen-libros {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-        }
-
-        .tarjeta-resumen-libro {
-            display: grid;
-            grid-template-columns: 38px 1fr auto;
-            align-items: center;
-            gap: 11px;
-            padding: 11px 12px;
-            border: 1px solid #e1e7eb;
-            border-radius: 8px;
-            background: #ffffff;
-        }
-
-        .numero-resumen-libro {
-            width: 32px;
-            height: 32px;
-            border-radius: 7px;
-            background: #eaf7fc;
-            color: #007caf;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 13px;
-        }
-
-        .datos-resumen-libro {
-            min-width: 0;
-        }
-
-        .codigo-resumen-libro {
-            font-size: 11px;
-            color: #6b7280;
-            margin-bottom: 2px;
-        }
-
-        .nombre-resumen-libro {
-            font-size: 13px;
-            color: #1f2937;
-            font-weight: 700;
-            line-height: 1.35;
-        }
-
-        .estado-resumen-libro {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-            border-radius: 14px;
-            padding: 4px 8px;
-            font-size: 11px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .fechas-prestamo {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-        }
-
-        .campo-fecha {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .campo-fecha label {
-            font-size: 13px;
-            font-weight: bold;
-            color: #374151;
-        }
-
-        .campo-fecha input,
-        .campo-fecha select {
-            width: 100%;
-            flex: none;
-            background: white;
-            padding: 10px 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 7px;
-            font-size: 14px;
-            color: #1f2937;
-            outline: none;
-        }
-
-        .campo-fecha input:focus,
-        .campo-fecha select:focus {
-            border-color: #009ddc;
-            box-shadow: 0 0 0 3px rgba(0, 157, 220, 0.12);
-        }
-
-        .campo-fecha select {
-            cursor: pointer;
-        }
-
-        .ayuda-fecha {
-            font-size: 11px;
-            color: #6b7280;
-            margin-top: 1px;
-            line-height: 1.3;
-        }
-
-        /* AJUSTE VISUAL:
-           Confirmación un poco más compacta.
-           Los botones conservan exactamente su tamaño. */
-
-        .confirmacion {
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            border-radius: 8px;
-            padding: 11px 13px;
-            margin-top: 14px;
-            display: none;
-        }
-
-        .confirmacion-titulo {
-            font-size: 14px;
-            font-weight: bold;
-            color: #e65100;
-            margin-bottom: 3px;
-        }
-
-        .confirmacion-texto {
-            font-size: 12px;
-            color: #5d4037;
-            margin: 0;
-            line-height: 1.35;
-        }
-
-        .acciones-confirmacion {
-            margin-top: 10px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .btn-confirmar {
-            background: #009ddc;
-            color: white;
-        }
-
-        .btn-confirmar:hover {
-            opacity: 0.9;
-        }
-
-        .btn-cancelar {
-            background: #6b7280;
-            color: white;
-        }
-
-        .btn-cancelar:hover {
-            opacity: 0.9;
-        }
-
-        .libro-info {
-            margin-top: 12px;
-            padding: 12px;
-            background: #eaf7fc;
-            border: 1px solid #c9eaf6;
-            border-radius: 7px;
-            display: none;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .libro-info strong {
-            color: #007caf;
-        }
-
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, sans-serif; background: #f5f7fa; color: #1f2937; }
+        .encabezado { background: #009ddc; color: white; padding: 18px 25px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 20px; }
+        .encabezado-izquierda { min-width: 0; }
+        .encabezado-textos { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .encabezado h1 { margin: 0; font-size: 22px; font-weight: 700; text-align: center; }
+        .btn-volver { justify-self: end; background: rgba(255, 255, 255, 0.16); color: white; text-decoration: none; padding: 9px 14px; border-radius: 7px; font-size: 14px; font-weight: 600; border: 1px solid rgba(255, 255, 255, 0.28); transition: background 0.2s ease; white-space: nowrap; }
+        .btn-volver:hover { background: rgba(255, 255, 255, 0.26); }
+        .contenedor { max-width: 1100px; margin: 24px auto; padding: 0 18px; }
+        .seccion { background: #ffffff; border-radius: 10px; padding: 20px; margin-bottom: 18px; border: 1px solid #e5e7eb; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+        .seccion h2 { margin: 0 0 16px; font-size: 18px; color: #1f2937; font-weight: 700; }
+        .fila-busqueda { display: flex; gap: 10px; align-items: center; }
+        input { flex: 1; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 7px; font-size: 14px; color: #1f2937; background: #ffffff; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+        input:focus { border-color: #009ddc; box-shadow: 0 0 0 3px rgba(0, 157, 220, 0.12); }
+        button { border: none; border-radius: 7px; padding: 10px 15px; cursor: pointer; font-size: 14px; font-weight: 600; transition: opacity 0.2s ease, transform 0.1s ease; }
+        button:active { transform: translateY(1px); }
+        button:disabled { opacity: .6; cursor: not-allowed; }
+        .btn-buscar { background: #009ddc; color: white; }
+        .btn-buscar:hover { opacity: 0.9; }
+        .mensaje { margin-top: 12px; padding: 10px 12px; border-radius: 7px; display: none; font-size: 13px; }
+        .mensaje.exito { display: block; background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+        .mensaje.error { display: block; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+        .tabla-contenedor { overflow-x: auto; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th { background: #f8fafc; color: #374151; padding: 10px 9px; border-bottom: 1px solid #e5e7eb; text-align: center; font-weight: 700; }
+        td { padding: 9px; border-bottom: 1px solid #eef0f2; text-align: center; color: #374151; }
+        td.nombre { text-align: left; }
+        tbody tr:hover { background: #f8fafc; }
+        tr.seleccionada { background: #e8f5e9; border-left: 4px solid #2e7d32; }
+        .btn-seleccionar { background: #009ddc; color: white; padding: 6px 10px; font-size: 12px; border-radius: 6px; }
+        .btn-seleccionar:hover { opacity: 0.9; }
+        .btn-seleccionar.seleccionada { background: #2e7d32; }
+        .tipo-solicitante { display: flex; gap: 10px; margin-bottom: 15px; }
+        .opcion-tipo { flex: 1; border: 1px solid #e5e7eb; background: #f8fafc; color: #374151; padding: 11px 15px; border-radius: 7px; cursor: pointer; text-align: center; font-weight: 600; }
+        .opcion-tipo:hover { background: #eef7fb; border-color: #b9ddeb; }
+        .opcion-tipo.activa { background: #009ddc; color: white; border-color: #009ddc; }
+        .libros-seleccionados { margin-top: 15px; display: none; }
+        .libros-seleccionados.visible { display: block; }
+        .encabezado-libros-seleccionados { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+        .titulo-libros-seleccionados { font-size: 14px; font-weight: 700; color: #374151; }
+        .contador-libros { background: #eaf7fc; color: #007caf; border: 1px solid #c9eaf6; padding: 5px 9px; border-radius: 15px; font-size: 12px; font-weight: 700; }
+        .lista-libros-seleccionados { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .libro-seleccionado { position: relative; background: #f8fafc; border: 1px solid #dce3e8; border-radius: 8px; padding: 12px 38px 12px 12px; min-height: 82px; }
+        .libro-seleccionado-numero { font-size: 11px; color: #007caf; font-weight: 700; margin-bottom: 5px; }
+        .libro-seleccionado-codigo { font-size: 12px; color: #6b7280; margin-bottom: 4px; }
+        .libro-seleccionado-nombre { font-size: 13px; color: #1f2937; font-weight: 700; line-height: 1.35; }
+        .btn-quitar-libro { position: absolute; top: 8px; right: 8px; width: 25px; height: 25px; padding: 0; border-radius: 50%; background: #ffffff; color: #c62828; border: 1px solid #ffcdd2; font-size: 15px; line-height: 23px; }
+        .btn-quitar-libro:hover { background: #ffebee; }
+        .btn-agregar-libro { margin-top: 10px; background: #ffffff; color: #009ddc; border: 1px solid #009ddc; padding: 8px 13px; }
+        .btn-agregar-libro:hover { background: #eef9fd; }
+        .btn-agregar-libro:disabled { background: #f3f4f6; border-color: #d1d5db; color: #9ca3af; }
+        .resumen-prestamo { display: none; }
+        .bloque-resumen { border: 1px solid #e1e7eb; border-radius: 9px; overflow: hidden; margin-top: 15px; background: #ffffff; }
+        .titulo-bloque { background: #f8fafc; padding: 12px 14px; font-size: 14px; font-weight: bold; color: #374151; border-bottom: 1px solid #e5e7eb; }
+        .contenido-resumen { padding: 14px; }
+        .datos-persona { display: grid; grid-template-columns: 1fr; }
+        .tarjeta-persona { background: linear-gradient(to right, #f8fbfd, #ffffff); border: 1px solid #e1e8ec; border-radius: 8px; padding: 11px 12px; }
+        .tarjeta-persona-cabecera { display: flex; align-items: center; gap: 9px; margin-bottom: 8px; }
+        .icono-persona { width: 34px; height: 34px; border-radius: 8px; background: #eaf7fc; color: #009ddc; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+        .texto-persona h3 { margin: 0; font-size: 14px; color: #1f2937; }
+        .texto-persona span { display: block; margin-top: 1px; font-size: 11px; color: #6b7280; }
+        .datos-persona-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .dato-persona { background: #ffffff; border: 1px solid #edf0f2; border-radius: 7px; padding: 7px 8px; }
+        .dato-persona.etiqueta-completa { grid-column: span 2; }
+        .dato-persona span:first-child { display: block; font-size: 10px; color: #6b7280; margin-bottom: 2px; }
+        .dato-persona span:last-child { display: block; font-size: 12px; color: #1f2937; font-weight: 700; word-break: break-word; }
+        .resumen-libros { margin-top: 15px; }
+        .resumen-libros-cabecera { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .resumen-libros-titulo { font-size: 14px; font-weight: 700; color: #374151; }
+        .resumen-libros-contador { font-size: 12px; color: #007caf; background: #eaf7fc; border: 1px solid #c9eaf6; border-radius: 15px; padding: 5px 9px; font-weight: 700; }
+        .lista-resumen-libros { display: grid; grid-template-columns: 1fr; gap: 8px; }
+        .tarjeta-resumen-libro { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 11px; padding: 11px 12px; border: 1px solid #e1e7eb; border-radius: 8px; background: #ffffff; }
+        .numero-resumen-libro { width: 32px; height: 32px; border-radius: 7px; background: #eaf7fc; color: #007caf; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; }
+        .datos-resumen-libro { min-width: 0; }
+        .codigo-resumen-libro { font-size: 11px; color: #6b7280; margin-bottom: 2px; }
+        .nombre-resumen-libro { font-size: 13px; color: #1f2937; font-weight: 700; line-height: 1.35; }
+        .estado-resumen-libro { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; border-radius: 14px; padding: 4px 8px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+        .fechas-prestamo { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .campo-fecha { display: flex; flex-direction: column; gap: 6px; }
+        .campo-fecha label { font-size: 13px; font-weight: bold; color: #374151; }
+        .campo-fecha input, .campo-fecha select { width: 100%; flex: none; background: white; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 7px; font-size: 14px; color: #1f2937; outline: none; }
+        .campo-fecha input:focus, .campo-fecha select:focus { border-color: #009ddc; box-shadow: 0 0 0 3px rgba(0, 157, 220, 0.12); }
+        .campo-fecha select { cursor: pointer; }
+        .ayuda-fecha { font-size: 11px; color: #6b7280; margin-top: 1px; line-height: 1.3; }
+        .confirmacion { background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 11px 13px; margin-top: 14px; display: none; }
+        .confirmacion-titulo { font-size: 14px; font-weight: bold; color: #e65100; margin-bottom: 3px; }
+        .confirmacion-texto { font-size: 12px; color: #5d4037; margin: 0; line-height: 1.35; }
+        .acciones-confirmacion { margin-top: 10px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+        .btn-confirmar { background: #009ddc; color: white; }
+        .btn-confirmar:hover { opacity: 0.9; }
+        .btn-cancelar { background: #6b7280; color: white; }
+        .btn-cancelar:hover { opacity: 0.9; }
+        .libro-info { margin-top: 12px; padding: 12px; background: #eaf7fc; border: 1px solid #c9eaf6; border-radius: 7px; display: none; font-size: 13px; line-height: 1.5; }
+        .libro-info strong { color: #007caf; }
         @media (max-width: 850px) {
-
-            .fechas-prestamo {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .datos-persona-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .dato-persona.etiqueta-completa {
-                grid-column: span 2;
-            }
-
-            .lista-libros-seleccionados {
-                grid-template-columns: 1fr 1fr;
-            }
-
+            .fechas-prestamo { grid-template-columns: 1fr 1fr; }
+            .datos-persona-grid { grid-template-columns: 1fr 1fr; }
+            .dato-persona.etiqueta-completa { grid-column: span 2; }
+            .lista-libros-seleccionados { grid-template-columns: 1fr 1fr; }
         }
-
         @media (max-width: 700px) {
-
-            .fila-busqueda {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .tipo-solicitante {
-                flex-direction: column;
-            }
-
-            .encabezado {
-                gap: 12px;
-                grid-template-columns: 1fr;
-                justify-items: center;
-            }
-
-            .encabezado-izquierda {
-                display: none;
-            }
-
-            .encabezado-textos {
-                width: 100%;
-            }
-
-            .btn-volver {
-                justify-self: center;
-                text-align: center;
-            }
-
-            .fechas-prestamo {
-                grid-template-columns: 1fr;
-            }
-
-            .datos-persona-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .dato-persona.etiqueta-completa {
-                grid-column: span 2;
-            }
-
-            .lista-libros-seleccionados {
-                grid-template-columns: 1fr;
-            }
-
-            .acciones-confirmacion {
-                flex-direction: column;
-            }
-
-            .acciones-confirmacion button {
-                width: 100%;
-            }
-
-            .tarjeta-resumen-libro {
-                grid-template-columns: 34px 1fr;
-            }
-
-            .estado-resumen-libro {
-                grid-column: 2;
-                justify-self: start;
-            }
-
+            .fila-busqueda { flex-direction: column; align-items: stretch; }
+            .tipo-solicitante { flex-direction: column; }
+            .encabezado { gap: 12px; grid-template-columns: 1fr; justify-items: center; }
+            .encabezado-izquierda { display: none; }
+            .encabezado-textos { width: 100%; }
+            .btn-volver { justify-self: center; text-align: center; }
+            .fechas-prestamo { grid-template-columns: 1fr; }
+            .datos-persona-grid { grid-template-columns: 1fr 1fr; }
+            .dato-persona.etiqueta-completa { grid-column: span 2; }
+            .lista-libros-seleccionados { grid-template-columns: 1fr; }
+            .acciones-confirmacion { flex-direction: column; }
+            .acciones-confirmacion button { width: 100%; }
+            .tarjeta-resumen-libro { grid-template-columns: 34px 1fr; }
+            .estado-resumen-libro { grid-column: 2; justify-self: start; }
         }
-
         @media (max-width: 480px) {
-
-            .datos-persona-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .dato-persona.etiqueta-completa {
-                grid-column: span 1;
-            }
-
+            .datos-persona-grid { grid-template-columns: 1fr; }
+            .dato-persona.etiqueta-completa { grid-column: span 1; }
         }
-
     </style>
-
 </head>
-
 <body>
 
 <header class="encabezado">
-
     <div class="encabezado-izquierda"></div>
-
     <div class="encabezado-textos">
-
-        <h1>
-            Préstamos
-        </h1>
-
+        <h1>Préstamos</h1>
     </div>
-
-    <a
-        href="index.html"
-        class="btn-volver"
-    >
-        Volver al inicio
-    </a>
-
+    <a href="index.html" class="btn-volver">Volver al inicio</a>
 </header>
 
-
 <div class="contenedor">
-
-    <!-- =====================================================
-         PASO 1
-    ====================================================== -->
-
     <section class="seccion">
-
         <h2>1. ¿Quién solicita el préstamo?</h2>
-
         <div class="tipo-solicitante">
-
-            <button
-                type="button"
-                id="btnTipoAfiliado"
-                class="opcion-tipo activa"
-            >
-                👨‍👩‍👧 Afiliado
-            </button>
-
-            <button
-                type="button"
-                id="btnTipoColaborador"
-                class="opcion-tipo"
-            >
-                👤 Colaborador
-            </button>
-
+            <button type="button" id="btnTipoAfiliado" class="opcion-tipo activa">👨‍👩‍👧 Afiliado</button>
+            <button type="button" id="btnTipoColaborador" class="opcion-tipo">👤 Colaborador</button>
         </div>
 
-
-        <!-- AFILIADO -->
-
         <div id="seccionAfiliado">
-
             <div class="fila-busqueda">
-
-                <input
-                    type="text"
-                    id="buscarFamilia"
-                    placeholder="Ingrese número de familia..."
-                >
-
-                <button
-                    type="button"
-                    class="btn-buscar"
-                    id="btnBuscarFamilia"
-                >
-                    Buscar
-                </button>
-
+                <input type="text" id="buscarFamilia" placeholder="Ingrese número de familia...">
+                <button type="button" class="btn-buscar" id="btnBuscarFamilia">Buscar</button>
             </div>
-
-            <div
-                id="mensajeFamilia"
-                class="mensaje"
-            ></div>
-
+            <div id="mensajeFamilia" class="mensaje"></div>
             <div class="tabla-contenedor">
-
-                <table
-                    id="tablaFamilia"
-                    style="display:none;"
-                >
-
+                <table id="tablaFamilia" style="display:none;">
                     <thead>
-
                         <tr>
                             <th>PersonaId</th>
                             <th>FamiliaId</th>
@@ -874,59 +164,21 @@
                             <th>Estado</th>
                             <th>Seleccionar</th>
                         </tr>
-
                     </thead>
-
                     <tbody id="cuerpoFamilia"></tbody>
-
                 </table>
-
             </div>
-
         </div>
 
-
-        <!-- COLABORADOR -->
-
-        <div
-            id="seccionColaborador"
-            style="display:none;"
-        >
-
+        <div id="seccionColaborador" style="display:none;">
             <div class="fila-busqueda">
-
-                <input
-                    type="text"
-                    id="buscarColaborador"
-                    placeholder="Ingrese nombre, apellido o código del colaborador..."
-                    maxlength="100"
-                    autocomplete="off"
-                >
-
-                <button
-                    type="button"
-                    class="btn-buscar"
-                    id="btnBuscarColaborador"
-                >
-                    Buscar
-                </button>
-
+                <input type="text" id="buscarColaborador" placeholder="Ingrese nombre, apellido o código del colaborador..." maxlength="100" autocomplete="off">
+                <button type="button" class="btn-buscar" id="btnBuscarColaborador">Buscar</button>
             </div>
-
-            <div
-                id="mensajeColaborador"
-                class="mensaje"
-            ></div>
-
+            <div id="mensajeColaborador" class="mensaje"></div>
             <div class="tabla-contenedor">
-
-                <table
-                    id="tablaColaborador"
-                    style="display:none;"
-                >
-
+                <table id="tablaColaborador" style="display:none;">
                     <thead>
-
                         <tr>
                             <th>Código</th>
                             <th>Nombre</th>
@@ -934,3248 +186,959 @@
                             <th>Estado</th>
                             <th>Seleccionar</th>
                         </tr>
-
                     </thead>
-
                     <tbody id="cuerpoColaborador"></tbody>
-
                 </table>
-
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         PASO 2
-    ====================================================== -->
-
     <section class="seccion">
-
         <h2>2. Buscar libros</h2>
-
         <div class="fila-busqueda">
-
-            <input
-                type="text"
-                id="buscarLibro"
-                placeholder="Ingrese código del libro..."
-                maxlength="8"
-                inputmode="numeric"
-                autocomplete="off"
-            >
-
-            <button
-                type="button"
-                class="btn-buscar"
-                id="btnBuscarLibro"
-            >
-                Buscar
-            </button>
-
+            <input type="text" id="buscarLibro" placeholder="Ingrese código del libro..." maxlength="8" inputmode="numeric" autocomplete="off">
+            <button type="button" class="btn-buscar" id="btnBuscarLibro">Buscar</button>
         </div>
+        <div id="mensajeLibro" class="mensaje"></div>
+        <div id="libroInfo" class="libro-info"></div>
 
-        <div
-            id="mensajeLibro"
-            class="mensaje"
-        ></div>
-
-        <div
-            id="libroInfo"
-            class="libro-info"
-        ></div>
-
-
-        <!-- LIBROS SELECCIONADOS -->
-
-        <div
-            id="librosSeleccionados"
-            class="libros-seleccionados"
-        >
-
+        <div id="librosSeleccionados" class="libros-seleccionados">
             <div class="encabezado-libros-seleccionados">
-
-                <span class="titulo-libros-seleccionados">
-                    Libros seleccionados
-                </span>
-
-                <span
-                    id="contadorLibros"
-                    class="contador-libros"
-                >
-                    0 de 3
-                </span>
-
+                <span class="titulo-libros-seleccionados">Libros seleccionados</span>
+                <span id="contadorLibros" class="contador-libros">0 de 3</span>
             </div>
-
-            <div
-                id="listaLibrosSeleccionados"
-                class="lista-libros-seleccionados"
-            ></div>
-
-            <button
-                type="button"
-                id="btnAgregarLibro"
-                class="btn-agregar-libro"
-            >
-                + Agregar libro
-            </button>
-
+            <div id="listaLibrosSeleccionados" class="lista-libros-seleccionados"></div>
+            <button type="button" id="btnAgregarLibro" class="btn-agregar-libro">+ Agregar libro</button>
         </div>
-
     </section>
 
-
-    <!-- =====================================================
-         PASO 3
-    ====================================================== -->
-
     <section class="seccion">
-
         <h2>3. Confirmar préstamo</h2>
-
-        <div
-            id="resumenPrestamo"
-            class="resumen-prestamo"
-        >
-
-            <!-- DATOS PERSONA / COLABORADOR -->
-
+        <div id="resumenPrestamo" class="resumen-prestamo">
             <div class="bloque-resumen">
-
-                <div class="titulo-bloque">
-                    Datos del préstamo
-                </div>
-
+                <div class="titulo-bloque">Datos del préstamo</div>
                 <div class="contenido-resumen">
-
                     <div class="datos-persona">
-
                         <div class="tarjeta-persona">
-
                             <div class="tarjeta-persona-cabecera">
-
-                                <div class="icono-persona">
-                                    👤
-                                </div>
-
+                                <div class="icono-persona">👤</div>
                                 <div class="texto-persona">
-
-                                    <h3 id="tituloResumenPersona">
-                                        Afiliado
-                                    </h3>
-
-                                    <span id="subtituloResumenPersona">
-                                        Persona que recibe el préstamo
-                                    </span>
-
+                                    <h3 id="tituloResumenPersona">Afiliado</h3>
+                                    <span id="subtituloResumenPersona">Persona que recibe el préstamo</span>
                                 </div>
-
                             </div>
-
                             <div class="datos-persona-grid">
-
                                 <div class="dato-persona">
-
-                                    <span id="etiquetaIdentificador">
-                                        Familia
-                                    </span>
-
+                                    <span id="etiquetaIdentificador">Familia</span>
                                     <span id="resumenFamilia"></span>
-
                                 </div>
-
                                 <div class="dato-persona">
-
-                                    <span id="etiquetaPersonaId">
-                                        PersonaId
-                                    </span>
-
+                                    <span id="etiquetaPersonaId">PersonaId</span>
                                     <span id="resumenPersonaId"></span>
-
                                 </div>
-
                                 <div class="dato-persona etiqueta-completa">
-
-                                    <span id="etiquetaNombre">
-                                        Nombre
-                                    </span>
-
+                                    <span id="etiquetaNombre">Nombre</span>
                                     <span id="resumenNombre"></span>
-
                                 </div>
-
-                                <div
-                                    class="dato-persona"
-                                    id="filaAreaResumen"
-                                    style="display:none;"
-                                >
-
-                                    <span>
-                                        Área
-                                    </span>
-
+                                <div class="dato-persona" id="filaAreaResumen" style="display:none;">
+                                    <span>Área</span>
                                     <span id="resumenArea"></span>
-
                                 </div>
-
                                 <div class="dato-persona">
-
-                                    <span>
-                                        Sitio
-                                    </span>
-
+                                    <span>Sitio</span>
                                     <span id="resumenSitio"></span>
-
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
-
-                    <!-- LIBROS -->
 
                     <div class="resumen-libros">
-
                         <div class="resumen-libros-cabecera">
-
-                            <span class="resumen-libros-titulo">
-                                Libros que llevará
-                            </span>
-
-                            <span
-                                id="resumenLibrosContador"
-                                class="resumen-libros-contador"
-                            >
-                                0 libros
-                            </span>
-
+                            <span class="resumen-libros-titulo">Libros que llevará</span>
+                            <span id="resumenLibrosContador" class="resumen-libros-contador">0 libros</span>
                         </div>
-
-                        <div
-                            id="listaResumenLibros"
-                            class="lista-resumen-libros"
-                        ></div>
-
+                        <div id="listaResumenLibros" class="lista-resumen-libros"></div>
                     </div>
-
                 </div>
-
             </div>
 
-
-            <!-- FECHAS -->
-
             <div class="bloque-resumen">
-
-                <div class="titulo-bloque">
-                    Fechas del préstamo
-                </div>
-
+                <div class="titulo-bloque">Fechas del préstamo</div>
                 <div class="contenido-resumen">
-
                     <div class="fechas-prestamo">
-
                         <div class="campo-fecha">
-
-                            <label for="fechaPrestamo">
-                                Fecha del préstamo
-                            </label>
-
-                            <input
-                                type="date"
-                                id="fechaPrestamo"
-                            >
-
-                            <span class="ayuda-fecha">
-                                Se coloca automáticamente la fecha actual, pero puede modificarse.
-                            </span>
-
+                            <label for="fechaPrestamo">Fecha del préstamo</label>
+                            <input type="date" id="fechaPrestamo">
+                            <span class="ayuda-fecha">Se coloca automáticamente la fecha actual, pero puede modificarse.</span>
                         </div>
-
                         <div class="campo-fecha">
-
-                            <label for="fechaDevolucion">
-                                Fecha de devolución prevista
-                            </label>
-
-                            <input
-                                type="date"
-                                id="fechaDevolucion"
-                            >
-
-                            <span class="ayuda-fecha">
-                                Puede elegir libremente cuándo debe regresar el libro.
-                            </span>
-
+                            <label for="fechaDevolucion">Fecha de devolución prevista</label>
+                            <input type="date" id="fechaDevolucion">
+                            <span class="ayuda-fecha">Puede elegir libremente cuándo debe regresar el libro.</span>
                         </div>
-
                         <div class="campo-fecha">
-
-                            <label for="sitioPrestamo">
-                                Sitio de préstamo
-                            </label>
-
+                            <label for="sitioPrestamo">Sitio de préstamo</label>
                             <select id="sitioPrestamo">
-
                                 <option value="F">F</option>
                                 <option value="M">M</option>
                                 <option value="R">R</option>
                                 <option value="N">N</option>
                                 <option value="Z">Z</option>
-
                             </select>
-
-                            <span class="ayuda-fecha">
-                                Seleccione el sitio donde se realiza el préstamo.
-                            </span>
-
+                            <span class="ayuda-fecha">Seleccione el sitio donde se realiza el préstamo.</span>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
-
-            <!-- CONFIRMACIÓN -->
-
-            <div
-                id="confirmacion"
-                class="confirmacion"
-            >
-
-                <div class="confirmacion-titulo">
-                    ¿Desea registrar este préstamo?
-                </div>
-
-                <p class="confirmacion-texto">
-                    Se registrarán todos los libros seleccionados como préstamos individuales.
-                    Revise que la persona, los libros, el sitio y las fechas sean correctos antes de continuar.
-                </p>
-
+            <div id="confirmacion" class="confirmacion">
+                <div class="confirmacion-titulo">¿Desea registrar este préstamo?</div>
+                <p class="confirmacion-texto">Se registrarán todos los libros seleccionados como préstamos individuales. Revise que la persona, los libros, el sitio y las fechas sean correctos antes de continuar.</p>
                 <div class="acciones-confirmacion">
-
-                    <button
-                        type="button"
-                        class="btn-cancelar"
-                        id="btnCancelar"
-                    >
-                        Cancelar
-                    </button>
-
-                    <button
-                        type="button"
-                        class="btn-confirmar"
-                        id="btnConfirmar"
-                    >
-                        Sí, registrar préstamo
-                    </button>
-
+                    <button type="button" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+                    <button type="button" class="btn-confirmar" id="btnConfirmar">Sí, registrar préstamo</button>
                 </div>
-
             </div>
-
         </div>
-
-        <div
-            id="mensajeFinal"
-            class="mensaje"
-        ></div>
-
+        <div id="mensajeFinal" class="mensaje"></div>
     </section>
-
 </div>
 
-
 <script>
-
-/* =========================================================
-   VARIABLES
-========================================================= */
-
 let personaSeleccionada = null;
-
 let colaboradorSeleccionado = null;
-
 let librosSeleccionados = [];
-
 let tipoSolicitante = "Afiliado";
-
 let fechaDevolucionModificada = false;
-
 const MAX_LIBROS = 3;
-
-
-/* =========================================================
-   AUTENTICACIÓN
-========================================================= */
-
 let autenticacionLista = false;
 
 async function iniciarAutenticacion() {
-
     try {
-
-        if (
-            typeof window.protegerPagina !== "function"
-        ) {
-
-            console.error(
-                "No se encontró la función protegerPagina de auth.js."
-            );
-
-            mostrarMensaje(
-                mensajeFinal,
-                "No se pudo iniciar la autenticación del sistema.",
-                "error"
-            );
-
-            document.getElementById(
-                "btnConfirmar"
-            ).disabled = true;
-
+        if (typeof window.protegerPagina !== "function") {
+            console.error("No se encontró la función protegerPagina de auth.js.");
+            mostrarMensaje(mensajeFinal, "No se pudo iniciar la autenticación del sistema.", "error");
+            document.getElementById("btnConfirmar").disabled = true;
             return false;
         }
-
-        const autorizado =
-            await window.protegerPagina();
-
+        const autorizado = await window.protegerPagina();
         if (!autorizado) {
-
-            console.error(
-                "El usuario no pudo ser autorizado."
-            );
-
-            mostrarMensaje(
-                mensajeFinal,
-                "No fue posible verificar el usuario de la sesión. Actualice la página e intente nuevamente.",
-                "error"
-            );
-
-            document.getElementById(
-                "btnConfirmar"
-            ).disabled = true;
-
+            console.error("El usuario no pudo ser autorizado.");
+            mostrarMensaje(mensajeFinal, "No fue posible verificar el usuario de la sesión. Actualice la página e intente nuevamente.", "error");
+            document.getElementById("btnConfirmar").disabled = true;
             return false;
         }
-
-        if (
-            !window.perfilUsuario ||
-            !window.perfilUsuario.nombre
-        ) {
-
-            console.error(
-                "Perfil encontrado, pero no tiene nombre:",
-                window.perfilUsuario
-            );
-
-            mostrarMensaje(
-                mensajeFinal,
-                "No fue posible identificar al usuario que realiza el préstamo.",
-                "error"
-            );
-
-            document.getElementById(
-                "btnConfirmar"
-            ).disabled = true;
-
+        if (!window.perfilUsuario || !window.perfilUsuario.nombre) {
+            console.error("Perfil encontrado, pero no tiene nombre:", window.perfilUsuario);
+            mostrarMensaje(mensajeFinal, "No fue posible identificar al usuario que realiza el préstamo.", "error");
+            document.getElementById("btnConfirmar").disabled = true;
             return false;
         }
-
         autenticacionLista = true;
-
-        console.log(
-            "Usuario listo para registrar préstamos:",
-            window.perfilUsuario.nombre
-        );
-
+        console.log("Usuario listo para registrar préstamos:", window.perfilUsuario.nombre);
         return true;
-
     } catch (error) {
-
-        console.error(
-            "ERROR INICIANDO AUTENTICACIÓN:",
-            error
-        );
-
-        mostrarMensaje(
-            mensajeFinal,
-            "Ocurrió un problema al verificar el usuario.",
-            "error"
-        );
-
-        document.getElementById(
-            "btnConfirmar"
-        ).disabled = true;
-
+        console.error("ERROR INICIANDO AUTENTICACIÓN:", error);
+        mostrarMensaje(mensajeFinal, "Ocurrió un problema al verificar el usuario.", "error");
+        document.getElementById("btnConfirmar").disabled = true;
         return false;
     }
 }
 
+const buscarFamiliaInput = document.getElementById("buscarFamilia");
+const buscarColaboradorInput = document.getElementById("buscarColaborador");
+const buscarLibroInput = document.getElementById("buscarLibro");
+const cuerpoFamilia = document.getElementById("cuerpoFamilia");
+const cuerpoColaborador = document.getElementById("cuerpoColaborador");
+const tablaFamilia = document.getElementById("tablaFamilia");
+const tablaColaborador = document.getElementById("tablaColaborador");
+const mensajeFamilia = document.getElementById("mensajeFamilia");
+const mensajeColaborador = document.getElementById("mensajeColaborador");
+const mensajeLibro = document.getElementById("mensajeLibro");
+const mensajeFinal = document.getElementById("mensajeFinal");
+const libroInfo = document.getElementById("libroInfo");
 
-/* =========================================================
-   ELEMENTOS
-========================================================= */
+const contenedorLibrosSeleccionados = document.getElementById("librosSeleccionados");
+const listaLibrosSeleccionados = document.getElementById("listaLibrosSeleccionados");
+const contadorLibros = document.getElementById("contadorLibros");
+const btnAgregarLibro = document.getElementById("btnAgregarLibro");
+const resumenPrestamo = document.getElementById("resumenPrestamo");
+const confirmacion = document.getElementById("confirmacion");
+const fechaPrestamoInput = document.getElementById("fechaPrestamo");
+const fechaDevolucionInput = document.getElementById("fechaDevolucion");
+const sitioPrestamoInput = document.getElementById("sitioPrestamo");
+const seccionAfiliado = document.getElementById("seccionAfiliado");
+const seccionColaborador = document.getElementById("seccionColaborador");
+const btnTipoAfiliado = document.getElementById("btnTipoAfiliado");
+const btnTipoColaborador = document.getElementById("btnTipoColaborador");
 
-const buscarFamiliaInput =
-    document.getElementById("buscarFamilia");
+const tituloResumenPersona = document.getElementById("tituloResumenPersona");
+const subtituloResumenPersona = document.getElementById("subtituloResumenPersona");
+const etiquetaIdentificador = document.getElementById("etiquetaIdentificador");
+const etiquetaPersonaId = document.getElementById("etiquetaPersonaId");
+const etiquetaNombre = document.getElementById("etiquetaNombre");
+const filaAreaResumen = document.getElementById("filaAreaResumen");
+const resumenArea = document.getElementById("resumenArea");
+const resumenFamilia = document.getElementById("resumenFamilia");
+const resumenPersonaId = document.getElementById("resumenPersonaId");
+const resumenNombre = document.getElementById("resumenNombre");
+const resumenSitio = document.getElementById("resumenSitio");
+const listaResumenLibros = document.getElementById("listaResumenLibros");
+const resumenLibrosContador = document.getElementById("resumenLibrosContador");
 
-const buscarColaboradorInput =
-    document.getElementById("buscarColaborador");
-
-const buscarLibroInput =
-    document.getElementById("buscarLibro");
-
-const cuerpoFamilia =
-    document.getElementById("cuerpoFamilia");
-
-const cuerpoColaborador =
-    document.getElementById("cuerpoColaborador");
-
-const tablaFamilia =
-    document.getElementById("tablaFamilia");
-
-const tablaColaborador =
-    document.getElementById("tablaColaborador");
-
-const mensajeFamilia =
-    document.getElementById("mensajeFamilia");
-
-const mensajeColaborador =
-    document.getElementById("mensajeColaborador");
-
-const mensajeLibro =
-    document.getElementById("mensajeLibro");
-
-const mensajeFinal =
-    document.getElementById("mensajeFinal");
-
-const libroInfo =
-    document.getElementById("libroInfo");
-
-
-/*
-   IMPORTANTE:
-   Este elemento se llama diferente al arreglo
-   librosSeleccionados para evitar una colisión de variables.
-*/
-
-const contenedorLibrosSeleccionados =
-    document.getElementById("librosSeleccionados");
-
-const listaLibrosSeleccionados =
-    document.getElementById("listaLibrosSeleccionados");
-
-const contadorLibros =
-    document.getElementById("contadorLibros");
-
-const btnAgregarLibro =
-    document.getElementById("btnAgregarLibro");
-
-const resumenPrestamo =
-    document.getElementById("resumenPrestamo");
-
-const confirmacion =
-    document.getElementById("confirmacion");
-
-const fechaPrestamoInput =
-    document.getElementById("fechaPrestamo");
-
-const fechaDevolucionInput =
-    document.getElementById("fechaDevolucion");
-
-const sitioPrestamoInput =
-    document.getElementById("sitioPrestamo");
-
-const seccionAfiliado =
-    document.getElementById("seccionAfiliado");
-
-const seccionColaborador =
-    document.getElementById("seccionColaborador");
-
-const btnTipoAfiliado =
-    document.getElementById("btnTipoAfiliado");
-
-const btnTipoColaborador =
-    document.getElementById("btnTipoColaborador");
-
-
-/* =========================================================
-   ELEMENTOS RESUMEN
-========================================================= */
-
-const tituloResumenPersona =
-    document.getElementById("tituloResumenPersona");
-
-const subtituloResumenPersona =
-    document.getElementById("subtituloResumenPersona");
-
-const etiquetaIdentificador =
-    document.getElementById("etiquetaIdentificador");
-
-const etiquetaPersonaId =
-    document.getElementById("etiquetaPersonaId");
-
-const etiquetaNombre =
-    document.getElementById("etiquetaNombre");
-
-const filaAreaResumen =
-    document.getElementById("filaAreaResumen");
-
-const resumenArea =
-    document.getElementById("resumenArea");
-
-const resumenFamilia =
-    document.getElementById("resumenFamilia");
-
-const resumenPersonaId =
-    document.getElementById("resumenPersonaId");
-
-const resumenNombre =
-    document.getElementById("resumenNombre");
-
-const resumenSitio =
-    document.getElementById("resumenSitio");
-
-const listaResumenLibros =
-    document.getElementById("listaResumenLibros");
-
-const resumenLibrosContador =
-    document.getElementById("resumenLibrosContador");
-
-
-/* =========================================================
-   MENSAJES
-========================================================= */
-
-function mostrarMensaje(
-    elemento,
-    texto,
-    tipo
-) {
-
-    elemento.textContent =
-        texto;
-
-    elemento.className =
-        "mensaje " + tipo;
+function mostrarMensaje(elemento, texto, tipo) {
+    elemento.textContent = texto;
+    elemento.className = "mensaje " + tipo;
 }
 
-
-function limpiarMensaje(
-    elemento
-) {
-
-    elemento.textContent =
-        "";
-
-    elemento.className =
-        "mensaje";
+function limpiarMensaje(elemento) {
+    elemento.textContent = "";
+    elemento.className = "mensaje";
 }
 
-
-/* =========================================================
-   NORMALIZAR TEXTO
-========================================================= */
-
-function normalizarTexto(
-    valor
-) {
-
-    return String(valor || "")
-        .trim()
-        .toUpperCase();
+function normalizarTexto(valor) {
+    return String(valor || "").trim().toUpperCase();
 }
 
-
-/* =========================================================
-   NORMALIZAR CÓDIGO LIBRO
-========================================================= */
-
-function normalizarCodigo(
-    codigo
-) {
-
-    return String(codigo || "")
-        .replace(/\D/g, "")
-        .replace(/^0+/, "") || "0";
+function normalizarCodigo(codigo) {
+    return String(codigo || "").replace(/\D/g, "").replace(/^0+/, "") || "0";
 }
 
-
-/* =========================================================
-   NORMALIZAR CÓDIGO COLABORADOR
-========================================================= */
-
-function normalizarCodigoColaborador(
-    codigo
-) {
-
-    let valor =
-        String(codigo || "")
-            .trim()
-            .toUpperCase();
-
-    valor =
-        valor.replace(
-            /^C/,
-            ""
-        );
-
-    valor =
-        valor.replace(
-            /\D/g,
-            ""
-        );
-
-    valor =
-        valor.replace(
-            /^0+/,
-            ""
-        );
-
-    if (!valor) {
-        return "";
-    }
-
+function normalizarCodigoColaborador(codigo) {
+    let valor = String(codigo || "").trim().toUpperCase();
+    valor = valor.replace(/^C/, "");
+    valor = valor.replace(/\D/g, "");
+    valor = valor.replace(/^0+/, "");
+    if (!valor) return "";
     return "C" + valor;
 }
 
-
-/* =========================================================
-   FECHA LOCAL
-========================================================= */
-
 function obtenerFechaLocalInput() {
-
-    const hoy =
-        new Date();
-
-    const año =
-        hoy.getFullYear();
-
-    const mes =
-        String(
-            hoy.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-    const dia =
-        String(
-            hoy.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+    const dia = String(hoy.getDate()).padStart(2, "0");
     return `${año}-${mes}-${dia}`;
 }
 
-
-/* =========================================================
-   AGREGAR UN MES
-========================================================= */
-
-function agregarUnMes(
-    fechaTexto
-) {
-
-    if (!fechaTexto) {
-        return "";
-    }
-
-    const partes =
-        fechaTexto.split("-");
-
-    if (
-        partes.length !== 3
-    ) {
-        return "";
-    }
-
-    const año =
-        Number(partes[0]);
-
-    const mes =
-        Number(partes[1]);
-
-    const dia =
-        Number(partes[2]);
-
-    const fecha =
-        new Date(
-            año,
-            mes - 1,
-            dia,
-            12,
-            0,
-            0
-        );
-
-    fecha.setMonth(
-        fecha.getMonth() + 1
-    );
-
-    const nuevoAño =
-        fecha.getFullYear();
-
-    const nuevoMes =
-        String(
-            fecha.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-    const nuevoDia =
-        String(
-            fecha.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
+function agregarUnMes(fechaTexto) {
+    if (!fechaTexto) return "";
+    const partes = fechaTexto.split("-");
+    if (partes.length !== 3) return "";
+    const año = Number(partes[0]);
+    const mes = Number(partes[1]);
+    const dia = Number(partes[2]);
+    const fecha = new Date(año, mes - 1, dia, 12, 0, 0);
+    fecha.setMonth(fecha.getMonth() + 1);
+    const nuevoAño = fecha.getFullYear();
+    const nuevoMes = String(fecha.getMonth() + 1).padStart(2, "0");
+    const nuevoDia = String(fecha.getDate()).padStart(2, "0");
     return `${nuevoAño}-${nuevoMes}-${nuevoDia}`;
 }
 
-
-/* =========================================================
-   FECHA LOCAL DESDE INPUT
-========================================================= */
-
-function fechaLocalDesdeInput(
-    fechaTexto
-) {
-
-    if (!fechaTexto) {
-        return null;
-    }
-
-    const partes =
-        fechaTexto.split("-");
-
-    if (
-        partes.length !== 3
-    ) {
-        return null;
-    }
-
-    const año =
-        Number(partes[0]);
-
-    const mes =
-        Number(partes[1]);
-
-    const dia =
-        Number(partes[2]);
-
-    return new Date(
-        año,
-        mes - 1,
-        dia,
-        12,
-        0,
-        0
-    );
+function fechaLocalDesdeInput(fechaTexto) {
+    if (!fechaTexto) return null;
+    const partes = fechaTexto.split("-");
+    if (partes.length !== 3) return null;
+    const año = Number(partes[0]);
+    const mes = Number(partes[1]);
+    const dia = Number(partes[2]);
+    return new Date(año, mes - 1, dia, 12, 0, 0);
 }
 
-
-/* =========================================================
-   FECHA INPUT A ISO
-========================================================= */
-
-function fechaInputAISO(
-    fechaTexto
-) {
-
-    const fecha =
-        fechaLocalDesdeInput(
-            fechaTexto
-        );
-
-    if (!fecha) {
-        return null;
-    }
-
+function fechaInputAISO(fechaTexto) {
+    const fecha = fechaLocalDesdeInput(fechaTexto);
+    if (!fecha) return null;
     return fecha.toISOString();
 }
 
-
-/* =========================================================
-   OBTENER SITIO PERSONA
-========================================================= */
-
-function obtenerSitio(
-    persona
-) {
-
-    if (
-        persona &&
-        persona.Sitio
-    ) {
-
-        const sitio =
-            String(
-                persona.Sitio
-            )
-            .trim()
-            .toUpperCase();
-
-        if (
-            [
-                "F",
-                "M",
-                "R",
-                "N",
-                "Z"
-            ].includes(sitio)
-        ) {
-
-            return sitio;
-        }
+function obtenerSitio(persona) {
+    if (persona && persona.Sitio) {
+        const sitio = String(persona.Sitio).trim().toUpperCase();
+        if (["F", "M", "R", "N", "Z"].includes(sitio)) return sitio;
     }
-
-    if (
-        persona &&
-        persona.FamiliaId
-    ) {
-
-        const sitio =
-            String(
-                persona.FamiliaId
-            )
-            .trim()
-            .charAt(0)
-            .toUpperCase();
-
-        if (
-            [
-                "F",
-                "M",
-                "R",
-                "N",
-                "Z"
-            ].includes(sitio)
-        ) {
-
-            return sitio;
-        }
+    if (persona && persona.FamiliaId) {
+        const sitio = String(persona.FamiliaId).trim().charAt(0).toUpperCase();
+        if (["F", "M", "R", "N", "Z"].includes(sitio)) return sitio;
     }
-
     return null;
 }
-
-
-/* =========================================================
-   OBTENER SITIO PRÉSTAMO
-========================================================= */
 
 function obtenerSitioPrestamo() {
-
-    const sitio =
-        String(
-            sitioPrestamoInput.value || ""
-        )
-        .trim()
-        .toUpperCase();
-
-    if (
-        [
-            "F",
-            "M",
-            "R",
-            "N",
-            "Z"
-        ].includes(sitio)
-    ) {
-
-        return sitio;
-    }
-
+    const sitio = String(sitioPrestamoInput.value || "").trim().toUpperCase();
+    if (["F", "M", "R", "N", "Z"].includes(sitio)) return sitio;
     return null;
 }
 
-
-/* =========================================================
-   USUARIO ACTUAL
-========================================================= */
-
 function obtenerUsuarioActual() {
-
-    if (
-        window.perfilUsuario &&
-        window.perfilUsuario.nombre
-    ) {
-
-        return String(
-            window.perfilUsuario.nombre
-        ).trim();
-
+    if (window.perfilUsuario && window.perfilUsuario.nombre) {
+        return String(window.perfilUsuario.nombre).trim();
     }
-
     return "";
 }
 
-
-/* =========================================================
-   PREPARAR FECHAS
-========================================================= */
-
 function prepararFechas() {
-
-    if (
-        !fechaPrestamoInput.value
-    ) {
-
-        fechaPrestamoInput.value =
-            obtenerFechaLocalInput();
-
+    if (!fechaPrestamoInput.value) {
+        fechaPrestamoInput.value = obtenerFechaLocalInput();
     }
-
-    if (
-        !fechaDevolucionModificada
-    ) {
-
-        fechaDevolucionInput.value =
-            agregarUnMes(
-                fechaPrestamoInput.value
-            );
-
+    if (!fechaDevolucionModificada) {
+        fechaDevolucionInput.value = agregarUnMes(fechaPrestamoInput.value);
     }
 }
-
-
-/* =========================================================
-   VALIDAR FECHAS
-========================================================= */
 
 function validarFechas() {
-
-    const fechaPrestamo =
-        fechaPrestamoInput.value;
-
-    const fechaDevolucion =
-        fechaDevolucionInput.value;
-
+    const fechaPrestamo = fechaPrestamoInput.value;
+    const fechaDevolucion = fechaDevolucionInput.value;
     if (!fechaPrestamo) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "Seleccione la fecha del préstamo.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeFinal, "Seleccione la fecha del préstamo.", "error");
         fechaPrestamoInput.focus();
-
         return false;
     }
-
     if (!fechaDevolucion) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "Seleccione la fecha de devolución.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeFinal, "Seleccione la fecha de devolución.", "error");
         fechaDevolucionInput.focus();
-
         return false;
     }
-
-    const fechaInicio =
-        fechaLocalDesdeInput(
-            fechaPrestamo
-        );
-
-    const fechaFin =
-        fechaLocalDesdeInput(
-            fechaDevolucion
-        );
-
-    if (
-        !fechaInicio ||
-        !fechaFin
-    ) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "Las fechas seleccionadas no son válidas.",
-            "error"
-        );
-
+    const fechaInicio = fechaLocalDesdeInput(fechaPrestamo);
+    const fechaFin = fechaLocalDesdeInput(fechaDevolucion);
+    if (!fechaInicio || !fechaFin) {
+        mostrarMensaje(mensajeFinal, "Las fechas seleccionadas no son válidas.", "error");
         return false;
     }
-
-    if (
-        fechaFin < fechaInicio
-    ) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "La fecha de devolución no puede ser anterior a la fecha del préstamo.",
-            "error"
-        );
-
+    if (fechaFin < fechaInicio) {
+        mostrarMensaje(mensajeFinal, "La fecha de devolución no puede ser anterior a la fecha del préstamo.", "error");
         fechaDevolucionInput.focus();
-
         return false;
     }
-
     return true;
 }
-
-
-/* =========================================================
-   VALIDAR SITIO
-========================================================= */
 
 function validarSitioPrestamo() {
-
-    const sitio =
-        obtenerSitioPrestamo();
-
+    const sitio = obtenerSitioPrestamo();
     if (!sitio) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "Seleccione el Sitio de préstamo donde se está realizando esta operación.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeFinal, "Seleccione el Sitio de préstamo donde se está realizando esta operación.", "error");
         sitioPrestamoInput.focus();
-
         return false;
     }
-
     return true;
 }
 
-
-/* =========================================================
-   CAMBIAR TIPO
-========================================================= */
-
-function cambiarTipoSolicitante(
-    tipo
-) {
-
-    tipoSolicitante =
-        tipo;
-
-    personaSeleccionada =
-        null;
-
-    colaboradorSeleccionado =
-        null;
-
-    limpiarMensaje(
-        mensajeFamilia
-    );
-
-    limpiarMensaje(
-        mensajeColaborador
-    );
-
-    cuerpoFamilia.innerHTML =
-        "";
-
-    cuerpoColaborador.innerHTML =
-        "";
-
-    tablaFamilia.style.display =
-        "none";
-
-    tablaColaborador.style.display =
-        "none";
-
-    buscarFamiliaInput.value =
-        "";
-
-    buscarColaboradorInput.value =
-        "";
-
-    if (
-        tipo === "Afiliado"
-    ) {
-
-        btnTipoAfiliado.classList.add(
-            "activa"
-        );
-
-        btnTipoColaborador.classList.remove(
-            "activa"
-        );
-
-        seccionAfiliado.style.display =
-            "block";
-
-        seccionColaborador.style.display =
-            "none";
-
+function cambiarTipoSolicitante(tipo) {
+    tipoSolicitante = tipo;
+    personaSeleccionada = null;
+    colaboradorSeleccionado = null;
+    limpiarMensaje(mensajeFamilia);
+    limpiarMensaje(mensajeColaborador);
+    cuerpoFamilia.innerHTML = "";
+    cuerpoColaborador.innerHTML = "";
+    tablaFamilia.style.display = "none";
+    tablaColaborador.style.display = "none";
+    buscarFamiliaInput.value = "";
+    buscarColaboradorInput.value = "";
+    
+    if (tipo === "Afiliado") {
+        btnTipoAfiliado.classList.add("activa");
+        btnTipoColaborador.classList.remove("activa");
+        seccionAfiliado.style.display = "block";
+        seccionColaborador.style.display = "none";
     } else {
-
-        btnTipoAfiliado.classList.remove(
-            "activa"
-        );
-
-        btnTipoColaborador.classList.add(
-            "activa"
-        );
-
-        seccionAfiliado.style.display =
-            "none";
-
-        seccionColaborador.style.display =
-            "block";
+        btnTipoAfiliado.classList.remove("activa");
+        btnTipoColaborador.classList.add("activa");
+        seccionAfiliado.style.display = "none";
+        seccionColaborador.style.display = "block";
     }
-
     actualizarDetalle();
 }
 
-
-/* =========================================================
-   BUSCAR FAMILIA
-========================================================= */
-
 async function buscarFamilia() {
-
-    const familia =
-        buscarFamiliaInput.value.trim();
-
-    limpiarMensaje(
-        mensajeFamilia
-    );
-
-    cuerpoFamilia.innerHTML =
-        "";
-
-    tablaFamilia.style.display =
-        "none";
-
-    personaSeleccionada =
-        null;
-
+    const familia = buscarFamiliaInput.value.trim();
+    limpiarMensaje(mensajeFamilia);
+    cuerpoFamilia.innerHTML = "";
+    tablaFamilia.style.display = "none";
+    personaSeleccionada = null;
     actualizarDetalle();
 
     if (!familia) {
-
-        mostrarMensaje(
-            mensajeFamilia,
-            "Ingrese un número de familia.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeFamilia, "Ingrese un número de familia.", "error");
         return;
     }
 
     try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("afiliados")
-                .select("*")
-                .eq(
-                    "FamiliaId",
-                    familia
-                )
-                .eq(
-                    "estado",
-                    "Activo"
-                )
-                .order(
-                    "Apellidos",
-                    {
-                        ascending: true
-                    }
-                );
-
-        if (error) {
-            throw error;
-        }
-
-        if (
-            !data ||
-            data.length === 0
-        ) {
-
-            mostrarMensaje(
-                mensajeFamilia,
-                "No se encontraron personas activas para esta familia.",
-                "error"
-            );
-
+        const { data, error } = await supabaseClient.from("afiliados").select("*").eq("FamiliaId", familia).eq("estado", "Activo").order("Apellidos", { ascending: true });
+        if (error) throw error;
+        
+        if (!data || data.length === 0) {
+            mostrarMensaje(mensajeFamilia, "No se encontraron personas activas para esta familia.", "error");
             return;
         }
 
-        data.forEach(
-            persona => {
-
-                const fila =
-                    document.createElement("tr");
-
-                const tdPersona =
-                    document.createElement("td");
-
-                tdPersona.textContent =
-                    persona.PersonaId || "";
-
-                const tdFamilia =
-                    document.createElement("td");
-
-                tdFamilia.textContent =
-                    persona.FamiliaId || "";
-
-                const tdNombre =
-                    document.createElement("td");
-
-                tdNombre.className =
-                    "nombre";
-
-                tdNombre.textContent =
-                    `${persona.Nombres || ""} ${persona.Apellidos || ""}`;
-
-                const tdEstado =
-                    document.createElement("td");
-
-                tdEstado.textContent =
-                    persona.estado || "";
-
-                const tdAccion =
-                    document.createElement("td");
-
-                const boton =
-                    document.createElement("button");
-
-                boton.type =
-                    "button";
-
-                boton.className =
-                    "btn-seleccionar";
-
-                boton.textContent =
-                    "Seleccionar";
-
-                boton.addEventListener(
-                    "click",
-                    function() {
-
-                        seleccionarPersona(
-                            persona,
-                            fila,
-                            boton
-                        );
-
-                    }
-                );
-
-                tdAccion.appendChild(
-                    boton
-                );
-
-                fila.appendChild(
-                    tdPersona
-                );
-
-                fila.appendChild(
-                    tdFamilia
-                );
-
-                fila.appendChild(
-                    tdNombre
-                );
-
-                fila.appendChild(
-                    tdEstado
-                );
-
-                fila.appendChild(
-                    tdAccion
-                );
-
-                cuerpoFamilia.appendChild(
-                    fila
-                );
-
-            }
-        );
-
-        tablaFamilia.style.display =
-            "table";
-
+        data.forEach(persona => {
+            const fila = document.createElement("tr");
+            const tdPersona = document.createElement("td");
+            tdPersona.textContent = persona.PersonaId || "";
+            const tdFamilia = document.createElement("td");
+            tdFamilia.textContent = persona.FamiliaId || "";
+            const tdNombre = document.createElement("td");
+            tdNombre.className = "nombre";
+            tdNombre.textContent = `${persona.Nombres || ""} ${persona.Apellidos || ""}`;
+            const tdEstado = document.createElement("td");
+            tdEstado.textContent = persona.estado || "";
+            const tdAccion = document.createElement("td");
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.className = "btn-seleccionar";
+            boton.textContent = "Seleccionar";
+            boton.addEventListener("click", function() { seleccionarPersona(persona, fila, boton); });
+            
+            tdAccion.appendChild(boton);
+            fila.appendChild(tdPersona);
+            fila.appendChild(tdFamilia);
+            fila.appendChild(tdNombre);
+            fila.appendChild(tdEstado);
+            fila.appendChild(tdAccion);
+            cuerpoFamilia.appendChild(fila);
+        });
+        tablaFamilia.style.display = "table";
     } catch (error) {
-
-        console.error(
-            "ERROR BUSCANDO FAMILIA:",
-            error
-        );
-
-        mostrarMensaje(
-            mensajeFamilia,
-            "Ocurrió un error al consultar la familia.",
-            "error"
-        );
+        console.error("ERROR BUSCANDO FAMILIA:", error);
+        mostrarMensaje(mensajeFamilia, "Ocurrió un error al consultar la familia.", "error");
     }
 }
 
-
-/* =========================================================
-   SELECCIONAR PERSONA
-========================================================= */
-
-function seleccionarPersona(
-    persona,
-    filaSeleccionada,
-    botonSeleccionado
-) {
-
-    document
-        .querySelectorAll(
-            "#cuerpoFamilia tr"
-        )
-        .forEach(
-            fila => {
-
-                fila.classList.remove(
-                    "seleccionada"
-                );
-
-                const boton =
-                    fila.querySelector(
-                        ".btn-seleccionar"
-                    );
-
-                if (boton) {
-
-                    boton.classList.remove(
-                        "seleccionada"
-                    );
-
-                    boton.textContent =
-                        "Seleccionar";
-                }
-
-            }
-        );
-
-    filaSeleccionada.classList.add(
-        "seleccionada"
-    );
-
-    botonSeleccionado.classList.add(
-        "seleccionada"
-    );
-
-    botonSeleccionado.textContent =
-        "✓ Seleccionada";
-
-    personaSeleccionada =
-        persona;
-
-    colaboradorSeleccionado =
-        null;
-
+function seleccionarPersona(persona, filaSeleccionada, botonSeleccionado) {
+    document.querySelectorAll("#cuerpoFamilia tr").forEach(fila => {
+        fila.classList.remove("seleccionada");
+        const boton = fila.querySelector(".btn-seleccionar");
+        if (boton) {
+            boton.classList.remove("seleccionada");
+            boton.textContent = "Seleccionar";
+        }
+    });
+    filaSeleccionada.classList.add("seleccionada");
+    botonSeleccionado.classList.add("seleccionada");
+    botonSeleccionado.textContent = "✓ Seleccionada";
+    personaSeleccionada = persona;
+    colaboradorSeleccionado = null;
     actualizarDetalle();
 }
 
-
-/* =========================================================
-   BUSCAR COLABORADOR
-========================================================= */
-
 async function buscarColaborador() {
-
-    const textoIngresado =
-        buscarColaboradorInput.value.trim();
-
-    limpiarMensaje(
-        mensajeColaborador
-    );
-
-    cuerpoColaborador.innerHTML =
-        "";
-
-    tablaColaborador.style.display =
-        "none";
-
-    colaboradorSeleccionado =
-        null;
-
+    const textoIngresado = buscarColaboradorInput.value.trim();
+    limpiarMensaje(mensajeColaborador);
+    cuerpoColaborador.innerHTML = "";
+    tablaColaborador.style.display = "none";
+    colaboradorSeleccionado = null;
     actualizarDetalle();
 
     if (!textoIngresado) {
-
-        mostrarMensaje(
-            mensajeColaborador,
-            "Ingrese el nombre, apellido o código del colaborador.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeColaborador, "Ingrese el nombre, apellido o código del colaborador.", "error");
         return;
     }
 
     try {
+        const { data, error } = await supabaseClient.from("colaboradores").select("*").eq("estado", "Activo");
+        if (error) throw error;
+        
+        const textoBusqueda = normalizarTexto(textoIngresado);
+        const codigoBusqueda = normalizarCodigoColaborador(textoIngresado);
+        
+        const encontrados = (data || []).filter(colaborador => {
+            const nombre = normalizarTexto(colaborador.Nombre);
+            const codigo = normalizarTexto(colaborador.CodigoColaborador);
+            const codigoNormalizado = normalizarCodigoColaborador(colaborador.CodigoColaborador);
+            const coincideNombre = nombre.includes(textoBusqueda);
+            const coincideCodigo = codigo.includes(textoBusqueda) || (codigoBusqueda && codigoNormalizado.includes(codigoBusqueda));
+            return coincideNombre || coincideCodigo;
+        });
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("colaboradores")
-                .select("*")
-                .eq(
-                    "estado",
-                    "Activo"
-                );
-
-        if (error) {
-            throw error;
-        }
-
-        const textoBusqueda =
-            normalizarTexto(
-                textoIngresado
-            );
-
-        const codigoBusqueda =
-            normalizarCodigoColaborador(
-                textoIngresado
-            );
-
-        const encontrados =
-            (data || [])
-                .filter(
-                    colaborador => {
-
-                        const nombre =
-                            normalizarTexto(
-                                colaborador.Nombre
-                            );
-
-                        const codigo =
-                            normalizarTexto(
-                                colaborador.CodigoColaborador
-                            );
-
-                        const codigoNormalizado =
-                            normalizarCodigoColaborador(
-                                colaborador.CodigoColaborador
-                            );
-
-                        /*
-                           Se puede encontrar por:
-                           - Nombre completo
-                           - Parte del nombre
-                           - Código
-                           - Código sin ceros iniciales
-                        */
-
-                        const coincideNombre =
-                            nombre.includes(
-                                textoBusqueda
-                            );
-
-                        const coincideCodigo =
-                            codigo.includes(
-                                textoBusqueda
-                            ) ||
-                            (
-                                codigoBusqueda &&
-                                codigoNormalizado.includes(
-                                    codigoBusqueda
-                                )
-                            );
-
-                        return (
-                            coincideNombre ||
-                            coincideCodigo
-                        );
-
-                    }
-                );
-
-        if (
-            encontrados.length === 0
-        ) {
-
-            mostrarMensaje(
-                mensajeColaborador,
-                "No se encontró un colaborador activo con ese nombre, apellido o código.",
-                "error"
-            );
-
+        if (encontrados.length === 0) {
+            mostrarMensaje(mensajeColaborador, "No se encontró un colaborador activo con ese nombre, apellido o código.", "error");
             return;
         }
 
-        encontrados.forEach(
-            colaborador => {
-
-                const fila =
-                    document.createElement("tr");
-
-                const tdCodigo =
-                    document.createElement("td");
-
-                tdCodigo.textContent =
-                    colaborador.CodigoColaborador || "";
-
-                const tdNombre =
-                    document.createElement("td");
-
-                tdNombre.className =
-                    "nombre";
-
-                tdNombre.textContent =
-                    colaborador.Nombre || "";
-
-                const tdArea =
-                    document.createElement("td");
-
-                tdArea.textContent =
-                    colaborador.Area || "";
-
-                const tdEstado =
-                    document.createElement("td");
-
-                tdEstado.textContent =
-                    colaborador.estado || "";
-
-                const tdAccion =
-                    document.createElement("td");
-
-                const boton =
-                    document.createElement("button");
-
-                boton.type =
-                    "button";
-
-                boton.className =
-                    "btn-seleccionar";
-
-                boton.textContent =
-                    "Seleccionar";
-
-                boton.addEventListener(
-                    "click",
-                    function() {
-
-                        seleccionarColaborador(
-                            colaborador,
-                            fila,
-                            boton
-                        );
-
-                    }
-                );
-
-                tdAccion.appendChild(
-                    boton
-                );
-
-                fila.appendChild(
-                    tdCodigo
-                );
-
-                fila.appendChild(
-                    tdNombre
-                );
-
-                fila.appendChild(
-                    tdArea
-                );
-
-                fila.appendChild(
-                    tdEstado
-                );
-
-                fila.appendChild(
-                    tdAccion
-                );
-
-                cuerpoColaborador.appendChild(
-                    fila
-                );
-
-            }
-        );
-
-        tablaColaborador.style.display =
-            "table";
-
+        encontrados.forEach(colaborador => {
+            const fila = document.createElement("tr");
+            const tdCodigo = document.createElement("td");
+            tdCodigo.textContent = colaborador.CodigoColaborador || "";
+            const tdNombre = document.createElement("td");
+            tdNombre.className = "nombre";
+            tdNombre.textContent = colaborador.Nombre || "";
+            const tdArea = document.createElement("td");
+            tdArea.textContent = colaborador.Area || "";
+            const tdEstado = document.createElement("td");
+            tdEstado.textContent = colaborador.estado || "";
+            const tdAccion = document.createElement("td");
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.className = "btn-seleccionar";
+            boton.textContent = "Seleccionar";
+            boton.addEventListener("click", function() { seleccionarColaborador(colaborador, fila, boton); });
+            
+            tdAccion.appendChild(boton);
+            fila.appendChild(tdCodigo);
+            fila.appendChild(tdNombre);
+            fila.appendChild(tdArea);
+            fila.appendChild(tdEstado);
+            fila.appendChild(tdAccion);
+            cuerpoColaborador.appendChild(fila);
+        });
+        tablaColaborador.style.display = "table";
     } catch (error) {
-
-        console.error(
-            "ERROR BUSCANDO COLABORADOR:",
-            error
-        );
-
-        mostrarMensaje(
-            mensajeColaborador,
-            "Ocurrió un error al consultar el colaborador.",
-            "error"
-        );
+        console.error("ERROR BUSCANDO COLABORADOR:", error);
+        mostrarMensaje(mensajeColaborador, "Ocurrió un error al consultar el colaborador.", "error");
     }
 }
 
-
-/* =========================================================
-   SELECCIONAR COLABORADOR
-========================================================= */
-
-function seleccionarColaborador(
-    colaborador,
-    filaSeleccionada,
-    botonSeleccionado
-) {
-
-    document
-        .querySelectorAll(
-            "#cuerpoColaborador tr"
-        )
-        .forEach(
-            fila => {
-
-                fila.classList.remove(
-                    "seleccionada"
-                );
-
-                const boton =
-                    fila.querySelector(
-                        ".btn-seleccionar"
-                    );
-
-                if (boton) {
-
-                    boton.classList.remove(
-                        "seleccionada"
-                    );
-
-                    boton.textContent =
-                        "Seleccionar";
-                }
-
-            }
-        );
-
-    filaSeleccionada.classList.add(
-        "seleccionada"
-    );
-
-    botonSeleccionado.classList.add(
-        "seleccionada"
-    );
-
-    botonSeleccionado.textContent =
-        "✓ Seleccionado";
-
-    colaboradorSeleccionado =
-        colaborador;
-
-    personaSeleccionada =
-        null;
-
+function seleccionarColaborador(colaborador, filaSeleccionada, botonSeleccionado) {
+    document.querySelectorAll("#cuerpoColaborador tr").forEach(fila => {
+        fila.classList.remove("seleccionada");
+        const boton = fila.querySelector(".btn-seleccionar");
+        if (boton) {
+            boton.classList.remove("seleccionada");
+            boton.textContent = "Seleccionar";
+        }
+    });
+    filaSeleccionada.classList.add("seleccionada");
+    botonSeleccionado.classList.add("seleccionada");
+    botonSeleccionado.textContent = "✓ Seleccionado";
+    colaboradorSeleccionado = colaborador;
+    personaSeleccionada = null;
     actualizarDetalle();
 }
-
-
-/* =========================================================
-   BUSCAR LIBRO
-========================================================= */
 
 async function buscarLibro() {
-
-    const codigoIngresado =
-        buscarLibroInput.value.trim();
-
-    limpiarMensaje(
-        mensajeLibro
-    );
-
-    libroInfo.style.display =
-        "none";
+    const codigoIngresado = buscarLibroInput.value.trim();
+    limpiarMensaje(mensajeLibro);
+    libroInfo.style.display = "none";
 
     if (!codigoIngresado) {
-
-        mostrarMensaje(
-            mensajeLibro,
-            "Ingrese el código del libro.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeLibro, "Ingrese el código del libro.", "error");
         buscarLibroInput.focus();
-
         return;
     }
 
-    if (
-        librosSeleccionados.length >=
-        MAX_LIBROS
-    ) {
-
-        mostrarMensaje(
-            mensajeLibro,
-            "Ya se alcanzó el máximo de 3 libros por préstamo.",
-            "error"
-        );
-
+    if (librosSeleccionados.length >= MAX_LIBROS) {
+        mostrarMensaje(mensajeLibro, "Ya se alcanzó el máximo de 3 libros por préstamo.", "error");
         return;
     }
 
-    const codigoNormalizado =
-        normalizarCodigo(
-            codigoIngresado
-        );
-
-    const yaSeleccionado =
-        librosSeleccionados.some(
-            libro =>
-                normalizarCodigo(
-                    libro.codigoLibro
-                ) ===
-                codigoNormalizado
-        );
-
+    const codigoNormalizado = normalizarCodigo(codigoIngresado);
+    const yaSeleccionado = librosSeleccionados.some(libro => normalizarCodigo(libro.codigoLibro) === codigoNormalizado);
     if (yaSeleccionado) {
-
-        mostrarMensaje(
-            mensajeLibro,
-            "Este libro ya está seleccionado.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeLibro, "Este libro ya está seleccionado.", "error");
         buscarLibroInput.select();
-
         return;
     }
 
     try {
-
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .from("libros")
-                .select("*");
-
-        if (error) {
-            throw error;
-        }
-
-        const libro =
-            (data || [])
-                .find(
-                    item =>
-                        normalizarCodigo(
-                            item.codigoLibro
-                        ) ===
-                        codigoNormalizado
-                );
-
+        const { data, error } = await supabaseClient.from("libros").select("*");
+        if (error) throw error;
+        
+        const libro = (data || []).find(item => normalizarCodigo(item.codigoLibro) === codigoNormalizado);
+        
         if (!libro) {
-
-            mostrarMensaje(
-                mensajeLibro,
-                "No se encontró un libro con ese código.",
-                "error"
-            );
-
+            mostrarMensaje(mensajeLibro, "No se encontró un libro con ese código.", "error");
             return;
         }
 
-        if (
-            normalizarTexto(
-                libro.estado
-            ) ===
-            "BAJA"
-        ) {
-
-            mostrarMensaje(
-                mensajeLibro,
-                "Este libro está dado de baja.",
-                "error"
-            );
-
+        if (normalizarTexto(libro.estado) === "BAJA") {
+            mostrarMensaje(mensajeLibro, "Este libro está dado de baja.", "error");
             return;
         }
 
-        const {
-            data: prestamosActivos,
-            error: errorPrestamos
-        } =
-            await supabaseClient
-                .from("prestamos")
-                .select("codigoLibro, estado")
-                .eq(
-                    "estado",
-                    "Prestado"
-                );
-
-        if (errorPrestamos) {
-            throw errorPrestamos;
-        }
-
-        const yaPrestado =
-            (prestamosActivos || [])
-                .some(
-                    prestamo =>
-                        normalizarCodigo(
-                            prestamo.codigoLibro
-                        ) ===
-                        codigoNormalizado
-                );
-
-        if (
-            yaPrestado ||
-            normalizarTexto(
-                libro.estado
-            ) ===
-            "PRESTADO"
-        ) {
-
-            mostrarMensaje(
-                mensajeLibro,
-                "Este libro actualmente está prestado.",
-                "error"
-            );
-
+        const { data: prestamosActivos, error: errorPrestamos } = await supabaseClient.from("prestamos").select("codigoLibro, estado").eq("estado", "Prestado");
+        if (errorPrestamos) throw errorPrestamos;
+        
+        const yaPrestado = (prestamosActivos || []).some(prestamo => normalizarCodigo(prestamo.codigoLibro) === codigoNormalizado);
+        
+        if (yaPrestado || normalizarTexto(libro.estado) === "PRESTADO") {
+            mostrarMensaje(mensajeLibro, "Este libro actualmente está prestado.", "error");
             return;
         }
 
-        librosSeleccionados.push(
-            libro
-        );
-
-        buscarLibroInput.value =
-            "";
-
-        mostrarMensaje(
-            mensajeLibro,
-            "Libro agregado correctamente.",
-            "exito"
-        );
-
+        librosSeleccionados.push(libro);
+        buscarLibroInput.value = "";
+        mostrarMensaje(mensajeLibro, "Libro agregado correctamente.", "exito");
         actualizarLibrosSeleccionados();
-
         actualizarDetalle();
-
-        if (
-            librosSeleccionados.length <
-            MAX_LIBROS
-        ) {
-
+        
+        if (librosSeleccionados.length < MAX_LIBROS) {
             buscarLibroInput.focus();
-
         }
-
     } catch (error) {
-
-        console.error(
-            "ERROR BUSCANDO LIBRO:",
-            error
-        );
-
-        mostrarMensaje(
-            mensajeLibro,
-            "Ocurrió un error al consultar el libro.",
-            "error"
-        );
+        console.error("ERROR BUSCANDO LIBRO:", error);
+        mostrarMensaje(mensajeLibro, "Ocurrió un error al consultar el libro.", "error");
     }
 }
-
-
-/* =========================================================
-   ACTUALIZAR LIBROS SELECCIONADOS
-========================================================= */
 
 function actualizarLibrosSeleccionados() {
-
-    listaLibrosSeleccionados.innerHTML =
-        "";
-
-    if (
-        librosSeleccionados.length === 0
-    ) {
-
-        contenedorLibrosSeleccionados.classList.remove(
-            "visible"
-        );
-
-        contadorLibros.textContent =
-            "0 de 3";
-
-        btnAgregarLibro.disabled =
-            false;
-
-        btnAgregarLibro.textContent =
-            "+ Agregar libro";
-
+    listaLibrosSeleccionados.innerHTML = "";
+    if (librosSeleccionados.length === 0) {
+        contenedorLibrosSeleccionados.classList.remove("visible");
+        contadorLibros.textContent = "0 de 3";
+        btnAgregarLibro.disabled = false;
+        btnAgregarLibro.textContent = "+ Agregar libro";
         return;
     }
+    
+    contenedorLibrosSeleccionados.classList.add("visible");
+    contadorLibros.textContent = `${librosSeleccionados.length} de ${MAX_LIBROS}`;
+    
+    librosSeleccionados.forEach((libro, indice) => {
+        const tarjeta = document.createElement("div");
+        tarjeta.className = "libro-seleccionado";
+        const numero = document.createElement("div");
+        numero.className = "libro-seleccionado-numero";
+        numero.textContent = `LIBRO ${indice + 1}`;
+        const codigo = document.createElement("div");
+        codigo.className = "libro-seleccionado-codigo";
+        codigo.textContent = `Código: ${libro.codigoLibro}`;
+        const nombre = document.createElement("div");
+        nombre.className = "libro-seleccionado-nombre";
+        nombre.textContent = libro.nombreLibro || "";
+        const botonQuitar = document.createElement("button");
+        botonQuitar.type = "button";
+        botonQuitar.className = "btn-quitar-libro";
+        botonQuitar.title = "Quitar libro";
+        botonQuitar.textContent = "×";
+        botonQuitar.addEventListener("click", function() { quitarLibro(indice); });
+        
+        tarjeta.appendChild(numero);
+        tarjeta.appendChild(codigo);
+        tarjeta.appendChild(nombre);
+        tarjeta.appendChild(botonQuitar);
+        listaLibrosSeleccionados.appendChild(tarjeta);
+    });
 
-    contenedorLibrosSeleccionados.classList.add(
-        "visible"
-    );
-
-    contadorLibros.textContent =
-        `${librosSeleccionados.length} de ${MAX_LIBROS}`;
-
-    librosSeleccionados.forEach(
-        (
-            libro,
-            indice
-        ) => {
-
-            const tarjeta =
-                document.createElement("div");
-
-            tarjeta.className =
-                "libro-seleccionado";
-
-            const numero =
-                document.createElement("div");
-
-            numero.className =
-                "libro-seleccionado-numero";
-
-            numero.textContent =
-                `LIBRO ${indice + 1}`;
-
-            const codigo =
-                document.createElement("div");
-
-            codigo.className =
-                "libro-seleccionado-codigo";
-
-            codigo.textContent =
-                `Código: ${libro.codigoLibro}`;
-
-            const nombre =
-                document.createElement("div");
-
-            nombre.className =
-                "libro-seleccionado-nombre";
-
-            nombre.textContent =
-                libro.nombreLibro || "";
-
-            const botonQuitar =
-                document.createElement("button");
-
-            botonQuitar.type =
-                "button";
-
-            botonQuitar.className =
-                "btn-quitar-libro";
-
-            botonQuitar.title =
-                "Quitar libro";
-
-            botonQuitar.textContent =
-                "×";
-
-            botonQuitar.addEventListener(
-                "click",
-                function() {
-
-                    quitarLibro(
-                        indice
-                    );
-
-                }
-            );
-
-            tarjeta.appendChild(
-                numero
-            );
-
-            tarjeta.appendChild(
-                codigo
-            );
-
-            tarjeta.appendChild(
-                nombre
-            );
-
-            tarjeta.appendChild(
-                botonQuitar
-            );
-
-            listaLibrosSeleccionados.appendChild(
-                tarjeta
-            );
-
-        }
-    );
-
-    if (
-        librosSeleccionados.length >=
-        MAX_LIBROS
-    ) {
-
-        btnAgregarLibro.disabled =
-            true;
-
-        btnAgregarLibro.textContent =
-            "Máximo de 3 libros";
-
+    if (librosSeleccionados.length >= MAX_LIBROS) {
+        btnAgregarLibro.disabled = true;
+        btnAgregarLibro.textContent = "Máximo de 3 libros";
     } else {
-
-        btnAgregarLibro.disabled =
-            false;
-
-        btnAgregarLibro.textContent =
-            "+ Agregar libro";
+        btnAgregarLibro.disabled = false;
+        btnAgregarLibro.textContent = "+ Agregar libro";
     }
 }
 
-
-/* =========================================================
-   QUITAR LIBRO
-========================================================= */
-
-function quitarLibro(
-    indice
-) {
-
-    if (
-        indice < 0 ||
-        indice >= librosSeleccionados.length
-    ) {
-
-        return;
-    }
-
-    librosSeleccionados.splice(
-        indice,
-        1
-    );
-
-    limpiarMensaje(
-        mensajeLibro
-    );
-
+function quitarLibro(indice) {
+    if (indice < 0 || indice >= librosSeleccionados.length) return;
+    librosSeleccionados.splice(indice, 1);
+    limpiarMensaje(mensajeLibro);
     actualizarLibrosSeleccionados();
-
     actualizarDetalle();
-
     buscarLibroInput.focus();
 }
-
-
-/* =========================================================
-   BOTÓN AGREGAR LIBRO
-========================================================= */
 
 function activarBusquedaNuevoLibro() {
-
-    if (
-        librosSeleccionados.length >=
-        MAX_LIBROS
-    ) {
-
-        return;
-    }
-
+    if (librosSeleccionados.length >= MAX_LIBROS) return;
     buscarLibroInput.focus();
-
     buscarLibroInput.select();
-
-    mostrarMensaje(
-        mensajeLibro,
-        `Puede ingresar el código del libro ${librosSeleccionados.length + 1}.`,
-        "exito"
-    );
+    mostrarMensaje(mensajeLibro, `Puede ingresar el código del libro ${librosSeleccionados.length + 1}.`, "exito");
 }
-
-
-/* =========================================================
-   ACTUALIZAR RESUMEN DE LIBROS
-========================================================= */
 
 function actualizarResumenLibros() {
-
-    listaResumenLibros.innerHTML =
-        "";
-
-    if (
-        librosSeleccionados.length === 0
-    ) {
-
-        resumenLibrosContador.textContent =
-            "0 libros";
-
+    listaResumenLibros.innerHTML = "";
+    if (librosSeleccionados.length === 0) {
+        resumenLibrosContador.textContent = "0 libros";
         return;
     }
-
-    const cantidad =
-        librosSeleccionados.length;
-
-    resumenLibrosContador.textContent =
-        cantidad === 1
-            ? "1 libro"
-            : `${cantidad} libros`;
-
-    librosSeleccionados.forEach(
-        (
-            libro,
-            indice
-        ) => {
-
-            const tarjeta =
-                document.createElement("div");
-
-            tarjeta.className =
-                "tarjeta-resumen-libro";
-
-            const numero =
-                document.createElement("div");
-
-            numero.className =
-                "numero-resumen-libro";
-
-            numero.textContent =
-                indice + 1;
-
-            const datos =
-                document.createElement("div");
-
-            datos.className =
-                "datos-resumen-libro";
-
-            const codigo =
-                document.createElement("div");
-
-            codigo.className =
-                "codigo-resumen-libro";
-
-            codigo.textContent =
-                `Código: ${libro.codigoLibro}`;
-
-            const nombre =
-                document.createElement("div");
-
-            nombre.className =
-                "nombre-resumen-libro";
-
-            nombre.textContent =
-                libro.nombreLibro || "";
-
-            datos.appendChild(
-                codigo
-            );
-
-            datos.appendChild(
-                nombre
-            );
-
-            const estado =
-                document.createElement("div");
-
-            estado.className =
-                "estado-resumen-libro";
-
-            estado.textContent =
-                "Disponible";
-
-            tarjeta.appendChild(
-                numero
-            );
-
-            tarjeta.appendChild(
-                datos
-            );
-
-            tarjeta.appendChild(
-                estado
-            );
-
-            listaResumenLibros.appendChild(
-                tarjeta
-            );
-
-        }
-    );
+    const cantidad = librosSeleccionados.length;
+    resumenLibrosContador.textContent = cantidad === 1 ? "1 libro" : `${cantidad} libros`;
+    
+    librosSeleccionados.forEach((libro, indice) => {
+        const tarjeta = document.createElement("div");
+        tarjeta.className = "tarjeta-resumen-libro";
+        const numero = document.createElement("div");
+        numero.className = "numero-resumen-libro";
+        numero.textContent = indice + 1;
+        const datos = document.createElement("div");
+        datos.className = "datos-resumen-libro";
+        const codigo = document.createElement("div");
+        codigo.className = "codigo-resumen-libro";
+        codigo.textContent = `Código: ${libro.codigoLibro}`;
+        const nombre = document.createElement("div");
+        nombre.className = "nombre-resumen-libro";
+        nombre.textContent = libro.nombreLibro || "";
+        datos.appendChild(codigo);
+        datos.appendChild(nombre);
+        const estado = document.createElement("div");
+        estado.className = "estado-resumen-libro";
+        estado.textContent = "Disponible";
+        
+        tarjeta.appendChild(numero);
+        tarjeta.appendChild(datos);
+        tarjeta.appendChild(estado);
+        listaResumenLibros.appendChild(tarjeta);
+    });
 }
 
-
-/* =========================================================
-   ACTUALIZAR RESUMEN GENERAL
-========================================================= */
-
 function actualizarDetalle() {
-
-    const haySolicitante =
-        tipoSolicitante === "Afiliado"
-            ? !!personaSeleccionada
-            : !!colaboradorSeleccionado;
-
-    const hayLibros =
-        librosSeleccionados.length > 0;
-
-    if (
-        !haySolicitante ||
-        !hayLibros
-    ) {
-
-        resumenPrestamo.style.display =
-            "none";
-
-        confirmacion.style.display =
-            "none";
-
+    const haySolicitante = tipoSolicitante === "Afiliado" ? !!personaSeleccionada : !!colaboradorSeleccionado;
+    const hayLibros = librosSeleccionados.length > 0;
+    
+    if (!haySolicitante || !hayLibros) {
+        resumenPrestamo.style.display = "none";
+        confirmacion.style.display = "none";
         return;
     }
 
     prepararFechas();
 
-    if (
-        tipoSolicitante === "Afiliado"
-    ) {
-
-        tituloResumenPersona.textContent =
-            "Afiliado";
-
-        subtituloResumenPersona.textContent =
-            "Persona que recibe el préstamo";
-
-        etiquetaIdentificador.textContent =
-            "Familia";
-
-        etiquetaPersonaId.textContent =
-            "PersonaId";
-
-        etiquetaNombre.textContent =
-            "Nombre";
-
-        resumenFamilia.textContent =
-            personaSeleccionada.FamiliaId || "";
-
-        resumenPersonaId.textContent =
-            personaSeleccionada.PersonaId || "";
-
-        resumenNombre.textContent =
-            `${personaSeleccionada.Nombres || ""} ${personaSeleccionada.Apellidos || ""}`;
-
-        resumenArea.textContent =
-            "";
-
-        filaAreaResumen.style.display =
-            "none";
-
-        resumenSitio.textContent =
-            obtenerSitio(
-                personaSeleccionada
-            ) ||
-            "No definido";
-
+    if (tipoSolicitante === "Afiliado") {
+        tituloResumenPersona.textContent = "Afiliado";
+        subtituloResumenPersona.textContent = "Persona que recibe el préstamo";
+        etiquetaIdentificador.textContent = "Familia";
+        etiquetaPersonaId.textContent = "PersonaId";
+        etiquetaNombre.textContent = "Nombre";
+        resumenFamilia.textContent = personaSeleccionada.FamiliaId || "";
+        resumenPersonaId.textContent = personaSeleccionada.PersonaId || "";
+        resumenNombre.textContent = `${personaSeleccionada.Nombres || ""} ${personaSeleccionada.Apellidos || ""}`;
+        resumenArea.textContent = "";
+        filaAreaResumen.style.display = "none";
+        resumenSitio.textContent = obtenerSitio(personaSeleccionada) || "No definido";
     } else {
-
-        tituloResumenPersona.textContent =
-            "Colaborador";
-
-        subtituloResumenPersona.textContent =
-            "Persona que recibe el préstamo";
-
-        etiquetaIdentificador.textContent =
-            "Código";
-
-        etiquetaPersonaId.textContent =
-            "Tipo";
-
-        etiquetaNombre.textContent =
-            "Nombre";
-
-        resumenFamilia.textContent =
-            colaboradorSeleccionado.CodigoColaborador || "";
-
-        resumenPersonaId.textContent =
-            "Colaborador";
-
-        resumenNombre.textContent =
-            colaboradorSeleccionado.Nombre || "";
-
-        resumenArea.textContent =
-            colaboradorSeleccionado.Area ||
-            "No definida";
-
-        filaAreaResumen.style.display =
-            "block";
-
-        resumenSitio.textContent =
-            sitioPrestamoInput.value ||
-            "No definido";
+        tituloResumenPersona.textContent = "Colaborador";
+        subtituloResumenPersona.textContent = "Persona que recibe el préstamo";
+        etiquetaIdentificador.textContent = "Código";
+        etiquetaPersonaId.textContent = "Tipo";
+        etiquetaNombre.textContent = "Nombre";
+        resumenFamilia.textContent = colaboradorSeleccionado.CodigoColaborador || "";
+        resumenPersonaId.textContent = "Colaborador";
+        resumenNombre.textContent = colaboradorSeleccionado.Nombre || "";
+        resumenArea.textContent = colaboradorSeleccionado.Area || "No definida";
+        filaAreaResumen.style.display = "block";
+        resumenSitio.textContent = sitioPrestamoInput.value || "No definido";
     }
 
     actualizarResumenLibros();
-
-    resumenPrestamo.style.display =
-        "block";
-
-    confirmacion.style.display =
-        "block";
+    resumenPrestamo.style.display = "block";
+    confirmacion.style.display = "block";
 }
 
-
-/* =========================================================
-   CREAR DATOS DE PRÉSTAMO
-========================================================= */
-
-function crearDatosPrestamo(
-    libro,
-    usuarioActual,
-    sitioPrestamo,
-    fechaPrestamo,
-    fechaDevolucion
-) {
-
-    if (
-        tipoSolicitante ===
-        "Afiliado"
-    ) {
-
-        const sitio =
-            obtenerSitio(
-                personaSeleccionada
-            );
-
+function crearDatosPrestamo(libro, usuarioActual, sitioPrestamo, fechaPrestamo, fechaDevolucion) {
+    if (tipoSolicitante === "Afiliado") {
+        const sitio = obtenerSitio(personaSeleccionada);
         return {
-
-            tipoPrestamo:
-                "Afiliado",
-
-            Sitio:
-                sitio,
-
-            SitioPrestamo:
-                sitioPrestamo,
-
-            FamiliaId:
-                personaSeleccionada.FamiliaId,
-
-            PersonaId:
-                personaSeleccionada.PersonaId,
-
-            Nombres:
-                personaSeleccionada.Nombres,
-
-            Apellidos:
-                personaSeleccionada.Apellidos,
-
-            CodigoColaborador:
-                null,
-
-            NombreColaborador:
-                null,
-
-            AreaColaborador:
-                null,
-
-            codigoLibro:
-                libro.codigoLibro,
-
-            nombreLibro:
-                libro.nombreLibro,
-
-            fechaPrestamo:
-                fechaPrestamo,
-
-            fechaDevolucion:
-                fechaDevolucion,
-
-            estado:
-                "Prestado",
-
-            fechaDevolucionReal:
-                null,
-
-            PrestadoPor:
-                usuarioActual,
-
-            DevueltoPor:
-                null
+            tipoPrestamo: "Afiliado",
+            Sitio: sitio,
+            SitioPrestamo: sitioPrestamo,
+            FamiliaId: personaSeleccionada.FamiliaId,
+            PersonaId: personaSeleccionada.PersonaId,
+            Nombres: personaSeleccionada.Nombres,
+            Apellidos: personaSeleccionada.Apellidos,
+            CodigoColaborador: null,
+            NombreColaborador: null,
+            AreaColaborador: null,
+            codigoLibro: libro.codigoLibro,
+            nombreLibro: libro.nombreLibro,
+            fechaPrestamo: fechaPrestamo,
+            fechaDevolucion: fechaDevolucion,
+            estado: "Prestado",
+            fechaDevolucionReal: null,
+            PrestadoPor: usuarioActual,
+            DevueltoPor: null
         };
-
     }
-
     return {
-
-        tipoPrestamo:
-            "Colaborador",
-
-        Sitio:
-            sitioPrestamo,
-
-        SitioPrestamo:
-            sitioPrestamo,
-
-        FamiliaId:
-            null,
-
-        PersonaId:
-            null,
-
-        Nombres:
-            null,
-
-        Apellidos:
-            null,
-
-        CodigoColaborador:
-            colaboradorSeleccionado.CodigoColaborador,
-
-        NombreColaborador:
-            colaboradorSeleccionado.Nombre,
-
-        AreaColaborador:
-            colaboradorSeleccionado.Area,
-
-        codigoLibro:
-            libro.codigoLibro,
-
-        nombreLibro:
-            libro.nombreLibro,
-
-        fechaPrestamo:
-            fechaPrestamo,
-
-        fechaDevolucion:
-            fechaDevolucion,
-
-        estado:
-            "Prestado",
-
-        fechaDevolucionReal:
-            null,
-
-        PrestadoPor:
-            usuarioActual,
-
-        DevueltoPor:
-            null
+        tipoPrestamo: "Colaborador",
+        Sitio: sitioPrestamo,
+        SitioPrestamo: sitioPrestamo,
+        FamiliaId: null,
+        PersonaId: null,
+        Nombres: null,
+        Apellidos: null,
+        CodigoColaborador: colaboradorSeleccionado.CodigoColaborador,
+        NombreColaborador: colaboradorSeleccionado.Nombre,
+        AreaColaborador: colaboradorSeleccionado.Area,
+        codigoLibro: libro.codigoLibro,
+        nombreLibro: libro.nombreLibro,
+        fechaPrestamo: fechaPrestamo,
+        fechaDevolucion: fechaDevolucion,
+        estado: "Prestado",
+        fechaDevolucionReal: null,
+        PrestadoPor: usuarioActual,
+        DevueltoPor: null
     };
 }
 
-
-/* =========================================================
-   CONFIRMAR PRÉSTAMO
-========================================================= */
-
 async function confirmarPrestamo() {
-
-    limpiarMensaje(
-        mensajeFinal
-    );
+    limpiarMensaje(mensajeFinal);
 
     if (!autenticacionLista) {
-
-        const autorizado =
-            await iniciarAutenticacion();
-
-        if (!autorizado) {
-            return;
-        }
+        const autorizado = await iniciarAutenticacion();
+        if (!autorizado) return;
     }
 
-    const usuarioActual =
-        obtenerUsuarioActual();
-
+    const usuarioActual = obtenerUsuarioActual();
     if (!usuarioActual) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "No fue posible identificar al usuario que realiza el préstamo. Actualice la página e intente nuevamente.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeFinal, "No fue posible identificar al usuario que realiza el préstamo. Actualice la página e intente nuevamente.", "error");
         return;
     }
 
-    const haySolicitante =
-        tipoSolicitante === "Afiliado"
-            ? !!personaSeleccionada
-            : !!colaboradorSeleccionado;
-
+    const haySolicitante = tipoSolicitante === "Afiliado" ? !!personaSeleccionada : !!colaboradorSeleccionado;
     if (!haySolicitante) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "Debe seleccionar una persona o colaborador.",
-            "error"
-        );
-
+        mostrarMensaje(mensajeFinal, "Debe seleccionar una persona o colaborador.", "error");
         return;
     }
-
-    if (
-        librosSeleccionados.length === 0
-    ) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "Debe seleccionar al menos un libro.",
-            "error"
-        );
-
+    if (librosSeleccionados.length === 0) {
+        mostrarMensaje(mensajeFinal, "Debe seleccionar al menos un libro.", "error");
         return;
     }
-
-    if (
-        librosSeleccionados.length >
-        MAX_LIBROS
-    ) {
-
-        mostrarMensaje(
-            mensajeFinal,
-            "No se pueden registrar más de 3 libros en un mismo préstamo.",
-            "error"
-        );
-
+    if (librosSeleccionados.length > MAX_LIBROS) {
+        mostrarMensaje(mensajeFinal, "No se pueden registrar más de 3 libros en un mismo préstamo.", "error");
         return;
     }
-
-    if (
-        !validarFechas()
-    ) {
-
-        return;
-    }
-
-    if (
-        !validarSitioPrestamo()
-    ) {
-
-        return;
-    }
+    if (!validarFechas()) return;
+    if (!validarSitioPrestamo()) return;
 
     try {
-
-        /* =================================================
-           COMPROBAR SITIO DEL AFILIADO
-        ================================================= */
-
-        if (
-            tipoSolicitante ===
-            "Afiliado"
-        ) {
-
-            const sitio =
-                obtenerSitio(
-                    personaSeleccionada
-                );
-
+        if (tipoSolicitante === "Afiliado") {
+            const sitio = obtenerSitio(personaSeleccionada);
             if (!sitio) {
-
-                mostrarMensaje(
-                    mensajeFinal,
-                    "No se pudo determinar el sitio de la persona. Verifique el Sitio o FamiliaId del afiliado.",
-                    "error"
-                );
-
+                mostrarMensaje(mensajeFinal, "No se pudo determinar el sitio de la persona. Verifique el Sitio o FamiliaId del afiliado.", "error");
                 return;
             }
         }
 
+        const fechaPrestamo = fechaInputAISO(fechaPrestamoInput.value);
+        const fechaDevolucion = fechaInputAISO(fechaDevolucionInput.value);
+        const sitioPrestamo = obtenerSitioPrestamo();
 
-        /* =================================================
-           FECHAS
-        ================================================= */
+        const { data: prestamosExistentes, error: errorConsulta } = await supabaseClient.from("prestamos").select("codigoLibro, estado").eq("estado", "Prestado");
+        if (errorConsulta) throw errorConsulta;
 
-        const fechaPrestamo =
-            fechaInputAISO(
-                fechaPrestamoInput.value
-            );
-
-        const fechaDevolucion =
-            fechaInputAISO(
-                fechaDevolucionInput.value
-            );
-
-        const sitioPrestamo =
-            obtenerSitioPrestamo();
-
-
-        /* =================================================
-           VERIFICAR TODOS LOS LIBROS
-        ================================================= */
-
-        const {
-            data: prestamosExistentes,
-            error: errorConsulta
-        } =
-            await supabaseClient
-                .from("prestamos")
-                .select("codigoLibro, estado")
-                .eq(
-                    "estado",
-                    "Prestado"
-                );
-
-        if (errorConsulta) {
-            throw errorConsulta;
-        }
-
-        const librosYaPrestados =
-            [];
-
-        for (
-            const libro
-            of librosSeleccionados
-        ) {
-
-            const codigoNormalizado =
-                normalizarCodigo(
-                    libro.codigoLibro
-                );
-
-            const duplicado =
-                (
-                    prestamosExistentes ||
-                    []
-                )
-                .some(
-                    prestamo =>
-                        normalizarCodigo(
-                            prestamo.codigoLibro
-                        ) ===
-                        codigoNormalizado
-                );
-
-            if (
-                duplicado ||
-                normalizarTexto(
-                    libro.estado
-                ) ===
-                "PRESTADO"
-            ) {
-
-                librosYaPrestados.push(
-                    libro.codigoLibro
-                );
+        const librosYaPrestados = [];
+        for (const libro of librosSeleccionados) {
+            const codigoNormalizado = normalizarCodigo(libro.codigoLibro);
+            const duplicado = (prestamosExistentes || []).some(prestamo => normalizarCodigo(prestamo.codigoLibro) === codigoNormalizado);
+            if (duplicado || normalizarTexto(libro.estado) === "PRESTADO") {
+                librosYaPrestados.push(libro.codigoLibro);
             }
         }
 
-        if (
-            librosYaPrestados.length > 0
-        ) {
-
-            mostrarMensaje(
-                mensajeFinal,
-                "Uno o más libros ya fueron prestados: " +
-                librosYaPrestados.join(", ") +
-                ". Actualice la búsqueda antes de continuar.",
-                "error"
-            );
-
+        if (librosYaPrestados.length > 0) {
+            mostrarMensaje(mensajeFinal, "Uno o más libros ya fueron prestados: " + librosYaPrestados.join(", ") + ". Actualice la búsqueda antes de continuar.", "error");
             return;
         }
 
+        const prestamosParaGuardar = librosSeleccionados.map(libro => crearDatosPrestamo(libro, usuarioActual, sitioPrestamo, fechaPrestamo, fechaDevolucion));
+        console.log("PRÉSTAMOS A REGISTRAR:", prestamosParaGuardar);
 
-        /* =================================================
-           CREAR REGISTROS
-        ================================================= */
+        const { data: prestamosGuardados, error: errorInsertar } = await supabaseClient.from("prestamos").insert(prestamosParaGuardar).select();
+        if (errorInsertar) throw errorInsertar;
+        console.log("PRÉSTAMOS GUARDADOS:", prestamosGuardados);
 
-        const prestamosParaGuardar =
-            librosSeleccionados.map(
-                libro =>
-                    crearDatosPrestamo(
-                        libro,
-                        usuarioActual,
-                        sitioPrestamo,
-                        fechaPrestamo,
-                        fechaDevolucion
-                    )
-            );
-
-        console.log(
-            "PRÉSTAMOS A REGISTRAR:",
-            prestamosParaGuardar
-        );
-
-
-        /* =================================================
-           INSERTAR TODOS LOS PRÉSTAMOS
-        ================================================= */
-
-        const {
-            data: prestamosGuardados,
-            error: errorInsertar
-        } =
-            await supabaseClient
-                .from("prestamos")
-                .insert(
-                    prestamosParaGuardar
-                )
-                .select();
-
-        if (errorInsertar) {
-            throw errorInsertar;
-        }
-
-        console.log(
-            "PRÉSTAMOS GUARDADOS:",
-            prestamosGuardados
-        );
-
-
-        /* =================================================
-           ACTUALIZAR ESTADO DE CADA LIBRO
-        ================================================= */
-
-        for (
-            const libro
-            of librosSeleccionados
-        ) {
-
-            const {
-                error: errorLibro
-            } =
-                await supabaseClient
-                    .from("libros")
-                    .update({
-                        estado: "Prestado"
-                    })
-                    .eq(
-                        "id",
-                        libro.id
-                    );
-
+        for (const libro of librosSeleccionados) {
+            const { error: errorLibro } = await supabaseClient.from("libros").update({ estado: "Prestado" }).eq("id", libro.id);
             if (errorLibro) {
-
-                console.error(
-                    "ERROR ACTUALIZANDO LIBRO:",
-                    libro,
-                    errorLibro
-                );
-
+                console.error("ERROR ACTUALIZANDO LIBRO:", libro, errorLibro);
                 throw errorLibro;
             }
         }
 
+        const cantidadLibros = librosSeleccionados.length;
+        mostrarMensaje(mensajeFinal, cantidadLibros === 1 ? "Préstamo registrado correctamente." : `Préstamo registrado correctamente. Se registraron ${cantidadLibros} libros.`, "exito");
 
-        /* =================================================
-           ÉXITO
-        ================================================= */
-
-        const cantidadLibros =
-            librosSeleccionados.length;
-
-        mostrarMensaje(
-            mensajeFinal,
-            cantidadLibros === 1
-                ? "Préstamo registrado correctamente."
-                : `Préstamo registrado correctamente. Se registraron ${cantidadLibros} libros.`,
-            "exito"
-        );
-
-
-        /* =================================================
-           LIMPIAR
-        ================================================= */
-
-        personaSeleccionada =
-            null;
-
-        colaboradorSeleccionado =
-            null;
-
-        librosSeleccionados =
-            [];
-
-        fechaDevolucionModificada =
-            false;
-
-        tipoSolicitante =
-            "Afiliado";
-
-        btnTipoAfiliado.classList.add(
-            "activa"
-        );
-
-        btnTipoColaborador.classList.remove(
-            "activa"
-        );
-
-        seccionAfiliado.style.display =
-            "block";
-
-        seccionColaborador.style.display =
-            "none";
-
-        buscarFamiliaInput.value =
-            "";
-
-        cuerpoFamilia.innerHTML =
-            "";
-
-        tablaFamilia.style.display =
-            "none";
-
-        limpiarMensaje(
-            mensajeFamilia
-        );
-
-        buscarColaboradorInput.value =
-            "";
-
-        cuerpoColaborador.innerHTML =
-            "";
-
-        tablaColaborador.style.display =
-            "none";
-
-        limpiarMensaje(
-            mensajeColaborador
-        );
-
-        buscarLibroInput.value =
-            "";
-
-        libroInfo.innerHTML =
-            "";
-
-        libroInfo.style.display =
-            "none";
-
-        limpiarMensaje(
-            mensajeLibro
-        );
-
+        personaSeleccionada = null;
+        colaboradorSeleccionado = null;
+        librosSeleccionados = [];
+        fechaDevolucionModificada = false;
+        tipoSolicitante = "Afiliado";
+        btnTipoAfiliado.classList.add("activa");
+        btnTipoColaborador.classList.remove("activa");
+        seccionAfiliado.style.display = "block";
+        seccionColaborador.style.display = "none";
+        buscarFamiliaInput.value = "";
+        cuerpoFamilia.innerHTML = "";
+        tablaFamilia.style.display = "none";
+        limpiarMensaje(mensajeFamilia);
+        buscarColaboradorInput.value = "";
+        cuerpoColaborador.innerHTML = "";
+        tablaColaborador.style.display = "none";
+        limpiarMensaje(mensajeColaborador);
+        buscarLibroInput.value = "";
+        libroInfo.innerHTML = "";
+        libroInfo.style.display = "none";
+        limpiarMensaje(mensajeLibro);
         actualizarLibrosSeleccionados();
-
-        listaResumenLibros.innerHTML =
-            "";
-
-        resumenLibrosContador.textContent =
-            "0 libros";
-
-        resumenPrestamo.style.display =
-            "none";
-
-        confirmacion.style.display =
-            "none";
-
-        fechaPrestamoInput.value =
-            obtenerFechaLocalInput();
-
-        fechaDevolucionInput.value =
-            agregarUnMes(
-                fechaPrestamoInput.value
-            );
-
-        sitioPrestamoInput.value =
-            "F";
+        listaResumenLibros.innerHTML = "";
+        resumenLibrosContador.textContent = "0 libros";
+        resumenPrestamo.style.display = "none";
+        confirmacion.style.display = "none";
+        fechaPrestamoInput.value = obtenerFechaLocalInput();
+        fechaDevolucionInput.value = agregarUnMes(fechaPrestamoInput.value);
+        sitioPrestamoInput.value = "F";
 
     } catch (error) {
-
-        console.error(
-            "ERROR AL REGISTRAR PRÉSTAMO:",
-            error
-        );
-
-        mostrarMensaje(
-            mensajeFinal,
-            "No fue posible registrar el préstamo: " +
-            (
-                error.message ||
-                "error desconocido"
-            ),
-            "error"
-        );
+        console.error("ERROR AL REGISTRAR PRÉSTAMO:", error);
+        mostrarMensaje(mensajeFinal, "No fue posible registrar el préstamo: " + (error.message || "error desconocido"), "error");
     }
 }
 
-
-/* =========================================================
-   CANCELAR
-========================================================= */
-
 function cancelarPrestamo() {
-
-    librosSeleccionados =
-        [];
-
-    libroInfo.style.display =
-        "none";
-
-    buscarLibroInput.value =
-        "";
-
-    limpiarMensaje(
-        mensajeLibro
-    );
-
+    librosSeleccionados = [];
+    libroInfo.style.display = "none";
+    buscarLibroInput.value = "";
+    limpiarMensaje(mensajeLibro);
     actualizarLibrosSeleccionados();
-
     actualizarDetalle();
 }
 
-
-/* =========================================================
-   CAMBIO FECHA PRÉSTAMO
-========================================================= */
-
-fechaPrestamoInput.addEventListener(
-    "change",
-    function() {
-
-        if (
-            !fechaDevolucionModificada
-        ) {
-
-            fechaDevolucionInput.value =
-                agregarUnMes(
-                    fechaPrestamoInput.value
-                );
-        }
-
-        actualizarDetalle();
-
+fechaPrestamoInput.addEventListener("change", function() {
+    if (!fechaDevolucionModificada) {
+        fechaDevolucionInput.value = agregarUnMes(fechaPrestamoInput.value);
     }
-);
+    actualizarDetalle();
+});
 
+fechaDevolucionInput.addEventListener("change", function() {
+    fechaDevolucionModificada = true;
+    actualizarDetalle();
+});
 
-/* =========================================================
-   CAMBIO FECHA DEVOLUCIÓN
-========================================================= */
+sitioPrestamoInput.addEventListener("change", function() {
+    actualizarDetalle();
+});
 
-fechaDevolucionInput.addEventListener(
-    "change",
-    function() {
+btnTipoAfiliado.addEventListener("click", function() { cambiarTipoSolicitante("Afiliado"); });
+btnTipoColaborador.addEventListener("click", function() { cambiarTipoSolicitante("Colaborador"); });
 
-        fechaDevolucionModificada =
-            true;
+document.getElementById("btnBuscarFamilia").addEventListener("click", buscarFamilia);
+document.getElementById("btnBuscarColaborador").addEventListener("click", buscarColaborador);
+document.getElementById("btnBuscarLibro").addEventListener("click", buscarLibro);
+btnAgregarLibro.addEventListener("click", activarBusquedaNuevoLibro);
+document.getElementById("btnConfirmar").addEventListener("click", confirmarPrestamo);
+document.getElementById("btnCancelar").addEventListener("click", cancelarPrestamo);
 
-        actualizarDetalle();
-
+buscarFamiliaInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        buscarFamilia();
     }
-);
+});
 
-
-/* =========================================================
-   CAMBIO SITIO
-========================================================= */
-
-sitioPrestamoInput.addEventListener(
-    "change",
-    function() {
-
-        actualizarDetalle();
-
+buscarColaboradorInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        buscarColaborador();
     }
-);
+});
 
-
-/* =========================================================
-   BOTONES TIPO
-========================================================= */
-
-btnTipoAfiliado.addEventListener(
-    "click",
-    function() {
-
-        cambiarTipoSolicitante(
-            "Afiliado"
-        );
-
+buscarLibroInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        buscarLibro();
     }
-);
+});
 
-btnTipoColaborador.addEventListener(
-    "click",
-    function() {
+buscarLibroInput.addEventListener("input", function() {
+    this.value = this.value.replace(/\D/g, "").slice(0, 8);
+});
 
-        cambiarTipoSolicitante(
-            "Colaborador"
-        );
-
-    }
-);
-
-
-/* =========================================================
-   BOTONES BÚSQUEDA
-========================================================= */
-
-document
-    .getElementById(
-        "btnBuscarFamilia"
-    )
-    .addEventListener(
-        "click",
-        buscarFamilia
-    );
-
-document
-    .getElementById(
-        "btnBuscarColaborador"
-    )
-    .addEventListener(
-        "click",
-        buscarColaborador
-    );
-
-document
-    .getElementById(
-        "btnBuscarLibro"
-    )
-    .addEventListener(
-        "click",
-        buscarLibro
-    );
-
-btnAgregarLibro.addEventListener(
-    "click",
-    activarBusquedaNuevoLibro
-);
-
-document
-    .getElementById(
-        "btnConfirmar"
-    )
-    .addEventListener(
-        "click",
-        confirmarPrestamo
-    );
-
-document
-    .getElementById(
-        "btnCancelar"
-    )
-    .addEventListener(
-        "click",
-        cancelarPrestamo
-    );
-
-
-/* =================================================
-   ENTER - FAMILIA
-========================================================= */
-
-buscarFamiliaInput.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            event.preventDefault();
-
-            buscarFamilia();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ENTER - COLABORADOR
-========================================================= */
-
-buscarColaboradorInput.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            event.preventDefault();
-
-            buscarColaborador();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   ENTER - LIBRO
-========================================================= */
-
-buscarLibroInput.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            event.preventDefault();
-
-            buscarLibro();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   SOLO NÚMEROS PARA CÓDIGO DE LIBRO
-========================================================= */
-
-buscarLibroInput.addEventListener(
-    "input",
-    function() {
-
-        this.value =
-            this.value
-                .replace(
-                    /\D/g,
-                    ""
-                )
-                .slice(
-                    0,
-                    8
-                );
-
-    }
-);
-
-
-/* =========================================================
-   FECHAS INICIALES
-========================================================= */
-
-fechaPrestamoInput.value =
-    obtenerFechaLocalInput();
-
-fechaDevolucionInput.value =
-    agregarUnMes(
-        fechaPrestamoInput.value
-    );
-
-
-/* =========================================================
-   SITIO INICIAL
-========================================================= */
-
-sitioPrestamoInput.value =
-    "F";
-
-
-/* =========================================================
-   INICIAR AUTENTICACIÓN
-========================================================= */
+fechaPrestamoInput.value = obtenerFechaLocalInput();
+fechaDevolucionInput.value = agregarUnMes(fechaPrestamoInput.value);
+sitioPrestamoInput.value = "F";
 
 iniciarAutenticacion();
-
 </script>
-
 </body>
 </html>
