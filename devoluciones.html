@@ -179,10 +179,6 @@
             background: #d8e8ee;
         }
 
-        /* ==============================
-           BOTONES DE TIPO (CENTRADOS Y MÁS ANCHOS)
-        ============================== */
-
         .botones-tipo {
             display: flex;
             justify-content: center;
@@ -376,10 +372,6 @@
         footer .creditos {
             color: #90a4ae;
         }
-
-        /* ==============================
-           MODAL DE DETALLE
-        ============================== */
 
         .modal-detalle {
             position: fixed;
@@ -1017,7 +1009,7 @@
             <div
                 id="advertenciaExtraviado"
                 class="advertencia">
-                ⚠️️ Si selecciona
+                ⚠ Si selecciona
                 <strong>Extraviado</strong>,
                 el libro quedará registrado como dado de baja.
             </div>
@@ -1025,7 +1017,7 @@
             <div
                 id="confirmacionEliminar"
                 class="confirmacion-eliminar">
-                ⚠️ Está a punto de eliminar este registro de préstamo.
+                ⚠️️ Está a punto de eliminar este registro de préstamo.
                 Esta acción no se puede deshacer.
             </div>
 
@@ -1087,18 +1079,13 @@
         return String(parseInt(numero, 10));
     }
 
-    function normalizarCodigoColaborador(valor) {
-        const texto = normalizar(valor);
-        if (!texto) return "";
-        const coincidencia = texto.match(/^C0*(\d+)$/);
-        if (!coincidencia) return texto;
-        return "C" + String(parseInt(coincidencia[1], 10));
-    }
-
     function formatearCodigo(valor) {
-        const codigo = normalizarCodigo(valor);
+        if (!valor && valor !== 0) return "—";
+        const codigo = String(valor).trim();
         if (!codigo) return "—";
-        return codigo.padStart(8, "0");
+        const numero = codigo.replace(/\D/g, "");
+        if (!numero) return codigo;
+        return numero.padStart(8, "0");
     }
 
     function escapeHtml(valor) {
@@ -1121,19 +1108,28 @@
         });
     }
 
+    function obtenerSitioPrestamo(item) {
+        return item.Sitiodeprestamos || item.sitiodeprestamos || item.biblioteca || item.sitio || "—";
+    }
+
+    function obtenerCodigoLibro(item) {
+        return item.CodigoLibro || item.codigolibro || item.codigo_libro || item.codigoLibro || item.Codigo || "—";
+    }
+
+    function obtenerNombreLibro(item) {
+        return item.NombreLibro || item.nombrelibro || item.nombre_libro || item.nombreLibro || item.titulo || item.libro || "—";
+    }
+
+    function obtenerUsuarioPresto(item) {
+        return item.usuarioPresto || item.usuarioRegistra || item.PrestadoPor || item.prestado_por || item.usuario || "—";
+    }
+
     function esColaborador(prestamo) {
         return (
             normalizar(prestamo.tipoPrestamo) === "COLABORADOR" ||
-            !!prestamo.CodigoColaborador
+            !!prestamo.CodigoColaborador ||
+            !!prestamo.codigocolaborador
         );
-    }
-
-    function ordenarPorFechaDescendente(lista) {
-        return [...lista].sort((a, b) => {
-            const fechaA = new Date(a.fechaPrestamo || 0).getTime();
-            const fechaB = new Date(b.fechaPrestamo || 0).getTime();
-            return fechaB - fechaA;
-        });
     }
 
     async function cargarDatos() {
@@ -1166,17 +1162,18 @@
                 return false;
             }
 
-            if (biblioteca && normalizar(item.biblioteca) !== biblioteca) {
+            const sitio = normalizar(obtenerSitioPrestamo(item));
+            if (biblioteca && sitio !== biblioteca) {
                 return false;
             }
 
             if (textoBusqueda) {
-                const familia = normalizar(item.FamiliaId);
-                const persona = normalizar(item.NombrePersona || item.PersonaId);
-                const colaborador = normalizar(item.NombreColaborador || item.CodigoColaborador);
-                const libro = normalizar(item.NombreLibro);
-                const codigoLibro = normalizar(item.CodigoLibro);
-                const usuarioPresto = normalizar(item.usuarioPresto || item.usuarioRegistra || item.PrestadoPor);
+                const familia = normalizar(item.FamiliaId || item.familiaid);
+                const persona = normalizar(item.NombrePersona || item.nombrepersona || item.PersonaId);
+                const colaborador = normalizar(item.NombreColaborador || item.nombrecolaborador || item.CodigoColaborador);
+                const libro = normalizar(obtenerNombreLibro(item));
+                const codigoLibro = normalizar(obtenerCodigoLibro(item));
+                const usuarioPresto = normalizar(obtenerUsuarioPresto(item));
 
                 const coincide =
                     familia.includes(textoBusqueda) ||
@@ -1222,24 +1219,27 @@
                 : `<span class="badge badge-afiliado">Afiliado</span>`;
 
             const familiaCodigo = colab
-                ? escapeHtml(item.CodigoColaborador || "—")
-                : escapeHtml(item.FamiliaId || "—");
+                ? escapeHtml(item.CodigoColaborador || item.codigocolaborador || "—")
+                : escapeHtml(item.FamiliaId || item.familiaid || "—");
 
             const personaNombre = colab
-                ? escapeHtml(item.NombreColaborador || item.CodigoColaborador || "—")
-                : escapeHtml(item.NombrePersona || item.PersonaId || "—");
+                ? escapeHtml(item.NombreColaborador || item.nombrecolaborador || item.CodigoColaborador || "—")
+                : escapeHtml(item.NombrePersona || item.nombrepersona || item.PersonaId || "—");
 
-            const usuarioQuePresto = escapeHtml(item.usuarioPresto || item.usuarioRegistra || item.PrestadoPor || "—");
+            const sitioPrestamo = escapeHtml(obtenerSitioPrestamo(item));
+            const codigoLibro = escapeHtml(formatearCodigo(obtenerCodigoLibro(item)));
+            const nombreLibro = escapeHtml(obtenerNombreLibro(item));
+            const usuarioQuePresto = escapeHtml(obtenerUsuarioPresto(item));
 
             tr.innerHTML = `
                 <td>${badgeTipo}</td>
                 <td>${familiaCodigo}</td>
                 <td class="nombre-columna">${personaNombre}</td>
-                <td><span class="badge badge-biblioteca">${escapeHtml(item.biblioteca || "—")}</span></td>
-                <td>${escapeHtml(formatearCodigo(item.CodigoLibro))}</td>
-                <td class="libro-columna">${escapeHtml(item.NombreLibro || "—")}</td>
-                <td>${formatearFecha(item.fechaPrestamo)}</td>
-                <td>${formatearFecha(item.fechaLimite || item.fechaDevolucion)}</td>
+                <td><span class="badge badge-biblioteca">${sitioPrestamo}</span></td>
+                <td>${codigoLibro}</td>
+                <td class="libro-columna">${nombreLibro}</td>
+                <td>${formatearFecha(item.fechaPrestamo || item.fechaprestamo)}</td>
+                <td>${formatearFecha(item.fechaLimite || item.fechalimite || item.fechaDevolucion)}</td>
                 <td>${usuarioQuePresto}</td>
                 <td><span class="badge badge-prestado">${escapeHtml(item.estado || "Prestado")}</span></td>
                 <td class="acciones">
@@ -1267,8 +1267,9 @@
         
         const hoy = new Date().setHours(0,0,0,0);
         const vencidos = prestamos.filter(p => {
-            if (!p.fechaLimite) return false;
-            return new Date(p.fechaLimite).getTime() < hoy;
+            const fLimite = p.fechaLimite || p.fechalimite;
+            if (!fLimite) return false;
+            return new Date(fLimite).getTime() < hoy;
         }).length;
         
         document.getElementById("totalVencidos").textContent = vencidos;
@@ -1321,19 +1322,19 @@
         document.getElementById("detalleTipo").className = colab ? "badge badge-colaborador" : "badge badge-afiliado";
 
         document.getElementById("etiquetaIdentificacion").textContent = colab ? "Código Colaborador" : "FamiliaId";
-        document.getElementById("detalleIdentificacion").textContent = (colab ? item.CodigoColaborador : item.FamiliaId) || "—";
+        document.getElementById("detalleIdentificacion").textContent = (colab ? (item.CodigoColaborador || item.codigocolaborador) : (item.FamiliaId || item.familiaid)) || "—";
 
         document.getElementById("etiquetaPersona").textContent = colab ? "Nombre Colaborador" : "Nombre Persona";
-        document.getElementById("detallePersona").textContent = (colab ? item.NombreColaborador : item.NombrePersona) || "—";
+        document.getElementById("detallePersona").textContent = (colab ? (item.NombreColaborador || item.nombrecolaborador) : (item.NombrePersona || item.nombrepersona)) || "—";
 
-        document.getElementById("detallePersonaId").textContent = item.PersonaId || "—";
-        document.getElementById("detalleArea").textContent = item.Area || "—";
-        document.getElementById("detalleBiblioteca").textContent = item.biblioteca || "—";
-        document.getElementById("detalleLibro").textContent = item.NombreLibro || "—";
-        document.getElementById("detalleCodigo").textContent = formatearCodigo(item.CodigoLibro);
-        document.getElementById("detalleFechaPrestamo").textContent = formatearFecha(item.fechaPrestamo);
-        document.getElementById("detalleFechaLimite").textContent = formatearFecha(item.fechaLimite);
-        document.getElementById("detalleUsuarioPresto").textContent = item.usuarioPresto || item.usuarioRegistra || item.PrestadoPor || "—";
+        document.getElementById("detallePersonaId").textContent = item.PersonaId || item.personaid || "—";
+        document.getElementById("detalleArea").textContent = item.Area || item.area || "—";
+        document.getElementById("detalleBiblioteca").textContent = obtenerSitioPrestamo(item);
+        document.getElementById("detalleLibro").textContent = obtenerNombreLibro(item);
+        document.getElementById("detalleCodigo").textContent = formatearCodigo(obtenerCodigoLibro(item));
+        document.getElementById("detalleFechaPrestamo").textContent = formatearFecha(item.fechaPrestamo || item.fechaprestamo);
+        document.getElementById("detalleFechaLimite").textContent = formatearFecha(item.fechaLimite || item.fechalimite);
+        document.getElementById("detalleUsuarioPresto").textContent = obtenerUsuarioPresto(item);
     }
 
     function cerrarModal() {
@@ -1342,7 +1343,6 @@
         document.getElementById("comentarioDevolucion").value = "";
     }
 
-    // Event Listeners
     document.getElementById("btnBuscar").addEventListener("click", aplicarFiltros);
     document.getElementById("buscar").addEventListener("keyup", (e) => {
         if (e.key === "Enter") aplicarFiltros();
