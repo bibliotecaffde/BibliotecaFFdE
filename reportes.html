@@ -4439,23 +4439,10 @@
                     }
 
 
-                    let fechaDevolucion =
-                        prestamo.fechaDevolucion;
-
-
-                    if (
-
-                        estado ===
-                        "Devuelto" &&
-
-                        prestamo.fechaDevolucionReal
-
-                    ) {
-
-                        fechaDevolucion =
-                            prestamo.fechaDevolucionReal;
-
-                    }
+                   let fechaDevolucion = null;
+if (estado === "Devuelto") {
+    fechaDevolucion = prestamo.fechaDevolucionReal || prestamo.fechaDevolucion;
+}
 
 
                     const sitio =
