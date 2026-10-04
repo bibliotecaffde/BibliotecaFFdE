@@ -7,7 +7,7 @@
 
     <style>
         html {
-            visibility: hidden;
+            visibility: visible;
             scroll-behavior: smooth;
         }
 
@@ -107,10 +107,6 @@
             color: #009ddc;
         }
 
-        .tarjeta-numero.vencido-alerta {
-            color: #c62828;
-        }
-
         .contenedor-busqueda {
             background: white;
             border: 1px solid #dfeaf0;
@@ -185,9 +181,8 @@
 
         .botones-tipo {
             display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 12px;
+            gap: 6px;
+            margin-top: 9px;
         }
 
         .boton-tipo {
@@ -195,12 +190,10 @@
             background: white;
             color: #546e7a;
             border-radius: 6px;
-            padding: 9px 24px;
-            min-width: 130px;
+            padding: 7px 12px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            text-align: center;
         }
 
         .boton-tipo:hover {
@@ -226,7 +219,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1150px;
+            min-width: 1050px;
         }
 
         thead {
@@ -272,12 +265,6 @@
             color: #856404;
         }
 
-        .badge-vencido {
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-        }
-
         .badge-colaborador {
             background: #e3f2fd;
             color: #1565c0;
@@ -286,11 +273,6 @@
         .badge-afiliado {
             background: #f3e5f5;
             color: #6a1b9a;
-        }
-
-        .badge-biblioteca {
-            background: #e8f5e9;
-            color: #2e7d32;
         }
 
         .acciones {
@@ -378,11 +360,6 @@
             flex-wrap: wrap;
         }
 
-        footer .version,
-        footer .creditos {
-            color: #90a4ae;
-        }
-
         .modal-detalle {
             position: fixed;
             inset: 0;
@@ -438,10 +415,6 @@
             padding: 15px 17px;
         }
 
-        .detalle-tipo {
-            margin-bottom: 12px;
-        }
-
         .detalle-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -480,6 +453,7 @@
             font-weight: bold;
         }
 
+        .campo-detalle select,
         .campo-detalle textarea {
             width: 100%;
             border: 1px solid #cfd8dc;
@@ -487,29 +461,11 @@
             padding: 8px 9px;
             font-family: Arial, Helvetica, sans-serif;
             font-size: 13px;
+        }
+
+        .campo-detalle textarea {
             min-height: 65px;
             resize: vertical;
-        }
-
-        .campo-detalle textarea:focus {
-            outline: none;
-            border-color: #009ddc;
-            box-shadow: 0 0 0 2px rgba(0, 157, 220, 0.10);
-        }
-
-        .confirmacion-eliminar {
-            background: #ffebee;
-            color: #b71c1c;
-            border: 1px solid #ffcdd2;
-            border-radius: 6px;
-            padding: 9px 10px;
-            margin-top: 12px;
-            font-size: 11px;
-            display: none;
-        }
-
-        .confirmacion-eliminar.mostrar {
-            display: block;
         }
 
         .detalle-acciones {
@@ -535,26 +491,14 @@
             color: #455a64;
         }
 
-        .btn-cancelar:hover {
-            background: #d8e8ee;
-        }
-
         .btn-confirmar-devolucion {
             background: #009ddc;
             color: white;
         }
 
-        .btn-confirmar-devolucion:hover {
-            background: #008bc4;
-        }
-
         .btn-confirmar-eliminar {
             background: #c62828;
             color: white;
-        }
-
-        .btn-confirmar-eliminar:hover {
-            background: #8e0000;
         }
 
         .mensaje {
@@ -580,38 +524,6 @@
         .mensaje.mostrar {
             display: block;
         }
-
-        @media (max-width: 900px) {
-            main {
-                padding: 15px;
-            }
-
-            .resumen {
-                grid-template-columns: 1fr;
-            }
-
-            .fila-busqueda {
-                flex-wrap: wrap;
-            }
-
-            .campo-busqueda {
-                width: 100%;
-                min-width: 100%;
-            }
-
-            .filtro-select {
-                flex: 1;
-                min-width: 150px;
-            }
-
-            .detalle-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .detalle {
-                max-height: 92vh;
-            }
-        }
     </style>
 </head>
 
@@ -619,19 +531,10 @@
 
 <header>
     <div class="encabezado-izquierdo"></div>
-
     <div class="titulo-encabezado">
-        <div class="titulo-encabezado-principal">
-            Devoluciones
-        </div>
+        <div class="titulo-encabezado-principal">Devoluciones</div>
     </div>
-
-    <button
-        type="button"
-        class="boton-volver"
-        onclick="window.location.href='index.html'">
-        Volver al inicio
-    </button>
+    <button type="button" class="boton-volver" onclick="window.location.href='index.html'">Volver al inicio</button>
 </header>
 
 <main>
@@ -639,84 +542,41 @@
 
     <section class="resumen">
         <div class="tarjeta">
-            <div class="tarjeta-titulo">
-                Préstamos activos
-            </div>
-            <div class="tarjeta-numero" id="totalPrestamos">
-                0
-            </div>
+            <div class="tarjeta-titulo">Préstamos activos</div>
+            <div class="tarjeta-numero" id="totalPrestamos">0</div>
         </div>
-
         <div class="tarjeta">
-            <div class="tarjeta-titulo">
-                Préstamos vencidos
-            </div>
-            <div class="tarjeta-numero" id="totalVencidos">
-                0
-            </div>
+            <div class="tarjeta-titulo">Préstamos vencidos</div>
+            <div class="tarjeta-numero" id="totalVencidos">0</div>
         </div>
-
         <div class="tarjeta">
-            <div class="tarjeta-titulo">
-                Libros disponibles
-            </div>
-            <div class="tarjeta-numero" id="totalDisponibles">
-                0
-            </div>
+            <div class="tarjeta-titulo">Libros disponibles</div>
+            <div class="tarjeta-numero" id="totalDisponibles">0</div>
         </div>
     </section>
 
     <section class="contenedor-busqueda">
         <div class="fila-busqueda">
-            <input
-                type="text"
-                id="buscar"
-                class="campo-busqueda"
-                placeholder="Buscar por familia, persona, colaborador, libro o código..."
-                autocomplete="off">
-
-            <select
-                id="filtroBiblioteca"
-                class="filtro-select">
-                <option value="">
-                    Sitio Préstamos
-                </option>
+            <input type="text" id="buscar" class="campo-busqueda" placeholder="Buscar por familia, persona, colaborador, libro o código..." autocomplete="off">
+            <select id="filtroTipo" class="filtro-select">
+                <option value="">Todos los tipos</option>
+                <option value="AFILIADO">Afiliado</option>
+                <option value="COLABORADOR">Colaborador</option>
+            </select>
+            <select id="filtroBiblioteca" class="filtro-select">
+                <option value="">Todos los sitios</option>
                 <option value="F">F</option>
                 <option value="M">M</option>
                 <option value="N">N</option>
                 <option value="R">R</option>
                 <option value="Z">Z</option>
             </select>
-
-            <button
-                type="button"
-                id="btnBuscar"
-                class="boton boton-buscar">
-                🔍 Buscar
-            </button>
-
-            <button
-                type="button"
-                id="btnLimpiar"
-                class="boton boton-limpiar">
-                Limpiar
-            </button>
+            <button type="button" id="btnBuscar" class="boton boton-buscar">🔍 Buscar</button>
+            <button type="button" id="btnLimpiar" class="boton boton-limpiar">Limpiar</button>
         </div>
-
         <div class="botones-tipo">
-            <button
-                type="button"
-                id="btnAfiliados"
-                class="boton-tipo">
-                Afiliados
-            </button>
-
-            <button
-                type="button"
-                id="btnColaboradores"
-                class="boton-tipo">
-                Colaboradores
-            </button>
+            <button type="button" id="btnAfiliados" class="boton-tipo">Afiliados</button>
+            <button type="button" id="btnColaboradores" class="boton-tipo">Colaboradores</button>
         </div>
     </section>
 
@@ -727,47 +587,24 @@
                     <th>Tipo</th>
                     <th>Familia / Código</th>
                     <th>Persona / Colaborador</th>
-                    <th>Sitiodeprestamos</th>
+                    <th>Biblioteca</th>
                     <th>Código del libro</th>
                     <th>Nombre del libro</th>
                     <th>Préstamo</th>
                     <th>Devolución</th>
-                    <th>Prestado por</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
-
             <tbody id="tablaPrestamos"></tbody>
         </table>
 
-        <div
-            id="sinResultados"
-            class="sin-resultados"
-            style="display:none;">
-            No se encontraron préstamos.
-        </div>
+        <div id="sinResultados" class="sin-resultados" style="display:none;">No se encontraron préstamos.</div>
 
         <div class="paginacion">
-            <button
-                type="button"
-                id="botonAnterior"
-                class="boton-pagina">
-                ← Anterior
-            </button>
-
-            <span
-                id="informacionPagina"
-                class="informacion-pagina">
-                Página 1
-            </span>
-
-            <button
-                type="button"
-                id="botonSiguiente"
-                class="boton-pagina">
-                Siguiente →
-            </button>
+            <button type="button" id="botonAnterior" class="boton-pagina">← Anterior</button>
+            <span id="informacionPagina" class="informacion-pagina">Página 1</span>
+            <button type="button" id="botonSiguiente" class="boton-pagina">Siguiente →</button>
         </div>
     </section>
 </main>
@@ -782,108 +619,45 @@
     <div class="detalle">
         <div class="detalle-cabecera">
             <h2 id="tituloDetalle">Detalle del préstamo</h2>
-            <button
-                type="button"
-                id="btnCerrarDetalle"
-                class="btn-cerrar">
-                ×
-            </button>
+            <button type="button" id="btnCerrarDetalle" class="btn-cerrar">×</button>
         </div>
-
         <div class="detalle-contenido">
-            <div class="detalle-tipo">
-                <span
-                    id="detalleTipo"
-                    class="badge badge-afiliado">
-                    Afiliado
-                </span>
-            </div>
-
             <div class="detalle-grid">
                 <div class="detalle-item">
-                    <div class="detalle-etiqueta" id="etiquetaIdentificacion">FamiliaId</div>
+                    <div class="detalle-etiqueta">Familia / Código</div>
                     <div class="detalle-valor" id="detalleIdentificacion">—</div>
                 </div>
-
                 <div class="detalle-item">
-                    <div class="detalle-etiqueta" id="etiquetaPersona">Nombre</div>
+                    <div class="detalle-etiqueta">Nombre</div>
                     <div class="detalle-valor" id="detallePersona">—</div>
                 </div>
-
-                <div class="detalle-item" id="detallePersonaIdContenedor">
-                    <div class="detalle-etiqueta" id="etiquetaPersonaId">PersonaId</div>
-                    <div class="detalle-valor" id="detallePersonaId">—</div>
-                </div>
-
-                <div class="detalle-item" id="detalleAreaContenedor">
-                    <div class="detalle-etiqueta">Área</div>
-                    <div class="detalle-valor" id="detalleArea">—</div>
-                </div>
-
                 <div class="detalle-item">
                     <div class="detalle-etiqueta">Biblioteca</div>
                     <div class="detalle-valor" id="detalleBiblioteca">—</div>
                 </div>
-
                 <div class="detalle-item">
                     <div class="detalle-etiqueta">Libro</div>
                     <div class="detalle-valor" id="detalleLibro">—</div>
                 </div>
-
                 <div class="detalle-item">
-                    <div class="detalle-etiqueta">Código del libro</div>
+                    <div class="detalle-etiqueta">Código libro</div>
                     <div class="detalle-valor" id="detalleCodigo">—</div>
                 </div>
-
                 <div class="detalle-item">
-                    <div class="detalle-etiqueta">Fecha de préstamo</div>
+                    <div class="detalle-etiqueta">Fecha Préstamo</div>
                     <div class="detalle-valor" id="detalleFechaPrestamo">—</div>
-                </div>
-
-                <div class="detalle-item">
-                    <div class="detalle-etiqueta">Fecha límite</div>
-                    <div class="detalle-valor" id="detalleFechaLimite">—</div>
-                </div>
-
-                <div class="detalle-item">
-                    <div class="detalle-etiqueta">Prestado por</div>
-                    <div class="detalle-valor" id="detalleUsuarioPresto">—</div>
                 </div>
             </div>
 
             <div id="contenedorComentario" class="campo-detalle">
                 <label for="comentarioDevolucion">Comentario de devolución</label>
-                <textarea
-                    id="comentarioDevolucion"
-                    placeholder="Escriba un comentario si es necesario..."></textarea>
-            </div>
-
-            <div id="confirmacionEliminar" class="confirmacion-eliminar">
-                ⚠ Está a punto de eliminar este registro de préstamo. Esta acción no se puede deshacer.
+                <textarea id="comentarioDevolucion" placeholder="Escriba un comentario si es necesario..."></textarea>
             </div>
 
             <div class="detalle-acciones">
-                <button
-                    type="button"
-                    id="btnCancelarDetalle"
-                    class="btn-modal btn-cancelar">
-                    Cancelar
-                </button>
-
-                <button
-                    type="button"
-                    id="btnConfirmarDevolucion"
-                    class="btn-modal btn-confirmar-devolucion">
-                    Devolver
-                </button>
-
-                <button
-                    type="button"
-                    id="btnConfirmarEliminar"
-                    class="btn-modal btn-confirmar-eliminar"
-                    style="display:none;">
-                    Eliminar
-                </button>
+                <button type="button" id="btnCancelarDetalle" class="btn-modal btn-cancelar">Cancelar</button>
+                <button type="button" id="btnConfirmarDevolucion" class="btn-modal btn-confirmar-devolucion">Devolver</button>
+                <button type="button" id="btnConfirmarEliminar" class="btn-modal btn-confirmar-eliminar" style="display:none;">Eliminar</button>
             </div>
         </div>
     </div>
@@ -896,17 +670,33 @@
 <script>
     let prestamos = [];
     let prestamosFiltrados = [];
-
     let paginaActual = 1;
     const registrosPorPagina = 25;
-
     let prestamoSeleccionado = null;
+    let modoDetalle = "devolucion";
     let filtroTipoBoton = "";
 
     function normalizar(valor) {
-        return String(valor ?? "")
-            .trim()
-            .toUpperCase();
+        return String(valor ?? "").trim().toUpperCase();
+    }
+
+    function normalizarCodigo(valor) {
+        const texto = String(valor ?? "").trim();
+        if (!texto) return "";
+        const numero = texto.replace(/\D/g, "");
+        return numero ? String(parseInt(numero, 10)) : "";
+    }
+
+    function normalizarCodigoColaborador(valor) {
+        const texto = normalizar(valor);
+        if (!texto) return "";
+        const coincidencia = texto.match(/^C0*(\d+)$/);
+        return coincidencia ? "C" + String(parseInt(coincidencia[1], 10)) : texto;
+    }
+
+    function formatearCodigo(valor) {
+        const codigo = normalizarCodigo(valor);
+        return codigo ? codigo.padStart(8, "0") : "—";
     }
 
     function escapeHtml(valor) {
@@ -918,175 +708,80 @@
             .replace(/'/g, "&#039;");
     }
 
-    function formatearCodigo(valor) {
-        if (!valor && valor !== 0) return "—";
-        const codigo = String(valor).trim();
-        if (!codigo) return "—";
-        const numero = codigo.replace(/\D/g, "");
-        if (!numero) return codigo;
-        return numero.padStart(8, "0");
-    }
-
     function formatearFecha(fecha) {
         if (!fecha) return "—";
-        const fechaObj = parsearFecha(fecha);
-        if (!fechaObj || isNaN(fechaObj.getTime())) return "—";
-        return fechaObj.toLocaleDateString("es-GT", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        });
-    }
-
-    function parsearFecha(fechaStr) {
-        if (!fechaStr) return null;
-        if (fechaStr instanceof Date) return fechaStr;
-        
-        if (typeof fechaStr === "string" && fechaStr.includes("-") && !fechaStr.includes("T")) {
-            const partes = fechaStr.split("-");
-            if (partes.length === 3) {
-                return new Date(partes[0], partes[1] - 1, partes[2]);
-            }
-        }
-        return new Date(fechaStr);
-    }
-
-    // Evaluación para determinar si la fecha límite ya venció
-    function estaVencido(item) {
-        const fechaLim = item.fechaLimite || item.fechalimite || item.fechaDevolucion;
-        if (!fechaLim) return false;
-        
-        const fechaObj = parsearFecha(fechaLim);
-        if (!fechaObj || isNaN(fechaObj.getTime())) return false;
-
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
-
-        const limite = new Date(fechaObj);
-        limite.setHours(0, 0, 0, 0);
-
-        return limite < hoy;
-    }
-
-    // Búsqueda exhaustiva para Sitiodeprestamos
-    function obtenerSitioPrestamo(item) {
-        const claves = [
-            "Sitiodeprestamos",
-            "sitiodeprestamos",
-            "sitioDePrestamos",
-            "sitio_de_prestamos",
-            "sitio",
-            "Sitio",
-            "biblioteca",
-            "Biblioteca",
-            "sitioPrestamo",
-            "sitioprestamo"
-        ];
-
-        for (const clave of claves) {
-            if (item[clave] !== undefined && item[clave] !== null && String(item[clave]).trim() !== "") {
-                return String(item[clave]).trim();
-            }
-        }
-        return "—";
-    }
-
-    function obtenerCodigoLibro(item) {
-        return item.CodigoLibro || item.codigolibro || item.codigo_libro || item.codigoLibro || item.Codigo || "—";
-    }
-
-    function obtenerNombreLibro(item) {
-        return item.NombreLibro || item.nombrelibro || item.nombre_libro || item.nombreLibro || item.titulo || item.libro || "—";
-    }
-
-    function obtenerUsuarioPresto(item) {
-        return item.usuarioPresto || item.usuariopresto || item.usuarioRegistra || item.PrestadoPor || item.prestado_por || item.usuario || "—";
+        const fechaObj = new Date(fecha);
+        return isNaN(fechaObj.getTime()) ? "—" : fechaObj.toLocaleDateString("es-GT", { day: "2-digit", month: "2-digit", year: "numeric" });
     }
 
     function esColaborador(prestamo) {
-        return (
-            normalizar(prestamo.tipoPrestamo || prestamo.tipoprestamo) === "COLABORADOR" ||
-            !!prestamo.CodigoColaborador ||
-            !!prestamo.codigocolaborador
-        );
+        return normalizar(prestamo.tipoPrestamo) === "COLABORADOR" || !!prestamo.CodigoColaborador;
+    }
+
+    function mostrarMensaje(texto, tipo) {
+        const el = document.getElementById("mensaje");
+        el.className = `mensaje ${tipo} mostrar`;
+        el.innerText = texto;
+        setTimeout(() => el.classList.remove("mostrar"), 4000);
     }
 
     async function cargarDatos() {
-        const { data, error } = await supabaseClient
-            .from("prestamos")
-            .select("*")
-            .eq("estado", "Prestado")
-            .order("fechaPrestamo", { ascending: false });
+        try {
+            const { data, error } = await supabaseClient
+                .from("prestamos")
+                .select("*")
+                .eq("estado", "Prestado")
+                .order("fechaPrestamo", { ascending: false });
 
-        if (error) {
-            console.error(error);
-            mostrarMensaje("No fue posible cargar los préstamos.", "error");
-            return;
+            if (error) throw error;
+
+            const { data: libros } = await supabaseClient.from("libros").select("codigoLibro, Biblioteca");
+            const mapaLibros = {};
+            (libros || []).forEach(l => {
+                const c = normalizarCodigo(l.codigoLibro);
+                if (c) mapaLibros[c] = l;
+            });
+
+            prestamos = (data || []).map(p => ({
+                ...p,
+                Biblioteca: p.Biblioteca || mapaLibros[normalizarCodigo(p.codigoLibro)]?.Biblioteca || "—"
+            }));
+
+            aplicarFiltros();
+            actualizarTarjetas();
+        } catch (err) {
+            console.error(err);
+            mostrarMensaje("Error al cargar préstamos.", "error");
         }
-
-        prestamos = data || [];
-        aplicarFiltros();
-        actualizarResumen();
-        cargarLibrosDisponibles();
     }
 
-    async function cargarLibrosDisponibles() {
-        // Intenta obtener el total de libros disponibles desde la tabla de libros
-        try {
-            const { count, error } = await supabaseClient
-                .from("libros")
-                .select("*", { count: "exact", head: true })
-                .eq("estado", "Disponible");
-
-            if (!error && count !== null) {
-                document.getElementById("totalDisponibles").textContent = count;
-                return;
-            }
-        } catch (e) {
-            console.warn("Tabla 'libros' no encontrada o inaccesible.", e);
-        }
-
-        // Si no existe tabla 'libros', realiza un cálculo estimado basado en la tabla actual
-        const codigosUnicos = new Set(prestamos.map(p => obtenerCodigoLibro(p)).filter(c => c !== "—"));
-        document.getElementById("totalDisponibles").textContent = codigosUnicos.size;
+    function actualizarTarjetas() {
+        document.getElementById("totalPrestamos").innerText = prestamos.length;
+        const hoy = new Date();
+        const vencidos = prestamos.filter(p => p.fechaLimite && new Date(p.fechaLimite) < hoy).length;
+        document.getElementById("totalVencidos").innerText = vencidos;
     }
 
     function aplicarFiltros() {
-        const textoBusqueda = normalizar(document.getElementById("buscar").value);
-        const biblioteca = normalizar(document.getElementById("filtroBiblioteca").value);
+        const query = normalizar(document.getElementById("buscar").value);
+        const tipoSelect = normalizar(document.getElementById("filtroTipo").value);
+        const biblioSelect = normalizar(document.getElementById("filtroBiblioteca").value);
 
-        prestamosFiltrados = prestamos.filter(item => {
-            const esColab = esColaborador(item);
-            const tipoItem = esColab ? "COLABORADOR" : "AFILIADO";
+        prestamosFiltrados = prestamos.filter(p => {
+            const esColab = esColaborador(p);
+            const tipoP = esColab ? "COLABORADOR" : "AFILIADO";
 
-            if (filtroTipoBoton && tipoItem !== filtroTipoBoton) {
-                return false;
+            if (filtroTipoBoton && tipoP !== filtroTipoBoton) return false;
+            if (tipoSelect && tipoP !== tipoSelect) return false;
+            if (biblioSelect && normalizar(p.Biblioteca) !== biblioSelect) return false;
+
+            if (query) {
+                const iden = normalizar(esColab ? p.CodigoColaborador : p.familiaId);
+                const nombre = normalizar(esColab ? p.NombreColaborador : p.nombrePersona);
+                const libro = normalizar(p.nombreLibro);
+                const cod = normalizarCodigo(p.codigoLibro);
+                return iden.includes(query) || nombre.includes(query) || libro.includes(query) || cod.includes(query);
             }
-
-            const sitio = normalizar(obtenerSitioPrestamo(item));
-            if (biblioteca && sitio !== biblioteca) {
-                return false;
-            }
-
-            if (textoBusqueda) {
-                const familia = normalizar(item.FamiliaId || item.familiaid);
-                const persona = normalizar(item.NombrePersona || item.nombrepersona || item.PersonaId);
-                const colaborador = normalizar(item.NombreColaborador || item.nombrecolaborador || item.CodigoColaborador);
-                const libro = normalizar(obtenerNombreLibro(item));
-                const codigoLibro = normalizar(obtenerCodigoLibro(item));
-                const usuarioPresto = normalizar(obtenerUsuarioPresto(item));
-
-                const coincide =
-                    familia.includes(textoBusqueda) ||
-                    persona.includes(textoBusqueda) ||
-                    colaborador.includes(textoBusqueda) ||
-                    libro.includes(textoBusqueda) ||
-                    codigoLibro.includes(textoBusqueda) ||
-                    usuarioPresto.includes(textoBusqueda);
-
-                if (!coincide) return false;
-            }
-
             return true;
         });
 
@@ -1096,264 +791,180 @@
 
     function renderizarTabla() {
         const tbody = document.getElementById("tablaPrestamos");
-        const divSinResultados = document.getElementById("sinResultados");
         tbody.innerHTML = "";
 
         if (prestamosFiltrados.length === 0) {
-            divSinResultados.style.display = "block";
-            actualizarPaginacion(0);
+            document.getElementById("sinResultados").style.display = "block";
+            document.getElementById("informacionPagina").innerText = "Página 0 de 0";
             return;
         }
 
-        divSinResultados.style.display = "none";
-
+        document.getElementById("sinResultados").style.display = "none";
         const inicio = (paginaActual - 1) * registrosPorPagina;
-        const fin = inicio + registrosPorPagina;
-        const paginaDatos = prestamosFiltrados.slice(inicio, fin);
+        const paginados = prestamosFiltrados.slice(inicio, inicio + registrosPorPagina);
 
-        paginaDatos.forEach(item => {
+        paginados.forEach(p => {
+            const esColab = esColaborador(p);
             const tr = document.createElement("tr");
-
-            const colab = esColaborador(item);
-            const badgeTipo = colab
-                ? `<span class="badge badge-colaborador">Colaborador</span>`
-                : `<span class="badge badge-afiliado">Afiliado</span>`;
-
-            const familiaCodigo = colab
-                ? escapeHtml(item.CodigoColaborador || item.codigocolaborador || "—")
-                : escapeHtml(item.FamiliaId || item.familiaid || "—");
-
-            const personaNombre = colab
-                ? escapeHtml(item.NombreColaborador || item.nombrecolaborador || item.CodigoColaborador || "—")
-                : escapeHtml(item.NombrePersona || item.nombrepersona || item.PersonaId || "—");
-
-            const sitioPrestamo = escapeHtml(obtenerSitioPrestamo(item));
-            const codigoLibro = escapeHtml(formatearCodigo(obtenerCodigoLibro(item)));
-            const nombreLibro = escapeHtml(obtenerNombreLibro(item));
-            const usuarioQuePresto = escapeHtml(obtenerUsuarioPresto(item));
-
-            // Actualización dinámica del Estado según la fecha límite
-            const vencido = estaVencido(item);
-            const textoEstado = vencido ? "Vencido" : (item.estado || "Prestado");
-            const badgeEstado = vencido
-                ? `<span class="badge badge-vencido">Vencido</span>`
-                : `<span class="badge badge-prestado">${escapeHtml(textoEstado)}</span>`;
-
             tr.innerHTML = `
-                <td>${badgeTipo}</td>
-                <td>${familiaCodigo}</td>
-                <td class="nombre-columna">${personaNombre}</td>
-                <td><span class="badge badge-biblioteca">${sitioPrestamo}</span></td>
-                <td>${codigoLibro}</td>
-                <td class="libro-columna">${nombreLibro}</td>
-                <td>${formatearFecha(item.fechaPrestamo || item.fechaprestamo)}</td>
-                <td>${formatearFecha(item.fechaLimite || item.fechalimite || item.fechaDevolucion)}</td>
-                <td>${usuarioQuePresto}</td>
-                <td>${badgeEstado}</td>
+                <td><span class="badge ${esColab ? 'badge-colaborador' : 'badge-afiliado'}">${esColab ? 'Colaborador' : 'Afiliado'}</span></td>
+                <td>${escapeHtml(esColab ? p.CodigoColaborador : p.familiaId)}</td>
+                <td class="nombre-columna">${escapeHtml(esColab ? p.NombreColaborador : p.nombrePersona)}</td>
+                <td>${escapeHtml(p.Biblioteca)}</td>
+                <td>${formatearCodigo(p.codigoLibro)}</td>
+                <td class="libro-columna">${escapeHtml(p.nombreLibro)}</td>
+                <td>${formatearFecha(p.fechaPrestamo)}</td>
+                <td>${formatearFecha(p.fechaLimite)}</td>
+                <td><span class="badge badge-prestado">Prestado</span></td>
                 <td class="acciones">
-                    <button type="button" class="btn-accion btn-devolver" onclick="abrirModalDevolucion('${item.id}')">Devolver</button>
-                    <button type="button" class="btn-accion btn-eliminar" onclick="abrirModalEliminar('${item.id}')">Eliminar</button>
+                    <button class="btn-accion btn-devolver" onclick="abrirModal(${p.id}, 'devolucion')">Devolver</button>
+                    <button class="btn-accion btn-eliminar" onclick="abrirModal(${p.id}, 'eliminar')">Eliminar</button>
                 </td>
             `;
-
             tbody.appendChild(tr);
         });
 
-        actualizarPaginacion(prestamosFiltrados.length);
-    }
-
-    function actualizarPaginacion(totalRegistros) {
-        const totalPaginas = Math.ceil(totalRegistros / registrosPorPagina) || 1;
-        document.getElementById("informacionPagina").textContent = `Página ${paginaActual} de ${totalPaginas}`;
-
-        document.getElementById("botonAnterior").disabled = paginaActual <= 1;
+        const totalPaginas = Math.ceil(prestamosFiltrados.length / registrosPorPagina);
+        document.getElementById("informacionPagina").innerText = `Página ${paginaActual} de ${totalPaginas}`;
+        document.getElementById("botonAnterior").disabled = paginaActual === 1;
         document.getElementById("botonSiguiente").disabled = paginaActual >= totalPaginas;
     }
 
-    function actualizarResumen() {
-        document.getElementById("totalPrestamos").textContent = prestamos.length;
-        
-        // Cálculo de préstamos vencidos
-        const cantidadVencidos = prestamos.filter(p => estaVencido(p)).length;
-        const elemVencidos = document.getElementById("totalVencidos");
-        elemVencidos.textContent = cantidadVencidos;
-
-        if (cantidadVencidos > 0) {
-            elemVencidos.classList.add("vencido-alerta");
-        } else {
-            elemVencidos.classList.remove("vencido-alerta");
-        }
-    }
-
-    function mostrarMensaje(texto, tipo) {
-        const mensajeDiv = document.getElementById("mensaje");
-        mensajeDiv.textContent = texto;
-        mensajeDiv.className = `mensaje ${tipo} mostrar`;
-        setTimeout(() => {
-            mensajeDiv.className = "mensaje";
-        }, 4000);
-    }
-
-    function abrirModalDevolucion(id) {
-        prestamoSeleccionado = prestamos.find(p => String(p.id) === String(id));
+    function abrirModal(id, modo) {
+        prestamoSeleccionado = prestamos.find(p => p.id === id);
         if (!prestamoSeleccionado) return;
 
-        document.getElementById("tituloDetalle").textContent = "Procesar Devolución";
-        document.getElementById("btnConfirmarDevolucion").style.display = "inline-block";
-        document.getElementById("btnConfirmarEliminar").style.display = "none";
-        document.getElementById("confirmacionEliminar").classList.remove("mostrar");
-        document.getElementById("contenedorComentario").style.display = "block";
+        modoDetalle = modo;
+        const esColab = esColaborador(prestamoSeleccionado);
 
-        cargarDatosModal();
+        document.getElementById("detalleIdentificacion").innerText = esColab ? prestamoSeleccionado.CodigoColaborador : prestamoSeleccionado.familiaId;
+        document.getElementById("detallePersona").innerText = esColab ? prestamoSeleccionado.NombreColaborador : prestamoSeleccionado.nombrePersona;
+        document.getElementById("detalleBiblioteca").innerText = prestamoSeleccionado.Biblioteca;
+        document.getElementById("detalleLibro").innerText = prestamoSeleccionado.nombreLibro;
+        document.getElementById("detalleCodigo").innerText = formatearCodigo(prestamoSeleccionado.codigoLibro);
+        document.getElementById("detalleFechaPrestamo").innerText = formatearFecha(prestamoSeleccionado.fechaPrestamo);
+
+        document.getElementById("btnConfirmarDevolucion").style.display = modo === "devolucion" ? "inline-block" : "none";
+        document.getElementById("btnConfirmarEliminar").style.display = modo === "eliminar" ? "inline-block" : "none";
+        document.getElementById("contenedorComentario").style.display = modo === "devolucion" ? "block" : "none";
+
         document.getElementById("modalDetalle").classList.add("mostrar");
-    }
-
-    function abrirModalEliminar(id) {
-        prestamoSeleccionado = prestamos.find(p => String(p.id) === String(id));
-        if (!prestamoSeleccionado) return;
-
-        document.getElementById("tituloDetalle").textContent = "Eliminar Registro";
-        document.getElementById("btnConfirmarDevolucion").style.display = "none";
-        document.getElementById("btnConfirmarEliminar").style.display = "inline-block";
-        document.getElementById("confirmacionEliminar").classList.add("mostrar");
-        document.getElementById("contenedorComentario").style.display = "none";
-
-        cargarDatosModal();
-        document.getElementById("modalDetalle").classList.add("mostrar");
-    }
-
-    function cargarDatosModal() {
-        const item = prestamoSeleccionado;
-        const colab = esColaborador(item);
-
-        document.getElementById("detalleTipo").textContent = colab ? "Colaborador" : "Afiliado";
-        document.getElementById("detalleTipo").className = colab ? "badge badge-colaborador" : "badge badge-afiliado";
-
-        document.getElementById("etiquetaIdentificacion").textContent = colab ? "Código Colaborador" : "FamiliaId";
-        document.getElementById("detalleIdentificacion").textContent = (colab ? (item.CodigoColaborador || item.codigocolaborador) : (item.FamiliaId || item.familiaid)) || "—";
-
-        document.getElementById("etiquetaPersona").textContent = colab ? "Nombre Colaborador" : "Nombre Persona";
-        document.getElementById("detallePersona").textContent = (colab ? (item.NombreColaborador || item.nombrecolaborador) : (item.NombrePersona || item.nombrepersona)) || "—";
-
-        document.getElementById("detallePersonaId").textContent = item.PersonaId || item.personaid || "—";
-        document.getElementById("detalleArea").textContent = item.Area || item.area || "—";
-        document.getElementById("detalleBiblioteca").textContent = obtenerSitioPrestamo(item);
-        document.getElementById("detalleLibro").textContent = obtenerNombreLibro(item);
-        document.getElementById("detalleCodigo").textContent = formatearCodigo(obtenerCodigoLibro(item));
-        document.getElementById("detalleFechaPrestamo").textContent = formatearFecha(item.fechaPrestamo || item.fechaprestamo);
-        document.getElementById("detalleFechaLimite").textContent = formatearFecha(item.fechaLimite || item.fechalimite || item.fechaDevolucion);
-        document.getElementById("detalleUsuarioPresto").textContent = obtenerUsuarioPresto(item);
     }
 
     function cerrarModal() {
         document.getElementById("modalDetalle").classList.remove("mostrar");
         prestamoSeleccionado = null;
-        document.getElementById("comentarioDevolucion").value = "";
     }
 
+    async function procesarDevolucion() {
+        if (!prestamoSeleccionado) return;
+
+        // Aseguramos que el ID se pase como entero numérico
+        const idRegistro = parseInt(prestamoSeleccionado.id, 10);
+        const comentario = document.getElementById("comentarioDevolucion").value;
+        const fechaHoy = new Date().toISOString().split("T")[0];
+
+        try {
+            const { error: errPrestamo } = await supabaseClient
+                .from("prestamos")
+                .update({
+                    estado: "Devuelto",
+                    fechaDevolucion: fechaHoy,
+                    comentario: comentario
+                })
+                .eq("id", idRegistro);
+
+            if (errPrestamo) throw errPrestamo;
+
+            // Actualizar stock del libro
+            const codigo = normalizarCodigo(prestamoSeleccionado.codigoLibro);
+            if (codigo) {
+                const { data: libro } = await supabaseClient
+                    .from("libros")
+                    .select("Disponibles")
+                    .eq("codigoLibro", codigo)
+                    .single();
+
+                if (libro) {
+                    await supabaseClient
+                        .from("libros")
+                        .update({ Disponibles: (libro.Disponibles || 0) + 1 })
+                        .eq("codigoLibro", codigo);
+                }
+            }
+
+            mostrarMensaje("Devolución registrada correctamente.", "exito");
+            cerrarModal();
+            cargarDatos();
+        } catch (err) {
+            console.error(err);
+            mostrarMensaje("Error al registrar la devolución.", "error");
+        }
+    }
+
+    async function procesarEliminacion() {
+        if (!prestamoSeleccionado) return;
+
+        const idRegistro = parseInt(prestamoSeleccionado.id, 10);
+
+        try {
+            const { error } = await supabaseClient
+                .from("prestamos")
+                .delete()
+                .eq("id", idRegistro);
+
+            if (error) throw error;
+
+            mostrarMensaje("Registro eliminado correctamente.", "exito");
+            cerrarModal();
+            cargarDatos();
+        } catch (err) {
+            console.error(err);
+            mostrarMensaje("Error al eliminar el registro.", "error");
+        }
+    }
+
+    // Eventos
     document.getElementById("btnBuscar").addEventListener("click", aplicarFiltros);
-    document.getElementById("buscar").addEventListener("keyup", (e) => {
-        if (e.key === "Enter") aplicarFiltros();
-    });
-
-    document.getElementById("filtroBiblioteca").addEventListener("change", aplicarFiltros);
-
+    document.getElementById("buscar").addEventListener("keyup", (e) => { if (e.key === "Enter") aplicarFiltros(); });
     document.getElementById("btnLimpiar").addEventListener("click", () => {
         document.getElementById("buscar").value = "";
+        document.getElementById("filtroTipo").value = "";
         document.getElementById("filtroBiblioteca").value = "";
         filtroTipoBoton = "";
-        document.getElementById("btnAfiliados").classList.remove("activo");
-        document.getElementById("btnColaboradores").classList.remove("activo");
+        document.querySelectorAll(".boton-tipo").forEach(b => b.classList.remove("activo"));
         aplicarFiltros();
     });
 
     document.getElementById("btnAfiliados").addEventListener("click", function() {
-        if (filtroTipoBoton === "AFILIADO") {
-            filtroTipoBoton = "";
-            this.classList.remove("activo");
-        } else {
-            filtroTipoBoton = "AFILIADO";
-            this.classList.add("activo");
-            document.getElementById("btnColaboradores").classList.remove("activo");
-        }
+        filtroTipoBoton = filtroTipoBoton === "AFILIADO" ? "" : "AFILIADO";
+        this.classList.toggle("activo", filtroTipoBoton === "AFILIADO");
+        document.getElementById("btnColaboradores").classList.remove("activo");
         aplicarFiltros();
     });
 
     document.getElementById("btnColaboradores").addEventListener("click", function() {
-        if (filtroTipoBoton === "COLABORADOR") {
-            filtroTipoBoton = "";
-            this.classList.remove("activo");
-        } else {
-            filtroTipoBoton = "COLABORADOR";
-            this.classList.add("activo");
-            document.getElementById("btnAfiliados").classList.remove("activo");
-        }
+        filtroTipoBoton = filtroTipoBoton === "COLABORADOR" ? "" : "COLABORADOR";
+        this.classList.toggle("activo", filtroTipoBoton === "COLABORADOR");
+        document.getElementById("btnAfiliados").classList.remove("activo");
         aplicarFiltros();
     });
 
     document.getElementById("botonAnterior").addEventListener("click", () => {
-        if (paginaActual > 1) {
-            paginaActual--;
-            renderizarTabla();
-        }
+        if (paginaActual > 1) { paginaActual--; renderizarTabla(); }
     });
 
     document.getElementById("botonSiguiente").addEventListener("click", () => {
         const totalPaginas = Math.ceil(prestamosFiltrados.length / registrosPorPagina);
-        if (paginaActual < totalPaginas) {
-            paginaActual++;
-            renderizarTabla();
-        }
+        if (paginaActual < totalPaginas) { paginaActual++; renderizarTabla(); }
     });
 
     document.getElementById("btnCerrarDetalle").addEventListener("click", cerrarModal);
     document.getElementById("btnCancelarDetalle").addEventListener("click", cerrarModal);
+    document.getElementById("btnConfirmarDevolucion").addEventListener("click", procesarDevolucion);
+    document.getElementById("btnConfirmarEliminar").addEventListener("click", procesarEliminacion);
 
-    document.getElementById("btnConfirmarDevolucion").addEventListener("click", async () => {
-        if (!prestamoSeleccionado) return;
-
-        const comentario = document.getElementById("comentarioDevolucion").value;
-
-        const { error } = await supabaseClient
-            .from("prestamos")
-            .update({
-                estado: "Devuelto",
-                fechaDevolucion: new Date().toISOString(),
-                comentarioDevolucion: comentario
-            })
-            .eq("id", prestamoSeleccionado.id);
-
-        if (error) {
-            mostrarMensaje("Error al procesar la devolución.", "error");
-        } else {
-            mostrarMensaje("Devolución procesada correctamente.", "exito");
-            cerrarModal();
-            cargarDatos();
-        }
-    });
-
-    document.getElementById("btnConfirmarEliminar").addEventListener("click", async () => {
-        if (!prestamoSeleccionado) return;
-
-        const { error } = await supabaseClient
-            .from("prestamos")
-            .delete()
-            .eq("id", prestamoSeleccionado.id);
-
-        if (error) {
-            mostrarMensaje("Error al eliminar el registro.", "error");
-        } else {
-            mostrarMensaje("Registro eliminado correctamente.", "exito");
-            cerrarModal();
-            cargarDatos();
-        }
-    });
-
-    window.addEventListener("DOMContentLoaded", () => {
-        document.documentElement.style.visibility = "visible";
-        cargarDatos();
-    });
+    document.addEventListener("DOMContentLoaded", cargarDatos);
 </script>
-
 </body>
 </html>
