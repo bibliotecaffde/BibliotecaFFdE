@@ -40,7 +40,6 @@
                 const autorizado =
                     await window.protegerPagina();
 
-
                 if (!autorizado) {
 
                     window.location.replace(
@@ -50,7 +49,6 @@
                     return false;
 
                 }
-
 
                 if (!window.esAdministrador()) {
 
@@ -62,13 +60,10 @@
 
                 }
 
-
                 document.documentElement.style.visibility =
                     "visible";
 
-
                 return true;
-
 
             } catch (error) {
 
@@ -77,11 +72,9 @@
                     error
                 );
 
-
                 window.location.replace(
                     "index.html"
                 );
-
 
                 return false;
 
@@ -100,6 +93,10 @@
 
     <style>
 
+        /* =========================
+           CONTENEDOR PRINCIPAL
+        ========================= */
+
         .reportes-contenedor {
 
             max-width: 1200px;
@@ -111,17 +108,82 @@
         }
 
 
+        /* =========================
+           ENCABEZADO
+        ========================= */
+
+        .encabezado {
+
+            background: #009ddc !important;
+
+            color: white;
+
+            padding: 16px 20px;
+
+        }
+
+
         .encabezado .encabezado-contenido {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            min-height: 48px;
 
             display: flex;
 
             align-items: center;
 
-            justify-content: space-between;
+            justify-content: center;
+
+            position: relative;
 
             width: 100%;
 
             box-sizing: border-box;
+
+        }
+
+
+        .marca {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            text-align: center;
+
+        }
+
+
+        .icono-marca {
+
+            font-size: 27px;
+
+        }
+
+
+        .titulo-marca {
+
+            margin: 0;
+
+            font-size: 23px;
+
+            line-height: 1.2;
+
+            font-weight: bold;
+
+        }
+
+
+        .subtitulo-marca {
+
+            display: none;
 
         }
 
@@ -134,13 +196,13 @@
 
             justify-content: center;
 
-            padding: 8px 14px;
+            padding: 8px 13px;
 
-            border-radius: 6px;
+            border-radius: 7px;
 
-            background: rgba(38, 50, 56, 0.55);
+            background: rgba(255, 255, 255, 0.16);
 
-            border: 1px solid rgba(255, 255, 255, 0.55);
+            border: none;
 
             color: #ffffff !important;
 
@@ -148,22 +210,27 @@
 
             font-size: 13px;
 
-            font-weight: 600;
+            font-weight: bold;
 
             white-space: nowrap;
 
+            position: absolute;
+
+            right: 0;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
             transition:
-                background 0.2s ease,
-                border-color 0.2s ease;
+                background 0.2s ease;
 
         }
 
 
         .volver-header:hover {
 
-            background: rgba(38, 50, 56, 0.72);
-
-            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.24);
 
             color: #ffffff !important;
 
@@ -172,34 +239,9 @@
         }
 
 
-        .reporte-encabezado {
-
-            margin-bottom: 16px;
-
-        }
-
-
-        .reporte-encabezado h1 {
-
-            margin: 0 0 4px;
-
-            font-size: 26px;
-
-            color: #263238;
-
-        }
-
-
-        .reporte-encabezado p {
-
-            margin: 0;
-
-            color: #607d8b;
-
-            font-size: 13px;
-
-        }
-
+        /* =========================
+           ESTADÍSTICAS
+        ========================= */
 
         .estadisticas-reportes {
 
@@ -210,7 +252,7 @@
 
             gap: 10px;
 
-            margin-bottom: 14px;
+            margin-bottom: 16px;
 
         }
 
@@ -221,14 +263,13 @@
 
             border: 1px solid #e0e0e0;
 
-            border-radius: 9px;
+            border-radius: 8px;
 
-            padding: 11px 8px;
+            padding: 11px 10px;
 
             text-align: center;
 
-            box-shadow:
-                0 2px 5px rgba(0,0,0,0.04);
+            box-shadow: none;
 
         }
 
@@ -239,14 +280,14 @@
 
             line-height: 1;
 
-            margin-bottom: 4px;
+            margin-bottom: 3px;
 
         }
 
 
         .estadistica-reporte .numero {
 
-            font-size: 22px;
+            font-size: 20px;
 
             line-height: 1.1;
 
@@ -261,16 +302,20 @@
 
             margin-top: 3px;
 
-            font-size: 11px;
+            font-size: 12px;
 
-            color: #78909c;
+            color: #607d8b;
 
         }
 
 
+        /* =========================
+           GRÁFICOS
+        ========================= */
+
         .graficos-seccion {
 
-            margin-bottom: 14px;
+            margin-bottom: 16px;
 
         }
 
@@ -294,7 +339,7 @@
 
             margin: 0;
 
-            font-size: 17px;
+            font-size: 16px;
 
             color: #37474f;
 
@@ -360,7 +405,11 @@
 
         .selector-grafica:focus {
 
-            border-color: #78909c;
+            border-color: #009ddc;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(0, 157, 220, 0.12);
 
         }
 
@@ -372,7 +421,7 @@
             grid-template-columns:
                 repeat(3, 1fr);
 
-            gap: 14px;
+            gap: 12px;
 
         }
 
@@ -383,12 +432,11 @@
 
             border: 1px solid #e0e0e0;
 
-            border-radius: 9px;
+            border-radius: 8px;
 
-            padding: 14px;
+            padding: 13px;
 
-            box-shadow:
-                0 2px 5px rgba(0,0,0,0.04);
+            box-shadow: none;
 
             min-width: 0;
 
@@ -410,19 +458,21 @@
 
             position: relative;
 
-            height: 245px;
+            height: 230px;
 
         }
 
 
-        .grafico-libros .grafico-contenedor {
+        .grafico-libros
+        .grafico-contenedor {
 
-            height: 245px;
+            height: 230px;
 
         }
 
 
-        .grafico-libros .leyenda-circular {
+        .grafico-libros
+        .leyenda-circular {
 
             display: flex;
 
@@ -484,18 +534,21 @@
         }
 
 
+        /* =========================
+           RESULTADOS
+        ========================= */
+
         .resultados-seccion {
 
             background: white;
 
             border: 1px solid #e0e0e0;
 
-            border-radius: 9px;
+            border-radius: 8px;
 
-            padding: 14px;
+            padding: 16px;
 
-            box-shadow:
-                0 2px 5px rgba(0,0,0,0.04);
+            box-shadow: none;
 
         }
 
@@ -511,7 +564,7 @@
 
             margin: 0;
 
-            font-size: 18px;
+            font-size: 16px;
 
             color: #37474f;
 
@@ -528,6 +581,10 @@
 
         }
 
+
+        /* =========================
+           FILTROS
+        ========================= */
 
         .filtros {
 
@@ -621,7 +678,11 @@
         .campo input:focus,
         .campo select:focus {
 
-            border-color: #78909c;
+            border-color: #009ddc;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(0, 157, 220, 0.12);
 
         }
 
@@ -638,13 +699,25 @@
         }
 
 
+        /* =========================
+           BOTONES DE FILTROS
+        ========================= */
+
         .botones-filtros {
 
             display: flex;
 
-            gap: 6px;
+            justify-content: center;
 
-            margin-top: 7px;
+            align-items: center;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+
+            margin-top: 10px;
+
+            width: 100%;
 
         }
 
@@ -653,9 +726,9 @@
 
             border: none;
 
-            border-radius: 5px;
+            border-radius: 6px;
 
-            padding: 7px 11px;
+            padding: 8px 13px;
 
             cursor: pointer;
 
@@ -666,26 +739,20 @@
         }
 
 
-        .btn-buscar,
-        .btn-limpiar {
+        .btn-buscar {
+
+            background: #009ddc;
+
+            color: white;
 
             min-width: 145px;
 
         }
 
 
-        .btn-buscar {
-
-            background: #455a64;
-
-            color: white;
-
-        }
-
-
         .btn-buscar:hover {
 
-            background: #37474f;
+            background: #008bc4;
 
         }
 
@@ -695,6 +762,8 @@
             background: #eceff1;
 
             color: #455a64;
+
+            min-width: 145px;
 
         }
 
@@ -723,6 +792,10 @@
 
         }
 
+
+        /* =========================
+           RESUMEN
+        ========================= */
 
         .resultado-resumen {
 
@@ -765,6 +838,66 @@
         }
 
 
+        /* =========================
+           VISTAS
+        ========================= */
+
+        .vistas-resultados {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .btn-vista {
+
+            min-width: 175px;
+
+            padding: 10px 22px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            border-radius: 7px;
+
+            border: 1px solid #cfd8dc;
+
+            background: #f5f5f5;
+
+            color: #455a64;
+
+            cursor: pointer;
+
+            transition: all 0.2s ease;
+
+        }
+
+        .btn-vista.activo {
+
+            background: #009ddc;
+
+            color: white;
+
+            border-color: #009ddc;
+
+        }
+
+
+        /* =========================
+           TABLA
+        ========================= */
+
         .tabla-contenedor {
 
             overflow-x: auto;
@@ -772,6 +905,8 @@
             border: 1px solid #e0e0e0;
 
             border-radius: 6px;
+
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 
         }
 
@@ -791,38 +926,46 @@
 
         .tabla-resultados th {
 
-            background: #37474f;
+            background: #009ddc;
 
-            color: white;
+            color: #ffffff;
 
-            padding: 8px 7px;
+            padding: 10px 8px;
 
             text-align: center;
 
-            font-weight: 600;
+            font-weight: 700;
 
             white-space: nowrap;
+
+            border-bottom: 2px solid #008bc4;
 
         }
 
 
         .tabla-resultados td {
 
-            padding: 7px;
+            padding: 9px 7px;
 
-            border-bottom:
-                1px solid #eceff1;
+            border-bottom: 1px solid #eef2f5;
 
             text-align: center;
 
-            color: #455a64;
+            color: #37474f;
+
+        }
+
+
+        .tabla-resultados tbody tr:nth-child(even) {
+
+            background-color: #f8fafc;
 
         }
 
 
         .tabla-resultados tbody tr:hover {
 
-            background: #f8fafb;
+            background: #e3f2fd;
 
         }
 
@@ -902,6 +1045,10 @@
         }
 
 
+        /* =========================
+           PAGINACIÓN
+        ========================= */
+
         .paginacion-resultados {
 
             display: flex;
@@ -966,6 +1113,22 @@
 
         }
 
+
+        /* =========================
+           FLECHAS
+        ========================= */
+
+        .accion-flecha,
+        .opcion-flecha {
+
+            display: none !important;
+
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
 
         @media (max-width: 950px) {
 
@@ -1042,18 +1205,60 @@
             }
 
 
-            .encabezado .encabezado-contenido {
+            .encabezado {
 
-                gap: 10px;
+                padding:
+                    12px 15px;
+
+            }
+
+
+            .encabezado
+            .encabezado-contenido {
+
+                flex-direction: column;
+
+                gap: 8px;
+
+                padding:
+                    2px 0;
+
+            }
+
+
+            .marca {
+
+                width: 100%;
+
+            }
+
+
+            .titulo-marca {
+
+                font-size: 21px;
+
+            }
+
+
+            .icono-marca {
+
+                font-size: 24px;
 
             }
 
 
             .volver-header {
 
-                padding: 7px 10px;
+                position: static;
 
-                font-size: 11px;
+                transform: none;
+
+                margin: 0;
+
+                padding:
+                    8px 13px;
+
+                font-size: 12px;
 
             }
 
@@ -1076,14 +1281,16 @@
 
             .botones-filtros {
 
-                flex-direction: column;
+                flex-direction: row;
+
+                justify-content: center;
 
             }
 
 
             .btn {
 
-                width: 100%;
+                width: auto;
 
             }
 
@@ -1092,7 +1299,7 @@
             .btn-limpiar,
             .btn-excel {
 
-                min-width: 0;
+                min-width: 145px;
 
             }
 
@@ -1104,7 +1311,8 @@
             }
 
 
-            .grafico-libros .grafico-contenedor {
+            .grafico-libros
+            .grafico-contenedor {
 
                 height: 235px;
 
@@ -1127,6 +1335,53 @@
 
         }
 
+
+        @media (max-width: 480px) {
+
+            .estadisticas-reportes {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 8px;
+
+            }
+
+
+            .estadistica-reporte {
+
+                padding:
+                    10px 7px;
+
+            }
+
+
+            .estadistica-reporte .numero {
+
+                font-size: 19px;
+
+            }
+
+
+            .botones-filtros {
+
+                flex-direction: column;
+
+            }
+
+
+            .btn-buscar,
+            .btn-limpiar,
+            .btn-excel {
+
+                width: 100%;
+
+                max-width: 250px;
+
+            }
+
+        }
+
     </style>
 
 </head>
@@ -1135,6 +1390,10 @@
 <body>
 
 
+    <!-- =========================
+         ENCABEZADO
+    ========================= -->
+
     <header class="encabezado">
 
         <div class="encabezado-contenido">
@@ -1142,17 +1401,13 @@
             <div class="marca">
 
                 <div class="icono-marca">
-                    📚
+                    📊
                 </div>
 
                 <div>
 
                     <div class="titulo-marca">
-                        Biblioteca
-                    </div>
-
-                    <div class="subtitulo-marca">
-                        Sistema de control de préstamos
+                        Reportes
                     </div>
 
                 </div>
@@ -1175,18 +1430,9 @@
     <main class="reportes-contenedor">
 
 
-        <section class="reporte-encabezado">
-
-            <h1>
-                📊 Reportes
-            </h1>
-
-            <p>
-                Consulta y analiza la actividad de préstamos de la biblioteca.
-            </p>
-
-        </section>
-
+        <!-- =========================
+             ESTADÍSTICAS
+        ========================= -->
 
         <section class="estadisticas-reportes">
 
@@ -1294,6 +1540,10 @@
         </section>
 
 
+        <!-- =========================
+             GRÁFICOS
+        ========================= -->
+
         <section class="graficos-seccion">
 
 
@@ -1346,10 +1596,6 @@
 
                         <option value="Z">
                             Z
-                        </option>
-
-                        <option value="NE">
-                            NE
                         </option>
 
                     </select>
@@ -1462,6 +1708,10 @@
 
         </section>
 
+
+        <!-- =========================
+             RESULTADOS
+        ========================= -->
 
         <section
             class="resultados-seccion"
@@ -1667,42 +1917,33 @@
             </div>
 
 
+            <div class="vistas-resultados">
+
+                <button
+                    type="button"
+                    class="btn-vista activo"
+                    id="btnVistaAfiliados"
+                >
+                    👨‍👩‍👧 Afiliados
+                </button>
+
+
+                <button
+                    type="button"
+                    class="btn-vista"
+                    id="btnVistaColaboradores"
+                >
+                    👤 Colaboradores
+                </button>
+
+            </div>
+
+
             <div class="tabla-contenedor">
 
                 <table class="tabla-resultados">
 
-                    <thead>
-
-                        <tr>
-
-                            <th>Tipo</th>
-
-                            <th>SitioPréstamo</th>
-
-                            <th>FamiliaId</th>
-
-                            <th>PersonaId / Código</th>
-
-                            <th>Nombres / Colaborador</th>
-
-                            <th>Apellidos</th>
-
-                            <th>Área</th>
-
-                            <th>Código</th>
-
-                            <th>Libro</th>
-
-                            <th>Género</th>
-
-                            <th>Préstamo</th>
-
-                            <th>Devolución</th>
-
-                            <th>Estado</th>
-
-                        </tr>
-
+                    <thead id="encabezadoTablaResultados">
                     </thead>
 
                     <tbody
@@ -1744,6 +1985,8 @@
         let prestamos = [];
 
         let prestamosFiltrados = [];
+
+        let vistaResultadosActual = "Afiliados";
 
         let graficaMeses = null;
 
@@ -1933,36 +2176,98 @@
         }
 
 
+        function obtenerFechaCompleta(fecha) {
+
+            if (!fecha) return null;
+
+            const d = new Date(fecha);
+
+            if (isNaN(d.getTime())) {
+
+                return obtenerFechaSoloDia(fecha);
+
+            }
+
+            return d;
+
+        }
+
+
         function formatearFecha(fecha) {
 
-            const fechaObj =
-                obtenerFechaSoloDia(fecha);
-
-
-            if (!fechaObj) {
+            if (!fecha) {
 
                 return "—";
 
             }
 
 
-            const dia =
-                String(
-                    fechaObj.getDate()
-                ).padStart(2, "0");
+            const fechaObj = new Date(fecha);
 
 
-            const mes =
-                String(
-                    fechaObj.getMonth() + 1
-                ).padStart(2, "0");
+            if (isNaN(fechaObj.getTime())) {
+
+                const soloDia = obtenerFechaSoloDia(fecha);
+
+                if (!soloDia) return "—";
+
+                const dia = String(soloDia.getDate()).padStart(2, "0");
+
+                const mes = String(soloDia.getMonth() + 1).padStart(2, "0");
+
+                const anio = soloDia.getFullYear();
+
+                return `${dia}/${mes}/${anio}`;
+
+            }
 
 
-            const anio =
-                fechaObj.getFullYear();
+            const str = String(fecha).trim();
 
 
-            return `${dia}/${mes}/${anio}`;
+            if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+
+                const partes = str.split("-");
+
+                return `${partes[2].padStart(2, "0")}/${partes[1].padStart(2, "0")}/${partes[0]}`;
+
+            }
+
+
+            try {
+
+                const opciones = {
+
+                    timeZone: "America/Guatemala",
+
+                    day: "2-digit",
+
+                    month: "2-digit",
+
+                    year: "numeric",
+
+                    hour: "2-digit",
+
+                    minute: "2-digit",
+
+                    hour12: true
+
+                };
+
+
+                return new Intl.DateTimeFormat("es-GT", opciones).format(fechaObj);
+
+            } catch (e) {
+
+                const dia = String(fechaObj.getDate()).padStart(2, "0");
+
+                const mes = String(fechaObj.getMonth() + 1).padStart(2, "0");
+
+                const anio = fechaObj.getFullYear();
+
+                return `${dia}/${mes}/${anio}`;
+
+            }
 
         }
 
@@ -1992,11 +2297,7 @@
                 normalizarTexto(
                     prestamo.estado
                 ) ===
-                "devuelto" ||
-
-                Boolean(
-                    prestamo.fechaDevolucionReal
-                )
+                "devuelto"
             ) {
 
                 return "Devuelto";
@@ -2109,13 +2410,39 @@
         }
 
 
+        function obtenerPrestadoPor(prestamo) {
+
+            return (
+
+                prestamo.PrestadoPor ||
+
+                prestamo.prestadoPor ||
+
+                "—"
+
+            );
+
+        }
+
+
+        function obtenerDevueltoPor(prestamo) {
+
+            return (
+
+                prestamo.DevueltoPor ||
+
+                prestamo.devueltoPor ||
+
+                "—"
+
+            );
+
+        }
+
+
         function obtenerSitioPrestamo(prestamo) {
 
             const sitio =
-
-                prestamo.Sitio ||
-
-                prestamo.sitio ||
 
                 prestamo.SitioPrestamo ||
 
@@ -3703,6 +4030,26 @@
                         }
 
 
+                        if (
+                            vistaResultadosActual === "Afiliados" &&
+                            esColaborador(prestamo)
+                        ) {
+
+                            return false;
+
+                        }
+
+
+                        if (
+                            vistaResultadosActual === "Colaboradores" &&
+                            !esColaborador(prestamo)
+                        ) {
+
+                            return false;
+
+                        }
+
+
                         return true;
 
                     }
@@ -3719,23 +4066,17 @@
                         "reciente"
                     ) {
 
-                        const fechaA =
-                            obtenerFechaSoloDia(
-                                a.fechaPrestamo
-                            );
+                        const fechaDevA = obtenerFechaCompleta(
+                            a.fechaDevolucionReal || a.fechaDevolucion
+                        );
 
-
-                        const fechaB =
-                            obtenerFechaSoloDia(
-                                b.fechaPrestamo
-                            );
-
+                        const fechaDevB = obtenerFechaCompleta(
+                            b.fechaDevolucionReal || b.fechaDevolucion
+                        );
 
                         return (
-
-                            (fechaB || 0) -
-                            (fechaA || 0)
-
+                            (fechaDevB ? fechaDevB.getTime() : 0) -
+                            (fechaDevA ? fechaDevA.getTime() : 0)
                         );
 
                     }
@@ -3746,23 +4087,17 @@
                         "antiguo"
                     ) {
 
-                        const fechaA =
-                            obtenerFechaSoloDia(
-                                a.fechaPrestamo
-                            );
+                        const fechaDevA = obtenerFechaCompleta(
+                            a.fechaDevolucionReal || a.fechaDevolucion
+                        );
 
-
-                        const fechaB =
-                            obtenerFechaSoloDia(
-                                b.fechaPrestamo
-                            );
-
+                        const fechaDevB = obtenerFechaCompleta(
+                            b.fechaDevolucionReal || b.fechaDevolucion
+                        );
 
                         return (
-
-                            (fechaA || 0) -
-                            (fechaB || 0)
-
+                            (fechaDevA ? fechaDevA.getTime() : 0) -
+                            (fechaDevB ? fechaDevB.getTime() : 0)
                         );
 
                     }
@@ -3880,6 +4215,12 @@
                 );
 
 
+            const encabezado =
+                document.getElementById(
+                    "encabezadoTablaResultados"
+                );
+
+
             const cantidad =
                 document.getElementById(
                     "cantidadResultados"
@@ -3894,6 +4235,8 @@
 
             tabla.innerHTML = "";
 
+            encabezado.innerHTML = "";
+
             paginacion.innerHTML = "";
 
 
@@ -3906,6 +4249,87 @@
                 }`;
 
 
+            const esVistaColaboradores =
+                vistaResultadosActual === "Colaboradores";
+
+
+            if (esVistaColaboradores) {
+
+                encabezado.innerHTML = `
+
+                    <tr>
+
+                        <th>SitioPréstamo</th>
+
+                        <th>Código colaborador</th>
+
+                        <th>Colaborador</th>
+
+                        <th>Área</th>
+
+                        <th>Código</th>
+
+                        <th>Libro</th>
+
+                        <th>Género</th>
+
+                        <th>Préstamo</th>
+
+                        <th>Devolución</th>
+
+                        <th>Estado</th>
+
+                        <th>Prestado por</th>
+
+                        <th>Devuelto por</th>
+
+                    </tr>
+
+                `;
+
+            } else {
+
+                encabezado.innerHTML = `
+
+                    <tr>
+
+                        <th>SitioPréstamo</th>
+
+                        <th>FamiliaId</th>
+
+                        <th>PersonaId</th>
+
+                        <th>Nombres</th>
+
+                        <th>Apellidos</th>
+
+                        <th>Código</th>
+
+                        <th>Libro</th>
+
+                        <th>Género</th>
+
+                        <th>Préstamo</th>
+
+                        <th>Devolución</th>
+
+                        <th>Estado</th>
+
+                        <th>Prestado por</th>
+
+                        <th>Devuelto por</th>
+
+                    </tr>
+
+                `;
+
+            }
+
+
+            const columnasVacias =
+                esVistaColaboradores ? 12 : 13;
+
+
             if (
                 prestamosFiltrados.length === 0
             ) {
@@ -3915,7 +4339,7 @@
                     <tr>
 
                         <td
-                            colspan="13"
+                            colspan="${columnasVacias}"
                             class="sin-resultados"
                         >
                             🔎 No se encontraron préstamos con los filtros seleccionados.
@@ -4016,7 +4440,7 @@
 
 
                     let fechaDevolucion =
-                        null;
+                        prestamo.fechaDevolucion;
 
 
                     if (
@@ -4034,109 +4458,10 @@
                     }
 
 
-                    const esColab =
-                        esColaborador(
-                            prestamo
-                        );
-
-
-                    const tipo =
-                        obtenerTipoPrestamo(
-                            prestamo
-                        );
-
-
                     const sitio =
                         obtenerSitioPrestamo(
                             prestamo
                         );
-
-
-                    const familia =
-
-                        esColab
-
-                            ? "—"
-
-                            :
-
-                            (
-
-                                prestamo.FamiliaId ||
-
-                                "—"
-
-                            );
-
-
-                    const personaCodigo =
-
-                        esColab
-
-                            ?
-
-                            obtenerCodigoColaborador(
-                                prestamo
-                            )
-
-                            :
-
-                            (
-
-                                prestamo.PersonaId ||
-
-                                "—"
-
-                            );
-
-
-                    const nombre =
-
-                        esColab
-
-                            ?
-
-                            obtenerNombreColaborador(
-                                prestamo
-                            )
-
-                            :
-
-                            obtenerNombrePersona(
-                                prestamo
-                            );
-
-
-                    const apellidos =
-
-                        esColab
-
-                            ? "—"
-
-                            :
-
-                            (
-
-                                prestamo.Apellidos ||
-
-                                "—"
-
-                            );
-
-
-                    const area =
-
-                        esColab
-
-                            ?
-
-                            obtenerAreaColaborador(
-                                prestamo
-                            )
-
-                            :
-
-                            "—";
 
 
                     const datosLibro =
@@ -4150,73 +4475,157 @@
                         "—";
 
 
-                    fila.innerHTML = `
+                    if (esVistaColaboradores) {
 
-                        <td>
-                            ${escapeHtml(tipo)}
-                        </td>
+                        fila.innerHTML = `
 
-                        <td>
-                            ${escapeHtml(sitio)}
-                        </td>
+                            <td>
+                                ${escapeHtml(sitio)}
+                            </td>
 
-                        <td>
-                            ${escapeHtml(familia)}
-                        </td>
+                            <td>
+                                ${escapeHtml(
+                                    obtenerCodigoColaborador(prestamo)
+                                )}
+                            </td>
 
-                        <td>
-                            ${escapeHtml(personaCodigo)}
-                        </td>
+                            <td class="nombre">
+                                ${escapeHtml(
+                                    obtenerNombreColaborador(prestamo)
+                                )}
+                            </td>
 
-                        <td class="nombre">
-                            ${escapeHtml(nombre)}
-                        </td>
+                            <td>
+                                ${escapeHtml(
+                                    obtenerAreaColaborador(prestamo)
+                                )}
+                            </td>
 
-                        <td>
-                            ${escapeHtml(apellidos)}
-                        </td>
+                            <td>
+                                ${escapeHtml(datosLibro.codigo)}
+                            </td>
 
-                        <td>
-                            ${escapeHtml(area)}
-                        </td>
+                            <td class="libro">
+                                ${escapeHtml(datosLibro.nombre)}
+                            </td>
 
-                        <td>
-                            ${escapeHtml(datosLibro.codigo)}
-                        </td>
+                            <td>
+                                ${escapeHtml(genero)}
+                            </td>
 
-                        <td class="libro">
-                            ${escapeHtml(datosLibro.nombre)}
-                        </td>
+                            <td>
+                                ${formatearFecha(
+                                    prestamo.fechaPrestamo
+                                )}
+                            </td>
 
-                        <td>
-                            ${escapeHtml(genero)}
-                        </td>
+                            <td>
+                                ${formatearFecha(
+                                    fechaDevolucion
+                                )}
+                            </td>
 
-                        <td>
-                            ${formatearFecha(
-                                prestamo.fechaPrestamo
-                            )}
-                        </td>
+                            <td>
+                                <span
+                                    class="estado ${claseEstado}"
+                                >
+                                    ${escapeHtml(estado)}
+                                </span>
+                            </td>
 
-                        <td>
-                            ${formatearFecha(
-                                fechaDevolucion
-                            )}
-                        </td>
+                            <td>
+                                ${escapeHtml(
+                                    obtenerPrestadoPor(prestamo)
+                                )}
+                            </td>
 
-                        <td>
+                            <td>
+                                ${escapeHtml(
+                                    obtenerDevueltoPor(prestamo)
+                                )}
+                            </td>
 
-                            <span
-                                class="estado ${claseEstado}"
-                            >
+                        `;
 
-                                ${escapeHtml(estado)}
+                    } else {
 
-                            </span>
+                        fila.innerHTML = `
 
-                        </td>
+                            <td>
+                                ${escapeHtml(sitio)}
+                            </td>
 
-                    `;
+                            <td>
+                                ${escapeHtml(
+                                    prestamo.FamiliaId || "—"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    prestamo.PersonaId || "—"
+                                )}
+                            </td>
+
+                            <td class="nombre">
+                                ${escapeHtml(
+                                    prestamo.Nombres || "—"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    prestamo.Apellidos || "—"
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(datosLibro.codigo)}
+                            </td>
+
+                            <td class="libro">
+                                ${escapeHtml(datosLibro.nombre)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(genero)}
+                            </td>
+
+                            <td>
+                                ${formatearFecha(
+                                    prestamo.fechaPrestamo
+                                )}
+                            </td>
+
+                            <td>
+                                ${formatearFecha(
+                                    fechaDevolucion
+                                )}
+                            </td>
+
+                            <td>
+                                <span
+                                    class="estado ${claseEstado}"
+                                >
+                                    ${escapeHtml(estado)}
+                                </span>
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    obtenerPrestadoPor(prestamo)
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(
+                                    obtenerDevueltoPor(prestamo)
+                                )}
+                            </td>
+
+                        `;
+
+                    }
 
 
                     tabla.appendChild(
@@ -4270,8 +4679,10 @@
 
 
             const fin =
-                inicio +
-                cantidadPagina;
+                Math.min(
+                    inicio + cantidadPagina,
+                    prestamosFiltrados.length
+                );
 
 
             paginacion.innerHTML = `
@@ -4594,10 +5005,290 @@
         }
 
 
+        function prepararDatosExcel(prestamosParaExportar, tipo) {
+
+            return prestamosParaExportar.map(
+
+                prestamo => {
+
+                    const estado =
+                        obtenerEstado(
+                            prestamo
+                        );
+
+
+                    let fechaDevolucion =
+                        prestamo.fechaDevolucion;
+
+
+                    if (
+
+                        estado === "Devuelto" &&
+
+                        prestamo.fechaDevolucionReal
+
+                    ) {
+
+                        fechaDevolucion =
+                            prestamo.fechaDevolucionReal;
+
+                    }
+
+
+                    const datosLibro =
+                        obtenerDatosLibro(
+                            prestamo
+                        );
+
+
+                    if (tipo === "Colaboradores") {
+
+                        return {
+
+                            "SitioPréstamo":
+                                obtenerSitioPrestamo(prestamo),
+
+                            "Código colaborador":
+                                obtenerCodigoColaborador(prestamo),
+
+                            "Colaborador":
+                                obtenerNombreColaborador(prestamo),
+
+                            "Área":
+                                obtenerAreaColaborador(prestamo),
+
+                            "Código":
+                                datosLibro.codigo,
+
+                            "Libro":
+                                datosLibro.nombre,
+
+                            "Género":
+                                datosLibro.genero || "",
+
+                            "Préstamo":
+                                formatearFecha(prestamo.fechaPrestamo),
+
+                            "Devolución":
+                                formatearFecha(fechaDevolucion),
+
+                            "Estado":
+                                estado,
+
+                            "Prestado por":
+                                obtenerPrestadoPor(prestamo),
+
+                            "Devuelto por":
+                                obtenerDevueltoPor(prestamo)
+
+                        };
+
+                    }
+
+
+                    return {
+
+                        "SitioPréstamo":
+                            obtenerSitioPrestamo(prestamo),
+
+                        "FamiliaId":
+                            prestamo.FamiliaId || "",
+
+                        "PersonaId":
+                            prestamo.PersonaId || "",
+
+                        "Nombres":
+                            prestamo.Nombres || "",
+
+                        "Apellidos":
+                            prestamo.Apellidos || "",
+
+                        "Código":
+                            datosLibro.codigo,
+
+                        "Libro":
+                            datosLibro.nombre,
+
+                        "Género":
+                            datosLibro.genero || "",
+
+                        "Préstamo":
+                            formatearFecha(prestamo.fechaPrestamo),
+
+                        "Devolución":
+                            formatearFecha(fechaDevolucion),
+
+                        "Estado":
+                            estado,
+
+                        "Prestado por":
+                            obtenerPrestadoPor(prestamo),
+
+                        "Devuelto por":
+                            obtenerDevueltoPor(prestamo)
+
+                    };
+
+                }
+
+            );
+
+        }
+
+
+        function obtenerPrestamosConFiltros() {
+
+            const busqueda =
+                normalizarTexto(
+                    document.getElementById("busqueda").value
+                );
+
+            const estadoFiltro =
+                document.getElementById("filtroEstado").value;
+
+            const sitioFiltro =
+                document.getElementById("filtroSitio").value;
+
+            const fechaDesde =
+                document.getElementById("fechaDesde").value;
+
+            const fechaHasta =
+                document.getElementById("fechaHasta").value;
+
+            return prestamos.filter(
+
+                prestamo => {
+
+                    const estado =
+                        obtenerEstado(prestamo);
+
+                    const sitio =
+                        obtenerSitioPrestamo(prestamo);
+
+                    const nombrePersona =
+                        obtenerNombrePersona(prestamo);
+
+                    const nombreColaborador =
+                        obtenerNombreColaborador(prestamo);
+
+                    const codigoColaborador =
+                        obtenerCodigoColaborador(prestamo);
+
+                    const areaColaborador =
+                        obtenerAreaColaborador(prestamo);
+
+                    const datosLibro =
+                        obtenerDatosLibro(prestamo);
+
+                    const textoCompleto =
+                        normalizarTexto(
+                            [
+                                prestamo.FamiliaId,
+                                prestamo.PersonaId,
+                                prestamo.Nombres,
+                                prestamo.Apellidos,
+                                nombrePersona,
+                                codigoColaborador,
+                                nombreColaborador,
+                                areaColaborador,
+                                prestamo.codigoLibro,
+                                prestamo.nombreLibro,
+                                datosLibro.autor,
+                                datosLibro.genero,
+                                datosLibro.editorial,
+                                datosLibro.anio,
+                                sitio
+                            ].join(" ")
+                        );
+
+                    if (
+                        busqueda &&
+                        !textoCompleto.includes(busqueda)
+                    ) {
+                        return false;
+                    }
+
+                    if (
+                        estadoFiltro !== "Todos" &&
+                        estado !== estadoFiltro
+                    ) {
+                        return false;
+                    }
+
+                    if (
+                        sitioFiltro !== "Todos" &&
+                        sitio !== sitioFiltro
+                    ) {
+                        return false;
+                    }
+
+                    const fechaPrestamo =
+                        obtenerFechaSoloDia(
+                            prestamo.fechaPrestamo
+                        );
+
+                    if (
+                        fechaDesde &&
+                        fechaPrestamo
+                    ) {
+
+                        const desde =
+                            new Date(
+                                fechaDesde + "T00:00:00"
+                            );
+
+                        if (fechaPrestamo < desde) {
+                            return false;
+                        }
+
+                    }
+
+                    if (
+                        fechaHasta &&
+                        fechaPrestamo
+                    ) {
+
+                        const hasta =
+                            new Date(
+                                fechaHasta + "T00:00:00"
+                            );
+
+                        if (fechaPrestamo > hasta) {
+                            return false;
+                        }
+
+                    }
+
+                    return true;
+
+                }
+
+            );
+
+        }
+
+
         function exportarExcel() {
 
+            const prestamosParaExportar =
+                obtenerPrestamosConFiltros();
+
+
+            const afiliados =
+                prestamosParaExportar.filter(
+                    prestamo => !esColaborador(prestamo)
+                );
+
+
+            const colaboradores =
+                prestamosParaExportar.filter(
+                    prestamo => esColaborador(prestamo)
+                );
+
+
             if (
-                prestamosFiltrados.length === 0
+                afiliados.length === 0 &&
+                colaboradores.length === 0
             ) {
 
                 alert(
@@ -4609,209 +5300,45 @@
             }
 
 
-            const datos =
-                prestamosFiltrados.map(
-
-                    prestamo => {
-
-                        const estado =
-                            obtenerEstado(
-                                prestamo
-                            );
-
-
-                        let fechaDevolucion =
-                            null;
-
-
-                        if (
-
-                            estado ===
-                            "Devuelto" &&
-
-                            prestamo.fechaDevolucionReal
-
-                        ) {
-
-                            fechaDevolucion =
-                                prestamo.fechaDevolucionReal;
-
-                        }
-
-
-                        const esColab =
-                            esColaborador(
-                                prestamo
-                            );
-
-
-                        const datosLibro =
-                            obtenerDatosLibro(
-                                prestamo
-                            );
-
-
-                        return {
-
-                            "Tipo":
-
-                                obtenerTipoPrestamo(
-                                    prestamo
-                                ),
-
-
-                            "SitioPréstamo":
-
-                                obtenerSitioPrestamo(
-                                    prestamo
-                                ),
-
-
-                            "FamiliaId":
-
-                                esColab
-
-                                    ? ""
-
-                                    :
-
-                                    (
-                                        prestamo.FamiliaId ||
-                                        ""
-                                    ),
-
-
-                            "PersonaId / Código":
-
-                                esColab
-
-                                    ?
-
-                                    obtenerCodigoColaborador(
-                                        prestamo
-                                    )
-
-                                    :
-
-                                    (
-                                        prestamo.PersonaId ||
-                                        ""
-                                    ),
-
-
-                            "Nombres / Colaborador":
-
-                                esColab
-
-                                    ?
-
-                                    obtenerNombreColaborador(
-                                        prestamo
-                                    )
-
-                                    :
-
-                                    obtenerNombrePersona(
-                                        prestamo
-                                    ),
-
-
-                            "Apellidos":
-
-                                esColab
-
-                                    ? ""
-
-                                    :
-
-                                    (
-                                        prestamo.Apellidos ||
-                                        ""
-                                    ),
-
-
-                            "Área":
-
-                                esColab
-
-                                    ?
-
-                                    obtenerAreaColaborador(
-                                        prestamo
-                                    )
-
-                                    :
-
-                                    "",
-
-
-                            "Código":
-
-                                datosLibro.codigo,
-
-
-                            "Libro":
-
-                                datosLibro.nombre,
-
-
-                            "Género":
-
-                                datosLibro.genero || "",
-
-
-                            "Préstamo":
-
-                                formatearFecha(
-                                    prestamo.fechaPrestamo
-                                ),
-
-
-                            "Devolución":
-
-                                formatearFecha(
-                                    fechaDevolucion
-                                ),
-
-
-                            "Estado":
-
-                                estado
-
-                        };
-
-                    }
-
-                );
-
-
-            const hoja =
-                XLSX.utils.json_to_sheet(
-                    datos
-                );
-
-
             const libroExcel =
                 XLSX.utils.book_new();
 
 
+            const hojaAfiliados =
+                XLSX.utils.json_to_sheet(
+                    prepararDatosExcel(
+                        afiliados,
+                        "Afiliados"
+                    )
+                );
+
+
+            const hojaColaboradores =
+                XLSX.utils.json_to_sheet(
+                    prepararDatosExcel(
+                        colaboradores,
+                        "Colaboradores"
+                    )
+                );
+
+
             XLSX.utils.book_append_sheet(
-
                 libroExcel,
+                hojaAfiliados,
+                "Afiliados"
+            );
 
-                hoja,
 
-                "Reporte"
-
+            XLSX.utils.book_append_sheet(
+                libroExcel,
+                hojaColaboradores,
+                "Colaboradores"
             );
 
 
             XLSX.writeFile(
-
                 libroExcel,
-
                 "Reporte_Biblioteca.xlsx"
-
             );
 
         }
@@ -4976,6 +5503,60 @@
             function () {
 
                 actualizarGraficosFiltrados();
+
+            }
+
+        );
+
+
+        document.getElementById(
+            "btnVistaAfiliados"
+        ).addEventListener(
+
+            "click",
+
+            function () {
+
+                vistaResultadosActual = "Afiliados";
+
+                document.getElementById(
+                    "btnVistaAfiliados"
+                ).classList.add("activo");
+
+                document.getElementById(
+                    "btnVistaColaboradores"
+                ).classList.remove("activo");
+
+                paginaResultados = 1;
+
+                aplicarFiltros();
+
+            }
+
+        );
+
+
+        document.getElementById(
+            "btnVistaColaboradores"
+        ).addEventListener(
+
+            "click",
+
+            function () {
+
+                vistaResultadosActual = "Colaboradores";
+
+                document.getElementById(
+                    "btnVistaColaboradores"
+                ).classList.add("activo");
+
+                document.getElementById(
+                    "btnVistaAfiliados"
+                ).classList.remove("activo");
+
+                paginaResultados = 1;
+
+                aplicarFiltros();
 
             }
 
