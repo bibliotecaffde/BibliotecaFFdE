@@ -7,13 +7,11 @@
 
     <!-- OCULTAR LA PÁGINA MIENTRAS SE COMPRUEBAN LOS PERMISOS -->
     <style>html { visibility: hidden; }</style>
-
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
     <script src="auth.js?v=1002"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
     <!-- PROTECCIÓN DE LA PÁGINA -->
     <script>
         window.librosAutorizado = false;
@@ -29,7 +27,6 @@
                     window.location.replace("index.html");
                     return false;
                 }
-
                 window.librosAutorizado = true;
                 document.documentElement.style.visibility = "visible";
                 return true;
