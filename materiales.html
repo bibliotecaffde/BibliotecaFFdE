@@ -175,7 +175,7 @@
             margin-top: 2px;
         }
 
-        /* BARRA DE ACCIÓN INVENTARIO (AL CENTRO Y MÁS ALTO) */
+        /* BARRA DE ACCIÓN INVENTARIO */
         .barra-accion-inventario {
             display: flex;
             justify-content: center;
@@ -488,7 +488,7 @@
             font-size: 12px;
         }
 
-        /* SECCIÓN CARGA DE INFORMACIÓN (SOLO ADMINS) */
+        /* SECCIÓN CARGA DE INFORMACIÓN */
         .seccion-admin {
             display: none;
             border: 1px dashed var(--celeste-fundacion);
@@ -515,7 +515,7 @@
             gap: 8px;
         }
 
-        /* SECCIÓN RESPALDO Y RESTAURACIÓN INDEPENDIENTE (SOLO ADMINS) */
+        /* SECCIÓN RESPALDO */
         .seccion-respaldo {
             display: none;
             border: 1px dashed #7bc8eb;
@@ -536,7 +536,7 @@
             margin-top: 10px;
         }
 
-        /* SECCIÓN MANTENIMIENTO INDEPENDIENTE (SOLO ADMINS) */
+        /* SECCIÓN MANTENIMIENTO */
         .seccion-peligro {
             display: none;
             border: 1px dashed var(--rojo);
@@ -563,7 +563,7 @@
             margin-top: 10px;
         }
 
-        /* MODALES FLOTANTES GENERÁLICOS */
+        /* MODALES */
         .modal {
             display: none;
             position: fixed;
@@ -620,7 +620,7 @@
             margin-bottom: 12px;
         }
 
-        /* ESTILOS ESPECÍFICOS PARA MODAL DE CONFIRMACIÓN DE ELIMINACIÓN */
+        /* MODAL DE CONFIRMACIÓN */
         .modal-alerta {
             max-width: 440px;
             text-align: center;
@@ -674,12 +674,15 @@
             .estadisticas {
                 grid-template-columns: repeat(2,1fr);
             }
+
             .fila-compacta {
                 grid-template-columns: 1fr;
             }
+
             .marca {
                 font-size: 18px;
             }
+
             #botonVolver {
                 right: 8px;
                 padding: 6px 10px;
@@ -708,21 +711,24 @@
             <div class="numero" id="totalTipos">0</div>
             <div class="texto">Tipos de materiales</div>
         </div>
+
         <div class="estadistica">
             <div class="numero" id="totalEntradas">0</div>
             <div class="texto">Entradas</div>
         </div>
+
         <div class="estadistica">
             <div class="numero" id="totalEntregadas">0</div>
             <div class="texto">Entregadas</div>
         </div>
+
         <div class="estadistica">
             <div class="numero" id="totalDisponibles">0</div>
             <div class="texto">Disponibles</div>
         </div>
     </section>
 
-    <!-- BOTÓN DE INVENTARIO (AL CENTRO Y MÁS ALTO) -->
+    <!-- BOTÓN DE INVENTARIO -->
     <div class="barra-accion-inventario">
         <button id="btnVerInventario" class="btn btn-primario btn-inventario-principal" type="button">
             📋 Ver inventario
@@ -734,39 +740,39 @@
     <!-- ENTREGAR MATERIAL -->
     <section class="seccion">
         <h2>Entregar material</h2>
-        <p class="seccion-descripcion">Registra los materiales que serán entregados a un afiliado o colaborador.</p>
 
-        <!-- TIPO RECEPTOR -->
+        <p class="seccion-descripcion">
+            Registra los materiales que serán entregados a un afiliado o colaborador.
+        </p>
+
         <div class="botones-tipo">
             <button id="btnAfiliado" class="btn btn-activo" type="button">Afiliado</button>
             <button id="btnColaborador" class="btn btn-secundario" type="button">Colaborador</button>
         </div>
 
-        <!-- AFILIADO -->
         <div id="bloqueAfiliado">
             <div class="campo">
                 <label>Número de familia</label>
                 <input id="inputFamilia" type="text" placeholder="Ejemplo: F1048" autocomplete="off">
             </div>
+
             <div id="resultadosFamilia" class="resultados"></div>
         </div>
 
-        <!-- COLABORADOR -->
         <div id="bloqueColaborador" style="display:none;">
             <div class="campo">
                 <label>Nombre o código del colaborador</label>
                 <input id="inputColaborador" type="text" placeholder="Escriba nombre o código" autocomplete="off">
             </div>
+
             <div id="resultadosColaborador" class="resultados"></div>
         </div>
 
-        <!-- PERSONA SELECCIONADA -->
         <div id="personaSeleccionada" class="persona-seleccionada">
             <div id="personaNombre" class="persona-nombre"></div>
             <div id="personaDetalle" class="persona-detalle"></div>
         </div>
 
-        <!-- BIBLIOTECA / SITIO / OBSERVACIONES (COMPACTO) -->
         <div class="fila-compacta" style="margin-top:10px;">
             <div class="campo">
                 <label>Biblioteca</label>
@@ -797,20 +803,21 @@
             </div>
         </div>
 
-        <!-- BUSCAR MATERIAL -->
         <div style="margin-top:10px;">
             <div class="campo">
                 <label>Material</label>
                 <input id="inputMaterial" type="text" placeholder="Escriba el nombre o código del material" autocomplete="off">
             </div>
+
             <div id="resultadosMaterial" class="resultados"></div>
             <div id="materialInfo" class="material-info"></div>
         </div>
 
-        <!-- LISTA DE MATERIALES A ENTREGAR -->
         <div style="margin-top:10px;">
             <strong style="font-size:13px;">Materiales a entregar</strong>
+
             <div id="listaMateriales"></div>
+
             <button id="btnAgregarOtro" type="button" class="btn btn-secundario" style="margin-top:6px;">
                 + Agregar otro material
             </button>
@@ -819,14 +826,19 @@
         <div id="mensajeEntrega" class="mensaje"></div>
 
         <div style="text-align:right; margin-top:10px;">
-            <button id="btnAceptar" type="button" class="btn btn-verde">Aceptar entrega</button>
+            <button id="btnAceptar" type="button" class="btn btn-verde">
+                Aceptar entrega
+            </button>
         </div>
     </section>
 
     <!-- MATERIALES ENTREGADOS -->
     <section class="seccion" id="seccionEntregados">
         <h2>Materiales entregados</h2>
-        <p class="seccion-descripcion">Registro de materiales entregados almacenados en Supabase.</p>
+
+        <p class="seccion-descripcion">
+            Registro de materiales entregados almacenados en Supabase.
+        </p>
 
         <div class="tabla-contenedor">
             <table>
@@ -849,24 +861,36 @@
                         <th>Usuario</th>
                     </tr>
                 </thead>
+
                 <tbody id="tablaEntregados">
                     <tr>
-                        <td colspan="15" class="vacio">Cargando registros...</td>
+                        <td colspan="15" class="vacio">
+                            Cargando registros...
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <div class="paginacion">
-            <button id="btnAnterior" type="button" class="btn btn-secundario">← Anterior</button>
-            <div id="paginaInfo" class="pagina-info">Página 1</div>
-            <button id="btnSiguiente" type="button" class="btn btn-secundario">Siguiente →</button>
+            <button id="btnAnterior" type="button" class="btn btn-secundario">
+                ← Anterior
+            </button>
+
+            <div id="paginaInfo" class="pagina-info">
+                Página 1
+            </div>
+
+            <button id="btnSiguiente" type="button" class="btn btn-secundario">
+                Siguiente →
+            </button>
         </div>
     </section>
 
-    <!-- 1. CARGA DE INFORMACIÓN (SOLO ADMINISTRADORES) -->
+    <!-- CARGA DE INFORMACIÓN -->
     <section class="seccion seccion-admin" id="seccionAdmin">
         <h2>Carga de información</h2>
+
         <p class="seccion-descripcion">
             Módulo exclusivo para Administradores. Permite descargar la plantilla base e importar nuevos ingresos de materiales.
         </p>
@@ -878,6 +902,7 @@
 
             <div class="caja-subida">
                 <input type="file" id="archivoExcel" accept=".xlsx, .xls" style="max-width:240px;">
+
                 <button id="btnCargarExcel" type="button" class="btn btn-verde">
                     📤 Cargar nuevos ingresos
                 </button>
@@ -887,12 +912,14 @@
         <div id="mensajeAdmin" class="mensaje"></div>
     </section>
 
-    <!-- 2. RESPALDO Y RESTAURACIÓN DE INFORMACIÓN (SOLO ADMINS) -->
+    <!-- RESPALDO -->
     <section class="seccion seccion-respaldo" id="seccionRespaldo">
         <h2>Respaldo de Información</h2>
+
         <p class="seccion-descripcion">
             Genera una copia de seguridad o restaura la base de datos completa desde un archivo de respaldo.
         </p>
+
         <div class="grupo-botones-respaldo">
             <button id="btnRespaldarInformacion" type="button" class="btn btn-primario" style="padding:10px 18px;">
                 💾 Respaldar información de Materiales
@@ -900,24 +927,31 @@
 
             <div class="caja-subida">
                 <input type="file" id="archivoRespaldoExcel" accept=".xlsx, .xls" style="max-width:230px;">
+
                 <button id="btnRestaurarRespaldo" type="button" class="btn btn-verde" style="padding:10px 18px;">
                     📤 Restaurar respaldo
                 </button>
             </div>
         </div>
+
         <div id="mensajeRespaldo" class="mensaje"></div>
     </section>
 
-    <!-- 3. MANTENIMIENTO BASE DE DATOS (BLOQUE SEPARADO - SOLO ADMINS) -->
+    <!-- MANTENIMIENTO -->
     <section class="seccion seccion-peligro" id="seccionPeligro">
-        <div class="titulo-peligro">Acciones de Mantenimiento de Base de Datos</div>
+        <div class="titulo-peligro">
+            Acciones de Mantenimiento de Base de Datos
+        </div>
+
         <p class="seccion-descripcion">
             Zona de alto riesgo. Elimina registros permanentemente de Supabase.
         </p>
+
         <div class="grupo-botones-peligro">
             <button id="btnEliminarMaterialesDB" type="button" class="btn btn-rojo">
                 🗑️ Eliminar Base de datos de Materiales
             </button>
+
             <button id="btnEliminarEntregasDB" type="button" class="btn btn-rojo">
                 🗑️ Eliminar registros de entregas de materiales
             </button>
@@ -926,16 +960,25 @@
 
 </main>
 
-<!-- MODAL INVENTARIO COMPLETO -->
+<!-- MODAL INVENTARIO -->
 <div id="modalInventario" class="modal">
     <div class="modal-contenido">
+
         <div class="modal-cabecera">
             <h3>Inventario de Materiales Disponibles</h3>
-            <button id="btnCerrarInventario" class="btn-cerrar" type="button">✕ Cerrar</button>
+
+            <button id="btnCerrarInventario" class="btn-cerrar" type="button">
+                ✕ Cerrar
+            </button>
         </div>
-        
+
         <div class="filtro-modal">
-            <input type="text" id="inputBuscarInventario" placeholder="🔍 Buscar por código o nombre de material..." autocomplete="off">
+            <input
+                type="text"
+                id="inputBuscarInventario"
+                placeholder="🔍 Buscar por código o nombre de material..."
+                autocomplete="off"
+            >
         </div>
 
         <div class="tabla-contenedor">
@@ -952,31 +995,58 @@
                         <th>Estado</th>
                     </tr>
                 </thead>
+
                 <tbody id="tablaInventarioModal">
                     <tr>
-                        <td colspan="8" class="vacio">Cargando inventario...</td>
+                        <td colspan="8" class="vacio">
+                            Cargando inventario...
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <div class="paginacion" style="margin-top:12px;">
-            <button id="btnAnteriorModal" type="button" class="btn btn-secundario">← Anterior</button>
-            <div id="paginaInfoModal" class="pagina-info">Página 1 de 1</div>
-            <button id="btnSiguienteModal" type="button" class="btn btn-secundario">Siguiente →</button>
+            <button id="btnAnteriorModal" type="button" class="btn btn-secundario">
+                ← Anterior
+            </button>
+
+            <div id="paginaInfoModal" class="pagina-info">
+                Página 1 de 1
+            </div>
+
+            <button id="btnSiguienteModal" type="button" class="btn btn-secundario">
+                Siguiente →
+            </button>
         </div>
+
     </div>
 </div>
 
-<!-- MODAL FLOTANTE DE CONFIRMACIÓN DE ELIMINACIÓN DE DATOS -->
+<!-- MODAL CONFIRMACIÓN -->
 <div id="modalConfirmacionPeligro" class="modal">
     <div class="modal-contenido modal-alerta">
+
         <div class="icono-alerta">⚠️</div>
-        <div id="tituloModalConfirmacion" class="titulo-modal-alerta">¿Está completamente seguro?</div>
-        <div id="textoModalConfirmacion" class="texto-modal-alerta">Esta acción eliminará registros de forma permanente y no se podrá deshacer.</div>
+
+        <div id="tituloModalConfirmacion" class="titulo-modal-alerta">
+            ¿Está completamente seguro?
+        </div>
+
+        <div id="textoModalConfirmacion" class="texto-modal-alerta">
+            Esta acción eliminará registros de forma permanente y no se podrá deshacer.
+        </div>
+
         <div class="acciones-modal-alerta">
-            <button id="btnCancelarAccionPeligro" type="button" class="btn btn-secundario">Cancelar</button>
-            <button id="btnConfirmarAccionPeligro" type="button" class="btn btn-rojo">Sí, procesar</button>
+
+            <button id="btnCancelarAccionPeligro" type="button" class="btn btn-secundario">
+                Cancelar
+            </button>
+
+            <button id="btnConfirmarAccionPeligro" type="button" class="btn btn-rojo">
+                Sí, procesar
+            </button>
+
         </div>
     </div>
 </div>
@@ -991,33 +1061,32 @@
     /* ==========================================================
        VARIABLES GLOBALES
     ========================================================== */
+
     let receptorTipo = "Afiliado";
     let receptorSeleccionado = null;
     let materialesDisponibles = [];
     let materialesSeleccionados = [];
-    
-    // Paginación Entregados
+
     let paginaActual = 1;
     const REGISTROS_POR_PAGINA = 25;
     let totalPaginas = 1;
 
-    // Paginación y Filtro Inventario Modal
     let inventarioConsolidadoCompleto = [];
     let inventarioFiltrado = [];
     let paginaModalActual = 1;
     const REGISTROS_MODAL_POR_PAGINA = 25;
 
-    // Callback para confirmación personalizada
     let callbackAccionPeligrosa = null;
 
     /* ==========================================================
        ELEMENTOS DEL DOM
     ========================================================== */
+
     const mensajeGeneral = document.getElementById("mensajeGeneral");
     const mensajeEntrega = document.getElementById("mensajeEntrega");
     const mensajeAdmin = document.getElementById("mensajeAdmin");
     const mensajeRespaldo = document.getElementById("mensajeRespaldo");
-    
+
     const bloqueAfiliado = document.getElementById("bloqueAfiliado");
     const bloqueColaborador = document.getElementById("bloqueColaborador");
     const resultadosFamilia = document.getElementById("resultadosFamilia");
@@ -1032,12 +1101,11 @@
     const paginaInfo = document.getElementById("paginaInfo");
     const btnAnterior = document.getElementById("btnAnterior");
     const btnSiguiente = document.getElementById("btnSiguiente");
-    
+
     const seccionAdmin = document.getElementById("seccionAdmin");
     const seccionRespaldo = document.getElementById("seccionRespaldo");
     const seccionPeligro = document.getElementById("seccionPeligro");
-    
-    // Modales
+
     const modalInventario = document.getElementById("modalInventario");
     const tablaInventarioModal = document.getElementById("tablaInventarioModal");
     const inputBuscarInventario = document.getElementById("inputBuscarInventario");
@@ -1054,6 +1122,7 @@
     /* ==========================================================
        UTILIDADES Y MENSAJES
     ========================================================== */
+
     function mostrarMensaje(elemento, texto, tipo) {
         elemento.textContent = texto;
         elemento.className = "mensaje visible " + tipo;
@@ -1066,6 +1135,7 @@
 
     function escapar(valor) {
         if (valor === null || valor === undefined) return "";
+
         return String(valor)
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -1075,45 +1145,91 @@
     }
 
     function disponible(material) {
-        return Math.max(0, Number(material.entradas || 0) - Number(material.entregadas || 0));
+        return Math.max(
+            0,
+            Number(material.entradas || 0) -
+            Number(material.entregadas || 0)
+        );
     }
 
     function fechaGuatemala(fecha) {
         if (!fecha) return "";
+
         const d = new Date(fecha);
-        if (Number.isNaN(d.getTime())) return String(fecha);
-        return d.toLocaleString("es-GT", { dateStyle: "short", timeStyle: "short" });
+
+        if (Number.isNaN(d.getTime())) {
+            return String(fecha);
+        }
+
+        return d.toLocaleString("es-GT", {
+            dateStyle: "short",
+            timeStyle: "short"
+        });
     }
 
     async function obtenerUsuarioActual() {
         try {
+
             if (typeof window.obtenerNombreUsuarioActual === "function") {
+
                 const nombre = window.obtenerNombreUsuarioActual();
-                if (nombre && !nombre.includes("@")) return nombre;
+
+                if (nombre && !nombre.includes("@")) {
+                    return nombre;
+                }
             }
 
             if (typeof supabaseClient !== "undefined") {
+
                 const { data } = await supabaseClient.auth.getUser();
+
                 if (data && data.user) {
+
                     const meta = data.user.user_metadata;
-                    if (meta && (meta.full_name || meta.nombre || meta.name)) {
-                        return meta.full_name || meta.nombre || meta.name;
+
+                    if (
+                        meta &&
+                        (
+                            meta.full_name ||
+                            meta.nombre ||
+                            meta.name
+                        )
+                    ) {
+                        return (
+                            meta.full_name ||
+                            meta.nombre ||
+                            meta.name
+                        );
                     }
                 }
             }
+
         } catch (e) {
-            console.warn("No se pudo obtener metadatos del usuario:", e);
+            console.warn(
+                "No se pudo obtener metadatos del usuario:",
+                e
+            );
         }
 
-        return localStorage.getItem("nombreUsuarioActual") || "Usuario Sistema";
+        return (
+            localStorage.getItem("nombreUsuarioActual") ||
+            "Usuario Sistema"
+        );
     }
 
     function verificarPermisosAdmin() {
-        if (typeof window.esAdministrador === "function" && window.esAdministrador()) {
+
+        if (
+            typeof window.esAdministrador === "function" &&
+            window.esAdministrador()
+        ) {
+
             seccionAdmin.classList.add("visible");
             seccionRespaldo.classList.add("visible");
             seccionPeligro.classList.add("visible");
+
         } else {
+
             seccionAdmin.classList.remove("visible");
             seccionRespaldo.classList.remove("visible");
             seccionPeligro.classList.remove("visible");
@@ -1121,1028 +1237,2916 @@
     }
 
     /* ==========================================================
-       MODAL DE CONFIRMACIÓN ESTILIZADO DE ALERTA
+       MODAL DE CONFIRMACIÓN
     ========================================================== */
-    function solicitarConfirmacionPersonalizada(titulo, mensaje, accionConfirmada) {
+
+    function solicitarConfirmacionPersonalizada(
+        titulo,
+        mensaje,
+        accionConfirmada
+    ) {
+
         tituloModalConfirmacion.textContent = titulo;
         textoModalConfirmacion.textContent = mensaje;
+
         callbackAccionPeligrosa = accionConfirmada;
+
         modalConfirmacionPeligro.classList.add("visible");
     }
 
     btnCancelarAccionPeligro.addEventListener("click", () => {
+
         modalConfirmacionPeligro.classList.remove("visible");
+
         callbackAccionPeligrosa = null;
     });
 
-    btnConfirmarAccionPeligro.addEventListener("click", async () => {
-        modalConfirmacionPeligro.classList.remove("visible");
-        if (typeof callbackAccionPeligrosa === "function") {
-            await callbackAccionPeligrosa();
+    btnConfirmarAccionPeligro.addEventListener(
+        "click",
+        async () => {
+
+            const accion = callbackAccionPeligrosa;
+
+            modalConfirmacionPeligro.classList.remove("visible");
+
+            callbackAccionPeligrosa = null;
+
+            if (typeof accion === "function") {
+
+                try {
+                    await accion();
+                } catch (error) {
+
+                    console.error(
+                        "Error ejecutando acción confirmada:",
+                        error
+                    );
+
+                    mostrarMensaje(
+                        mensajeGeneral,
+                        "Error al ejecutar la acción: " +
+                        (error.message || "Error desconocido."),
+                        "error"
+                    );
+                }
+            }
         }
-        callbackAccionPeligrosa = null;
-    });
+    );
 
     /* ==========================================================
-       INVENTARIO EN MODAL FLOTANTE (C001 ASC, BUSCADOR Y PAGINACIÓN)
+       INVENTARIO EN MODAL
     ========================================================== */
-    document.getElementById("btnVerInventario").addEventListener("click", () => {
-        modalInventario.classList.add("visible");
-        inputBuscarInventario.value = "";
-        paginaModalActual = 1;
-        cargarInventarioModal();
-    });
 
-    document.getElementById("btnCerrarInventario").addEventListener("click", () => {
-        modalInventario.classList.remove("visible");
-    });
+    document
+        .getElementById("btnVerInventario")
+        .addEventListener("click", () => {
+
+            modalInventario.classList.add("visible");
+            inputBuscarInventario.value = "";
+            paginaModalActual = 1;
+
+            cargarInventarioModal();
+        });
+
+    document
+        .getElementById("btnCerrarInventario")
+        .addEventListener("click", () => {
+
+            modalInventario.classList.remove("visible");
+        });
 
     async function cargarInventarioModal() {
-        tablaInventarioModal.innerHTML = `<tr><td colspan="8" class="vacio">Cargando inventario...</td></tr>`;
+
+        tablaInventarioModal.innerHTML = `
+            <tr>
+                <td colspan="8" class="vacio">
+                    Cargando inventario...
+                </td>
+            </tr>
+        `;
 
         try {
-            const { data, error } = await supabaseClient
+
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("materiales")
                 .select("*");
 
             if (error) throw error;
 
             if (!data || data.length === 0) {
-                tablaInventarioModal.innerHTML = `<tr><td colspan="8" class="vacio">No existen materiales registrados en el sistema.</td></tr>`;
+
+                tablaInventarioModal.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="vacio">
+                            No existen materiales registrados en el sistema.
+                        </td>
+                    </tr>
+                `;
+
                 inventarioConsolidadoCompleto = [];
                 inventarioFiltrado = [];
+
                 renderizarModalPaginado();
+
                 return;
             }
 
             const mapaConsolidado = new Map();
 
             data.forEach(m => {
-                const key = String(m.codigo).trim().toUpperCase();
+
+                const key = String(m.codigo)
+                    .trim()
+                    .toUpperCase();
+
                 if (mapaConsolidado.has(key)) {
-                    const existente = mapaConsolidado.get(key);
-                    existente.entradas = Number(existente.entradas || 0) + Number(m.entradas || 0);
-                    existente.entregadas = Number(existente.entregadas || 0) + Number(m.entregadas || 0);
+
+                    const existente =
+                        mapaConsolidado.get(key);
+
+                    existente.entradas =
+                        Number(existente.entradas || 0) +
+                        Number(m.entradas || 0);
+
+                    existente.entregadas =
+                        Number(existente.entregadas || 0) +
+                        Number(m.entregadas || 0);
+
                 } else {
+
                     mapaConsolidado.set(key, {
+
                         codigo: String(m.codigo).trim(),
+
                         nombre: m.nombre,
-                        categoria: m.categoria || "-",
-                        biblioteca: m.biblioteca || "-",
-                        entradas: Number(m.entradas || 0),
-                        entregadas: Number(m.entregadas || 0),
-                        estado: m.estado || "Activo"
+
+                        categoria:
+                            m.categoria || "-",
+
+                        biblioteca:
+                            m.biblioteca || "-",
+
+                        entradas:
+                            Number(m.entradas || 0),
+
+                        entregadas:
+                            Number(m.entregadas || 0),
+
+                        estado:
+                            m.estado || "Activo"
                     });
                 }
             });
 
-            inventarioConsolidadoCompleto = Array.from(mapaConsolidado.values()).sort((a, b) => {
-                return a.codigo.localeCompare(b.codigo, undefined, { numeric: true, sensitivity: 'base' });
-            });
+            inventarioConsolidadoCompleto =
+                Array.from(
+                    mapaConsolidado.values()
+                ).sort((a, b) => {
+
+                    return a.codigo.localeCompare(
+                        b.codigo,
+                        undefined,
+                        {
+                            numeric: true,
+                            sensitivity: "base"
+                        }
+                    );
+                });
 
             filtrarInventarioModal();
 
         } catch (err) {
-            console.error("Error al cargar inventario consolidado:", err);
-            tablaInventarioModal.innerHTML = `<tr><td colspan="8" class="vacio" style="color:var(--rojo);">Error: ${escapar(err.message)}</td></tr>`;
+
+            console.error(
+                "Error al cargar inventario consolidado:",
+                err
+            );
+
+            tablaInventarioModal.innerHTML = `
+                <tr>
+                    <td colspan="8"
+                        class="vacio"
+                        style="color:var(--rojo);">
+                        Error: ${escapar(err.message)}
+                    </td>
+                </tr>
+            `;
         }
     }
 
-    inputBuscarInventario.addEventListener("input", () => {
-        paginaModalActual = 1;
-        filtrarInventarioModal();
-    });
+    inputBuscarInventario.addEventListener(
+        "input",
+        () => {
+
+            paginaModalActual = 1;
+
+            filtrarInventarioModal();
+        }
+    );
 
     function filtrarInventarioModal() {
-        const query = inputBuscarInventario.value.trim().toLowerCase();
+
+        const query =
+            inputBuscarInventario.value
+                .trim()
+                .toLowerCase();
 
         if (!query) {
-            inventarioFiltrado = [...inventarioConsolidadoCompleto];
+
+            inventarioFiltrado =
+                [...inventarioConsolidadoCompleto];
+
         } else {
-            inventarioFiltrado = inventarioConsolidadoCompleto.filter(m =>
-                m.codigo.toLowerCase().includes(query) ||
-                m.nombre.toLowerCase().includes(query)
-            );
+
+            inventarioFiltrado =
+                inventarioConsolidadoCompleto.filter(m =>
+                    m.codigo
+                        .toLowerCase()
+                        .includes(query) ||
+
+                    m.nombre
+                        .toLowerCase()
+                        .includes(query)
+                );
         }
 
         renderizarModalPaginado();
     }
 
     function renderizarModalPaginado() {
+
         if (inventarioFiltrado.length === 0) {
-            tablaInventarioModal.innerHTML = `<tr><td colspan="8" class="vacio">No se encontraron materiales coincidentes.</td></tr>`;
-            paginaInfoModal.textContent = `Página 0 de 0`;
+
+            tablaInventarioModal.innerHTML = `
+                <tr>
+                    <td colspan="8" class="vacio">
+                        No se encontraron materiales coincidentes.
+                    </td>
+                </tr>
+            `;
+
+            paginaInfoModal.textContent =
+                "Página 0 de 0";
+
             btnAnteriorModal.disabled = true;
             btnSiguienteModal.disabled = true;
+
             return;
         }
 
-        const totalPaginasModal = Math.ceil(inventarioFiltrado.length / REGISTROS_MODAL_POR_PAGINA) || 1;
-        if (paginaModalActual > totalPaginasModal) paginaModalActual = totalPaginasModal;
+        const totalPaginasModal =
+            Math.ceil(
+                inventarioFiltrado.length /
+                REGISTROS_MODAL_POR_PAGINA
+            ) || 1;
 
-        const inicio = (paginaModalActual - 1) * REGISTROS_MODAL_POR_PAGINA;
-        const fin = inicio + REGISTROS_MODAL_POR_PAGINA;
-        const itemsPagina = inventarioFiltrado.slice(inicio, fin);
+        if (
+            paginaModalActual >
+            totalPaginasModal
+        ) {
+            paginaModalActual =
+                totalPaginasModal;
+        }
+
+        const inicio =
+            (paginaModalActual - 1) *
+            REGISTROS_MODAL_POR_PAGINA;
+
+        const fin =
+            inicio +
+            REGISTROS_MODAL_POR_PAGINA;
+
+        const itemsPagina =
+            inventarioFiltrado.slice(
+                inicio,
+                fin
+            );
 
         let html = "";
+
         itemsPagina.forEach(m => {
-            const disp = Math.max(0, m.entradas - m.entregadas);
+
+            const disp =
+                Math.max(
+                    0,
+                    m.entradas -
+                    m.entregadas
+                );
+
             html += `
                 <tr>
-                    <td><strong>${escapar(m.codigo)}</strong></td>
-                    <td>${escapar(m.nombre)}</td>
-                    <td>${escapar(m.categoria)}</td>
-                    <td>${escapar(m.biblioteca)}</td>
-                    <td>${m.entradas}</td>
-                    <td>${m.entregadas}</td>
-                    <td><strong style="color:var(--celeste-oscuro);">${disp}</strong></td>
-                    <td>${escapar(m.estado)}</td>
-                </tr>`;
+                    <td>
+                        <strong>
+                            ${escapar(m.codigo)}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapar(m.nombre)}
+                    </td>
+
+                    <td>
+                        ${escapar(m.categoria)}
+                    </td>
+
+                    <td>
+                        ${escapar(m.biblioteca)}
+                    </td>
+
+                    <td>
+                        ${m.entradas}
+                    </td>
+
+                    <td>
+                        ${m.entregadas}
+                    </td>
+
+                    <td>
+                        <strong
+                            style="color:var(--celeste-oscuro);">
+                            ${disp}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapar(m.estado)}
+                    </td>
+                </tr>
+            `;
         });
 
         tablaInventarioModal.innerHTML = html;
-        paginaInfoModal.textContent = `Página ${paginaModalActual} de ${totalPaginasModal}`;
-        btnAnteriorModal.disabled = paginaModalActual <= 1;
-        btnSiguienteModal.disabled = paginaModalActual >= totalPaginasModal;
+
+        paginaInfoModal.textContent =
+            `Página ${paginaModalActual} de ${totalPaginasModal}`;
+
+        btnAnteriorModal.disabled =
+            paginaModalActual <= 1;
+
+        btnSiguienteModal.disabled =
+            paginaModalActual >= totalPaginasModal;
     }
 
-    btnAnteriorModal.addEventListener("click", () => {
-        if (paginaModalActual > 1) {
-            paginaModalActual--;
-            renderizarModalPaginado();
-        }
-    });
+    btnAnteriorModal.addEventListener(
+        "click",
+        () => {
 
-    btnSiguienteModal.addEventListener("click", () => {
-        const totalPaginasModal = Math.ceil(inventarioFiltrado.length / REGISTROS_MODAL_POR_PAGINA) || 1;
-        if (paginaModalActual < totalPaginasModal) {
-            paginaModalActual++;
-            renderizarModalPaginado();
+            if (paginaModalActual > 1) {
+
+                paginaModalActual--;
+
+                renderizarModalPaginado();
+            }
         }
-    });
+    );
+
+    btnSiguienteModal.addEventListener(
+        "click",
+        () => {
+
+            const totalPaginasModal =
+                Math.ceil(
+                    inventarioFiltrado.length /
+                    REGISTROS_MODAL_POR_PAGINA
+                ) || 1;
+
+            if (
+                paginaModalActual <
+                totalPaginasModal
+            ) {
+
+                paginaModalActual++;
+
+                renderizarModalPaginado();
+            }
+        }
+    );
 
     /* ==========================================================
        CARGAR ESTADÍSTICAS Y MATERIALES
     ========================================================== */
+
     async function cargarEstadisticas() {
+
         try {
-            const { data: mats, error: errMats } = await supabaseClient
+
+            const {
+                data: mats,
+                error: errMats
+            } = await supabaseClient
                 .from("materiales")
-                .select("id, entradas, entregadas, estado");
+                .select(
+                    "id, entradas, entregadas, estado"
+                );
 
             if (errMats) throw errMats;
 
-            const activos = (mats || []).filter(m => String(m.estado || "").toLowerCase() === "activo");
+            const activos =
+                (mats || []).filter(
+                    m =>
+                        String(m.estado || "")
+                            .toLowerCase() === "activo"
+                );
+
             let totalEntradas = 0;
 
             activos.forEach(m => {
-                totalEntradas += Number(m.entradas || 0);
+
+                totalEntradas +=
+                    Number(m.entradas || 0);
             });
 
-            const { data: entregas, error: errEnt } = await supabaseClient
+            const {
+                data: entregas,
+                error: errEnt
+            } = await supabaseClient
                 .from("entregas_materiales")
                 .select("cantidad");
 
             if (errEnt) throw errEnt;
 
             let totalEntregadas = 0;
+
             (entregas || []).forEach(e => {
-                totalEntregadas += Number(e.cantidad || 0);
+
+                totalEntregadas +=
+                    Number(e.cantidad || 0);
             });
 
-            document.getElementById("totalTipos").textContent = activos.length;
-            document.getElementById("totalEntradas").textContent = totalEntradas;
-            document.getElementById("totalEntregadas").textContent = totalEntregadas;
-            document.getElementById("totalDisponibles").textContent = Math.max(0, totalEntradas - totalEntregadas);
+            document.getElementById(
+                "totalTipos"
+            ).textContent = activos.length;
+
+            document.getElementById(
+                "totalEntradas"
+            ).textContent = totalEntradas;
+
+            document.getElementById(
+                "totalEntregadas"
+            ).textContent = totalEntregadas;
+
+            document.getElementById(
+                "totalDisponibles"
+            ).textContent =
+                Math.max(
+                    0,
+                    totalEntradas -
+                    totalEntregadas
+                );
+
         } catch (err) {
-            console.error("Error al cargar estadísticas:", err.message);
+
+            console.error(
+                "Error al cargar estadísticas:",
+                err.message
+            );
         }
     }
 
     async function cargarMateriales() {
+
         try {
-            const { data, error } = await supabaseClient
+
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("materiales")
-                .select(`id, codigo, nombre, categoria, unidad, biblioteca, entradas, entregadas, estado, observaciones`)
-                .order("nombre", { ascending: true });
+                .select(`
+                    id,
+                    codigo,
+                    nombre,
+                    categoria,
+                    unidad,
+                    biblioteca,
+                    entradas,
+                    entregadas,
+                    estado,
+                    observaciones
+                `)
+                .order(
+                    "nombre",
+                    {
+                        ascending: true
+                    }
+                );
 
             if (error) throw error;
 
-            materialesDisponibles = (data || []).filter(m => String(m.estado || "").toLowerCase() === "activo" && disponible(m) > 0);
+            materialesDisponibles =
+                (data || []).filter(
+                    m =>
+                        String(m.estado || "")
+                            .toLowerCase() === "activo" &&
+                        disponible(m) > 0
+                );
+
         } catch (err) {
-            console.error("Error al cargar materiales:", err.message);
+
+            console.error(
+                "Error al cargar materiales:",
+                err.message
+            );
         }
     }
 
     /* ==========================================================
-       CARGAR MATERIALES ENTREGADOS (TABLA: entregas_materiales)
+       CARGAR ENTREGADOS
     ========================================================== */
+
     async function cargarEntregados() {
+
         tablaEntregados.innerHTML = `
             <tr>
-                <td colspan="15" class="vacio">Cargando registros...</td>
-            </tr>`;
+                <td colspan="15" class="vacio">
+                    Cargando registros...
+                </td>
+            </tr>
+        `;
 
         try {
-            const desde = (paginaActual - 1) * REGISTROS_POR_PAGINA;
-            const hasta = desde + REGISTROS_POR_PAGINA - 1;
 
-            const { data, error, count } = await supabaseClient
+            const desde =
+                (paginaActual - 1) *
+                REGISTROS_POR_PAGINA;
+
+            const hasta =
+                desde +
+                REGISTROS_POR_PAGINA -
+                1;
+
+            const {
+                data,
+                error,
+                count
+            } = await supabaseClient
                 .from("entregas_materiales")
-                .select("*", { count: "exact" })
-                .order("created_at", { ascending: false })
-                .range(desde, hasta);
+                .select(
+                    "*",
+                    {
+                        count: "exact"
+                    }
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .range(
+                    desde,
+                    hasta
+                );
 
             if (error) throw error;
 
             if (!data || data.length === 0) {
+
                 tablaEntregados.innerHTML = `
                     <tr>
-                        <td colspan="15" class="vacio">No hay materiales entregados registrados.</td>
-                    </tr>`;
+                        <td colspan="15" class="vacio">
+                            No hay materiales entregados registrados.
+                        </td>
+                    </tr>
+                `;
+
                 totalPaginas = 1;
+
                 actualizarPaginacion();
+
                 return;
             }
 
-            totalPaginas = Math.ceil((count || data.length) / REGISTROS_POR_PAGINA) || 1;
+            totalPaginas =
+                Math.ceil(
+                    (count || data.length) /
+                    REGISTROS_POR_PAGINA
+                ) || 1;
+
             actualizarPaginacion();
 
             let html = "";
+
             data.forEach(reg => {
+
                 html += `
                     <tr>
-                        <td>${escapar(fechaGuatemala(reg.fecha || reg.created_at))}</td>
-                        <td>${escapar(reg.codigo_material || "-")}</td>
-                        <td>${escapar(reg.material || "-")}</td>
-                        <td>${escapar(reg.cantidad || 1)}</td>
-                        <td>${escapar(reg.receptor || "-")}</td>
-                        <td>${escapar(reg.nombres || "-")}</td>
-                        <td>${escapar(reg.apellidos || "-")}</td>
-                        <td>${escapar(reg.persona_id || "-")}</td>
-                        <td>${escapar(reg.familia_id || "-")}</td>
-                        <td>${escapar(reg.codigo_colaborador || "-")}</td>
-                        <td>${escapar(reg.area_colaborador || "-")}</td>
-                        <td>${escapar(reg.biblioteca || "-")}</td>
-                        <td>${escapar(reg.sitio || "-")}</td>
-                        <td>${escapar(reg.observaciones || "-")}</td>
-                        <td>${escapar(reg.usuario || "-")}</td>
-                    </tr>`;
+                        <td>
+                            ${escapar(
+                                fechaGuatemala(
+                                    reg.fecha ||
+                                    reg.created_at
+                                )
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.codigo_material ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.material ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.cantidad ||
+                                1
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.receptor ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.nombres ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.apellidos ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.persona_id ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.familia_id ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.codigo_colaborador ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.area_colaborador ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.biblioteca ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.sitio ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.observaciones ||
+                                "-"
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapar(
+                                reg.usuario ||
+                                "-"
+                            )}
+                        </td>
+                    </tr>
+                `;
             });
 
             tablaEntregados.innerHTML = html;
 
         } catch (err) {
-            console.error("Error al consultar entregas_materiales:", err);
+
+            console.error(
+                "Error al consultar entregas_materiales:",
+                err
+            );
+
             tablaEntregados.innerHTML = `
                 <tr>
-                    <td colspan="15" class="vacio" style="color:var(--rojo);">
-                        Error al cargar los registros: ${escapar(err.message)}
+                    <td colspan="15"
+                        class="vacio"
+                        style="color:var(--rojo);">
+                        Error al cargar los registros:
+                        ${escapar(err.message)}
                     </td>
-                </tr>`;
+                </tr>
+            `;
         }
     }
 
     function actualizarPaginacion() {
-        paginaInfo.textContent = `Página ${paginaActual} de ${totalPaginas}`;
-        btnAnterior.disabled = paginaActual <= 1;
-        btnSiguiente.disabled = paginaActual >= totalPaginas;
+
+        paginaInfo.textContent =
+            `Página ${paginaActual} de ${totalPaginas}`;
+
+        btnAnterior.disabled =
+            paginaActual <= 1;
+
+        btnSiguiente.disabled =
+            paginaActual >= totalPaginas;
     }
 
-    btnAnterior.addEventListener("click", () => {
-        if (paginaActual > 1) {
-            paginaActual--;
-            cargarEntregados();
-        }
-    });
+    btnAnterior.addEventListener(
+        "click",
+        () => {
 
-    btnSiguiente.addEventListener("click", () => {
-        if (paginaActual < totalPaginas) {
-            paginaActual++;
-            cargarEntregados();
+            if (paginaActual > 1) {
+
+                paginaActual--;
+
+                cargarEntregados();
+            }
         }
-    });
+    );
+
+    btnSiguiente.addEventListener(
+        "click",
+        () => {
+
+            if (
+                paginaActual <
+                totalPaginas
+            ) {
+
+                paginaActual++;
+
+                cargarEntregados();
+            }
+        }
+    );
 
     /* ==========================================================
        TIPO AFILIADO Y COLABORADOR
     ========================================================== */
-    document.getElementById("btnAfiliado").addEventListener("click", function() {
-        receptorTipo = "Afiliado";
-        this.className = "btn btn-activo";
-        document.getElementById("btnColaborador").className = "btn btn-secundario";
-        bloqueAfiliado.style.display = "block";
-        bloqueColaborador.style.display = "none";
-        receptorSeleccionado = null;
-        limpiarPersona();
-        resultadosColaborador.innerHTML = "";
-    });
 
-    document.getElementById("btnColaborador").addEventListener("click", function() {
-        receptorTipo = "Colaborador";
-        this.className = "btn btn-activo";
-        document.getElementById("btnAfiliado").className = "btn btn-secundario";
-        bloqueAfiliado.style.display = "none";
-        bloqueColaborador.style.display = "block";
-        receptorSeleccionado = null;
-        limpiarPersona();
-        resultadosFamilia.innerHTML = "";
-    });
+    document
+        .getElementById("btnAfiliado")
+        .addEventListener(
+            "click",
+            function() {
+
+                receptorTipo = "Afiliado";
+
+                this.className =
+                    "btn btn-activo";
+
+                document.getElementById(
+                    "btnColaborador"
+                ).className =
+                    "btn btn-secundario";
+
+                bloqueAfiliado.style.display =
+                    "block";
+
+                bloqueColaborador.style.display =
+                    "none";
+
+                receptorSeleccionado =
+                    null;
+
+                limpiarPersona();
+
+                resultadosColaborador.innerHTML =
+                    "";
+            }
+        );
+
+    document
+        .getElementById("btnColaborador")
+        .addEventListener(
+            "click",
+            function() {
+
+                receptorTipo = "Colaborador";
+
+                this.className =
+                    "btn btn-activo";
+
+                document.getElementById(
+                    "btnAfiliado"
+                ).className =
+                    "btn btn-secundario";
+
+                bloqueAfiliado.style.display =
+                    "none";
+
+                bloqueColaborador.style.display =
+                    "block";
+
+                receptorSeleccionado =
+                    null;
+
+                limpiarPersona();
+
+                resultadosFamilia.innerHTML =
+                    "";
+            }
+        );
 
     /* ==========================================================
-       BUSCAR AFILIADO POR FAMILIA (TABLA: afiliados)
+       BUSCAR AFILIADO
     ========================================================== */
+
     let temporizadorFamilia;
-    document.getElementById("inputFamilia").addEventListener("input", function() {
-        clearTimeout(temporizadorFamilia);
-        const familia = this.value.trim();
-        resultadosFamilia.innerHTML = "";
-        receptorSeleccionado = null;
-        limpiarPersona();
 
-        if (!familia) return;
+    document
+        .getElementById("inputFamilia")
+        .addEventListener(
+            "input",
+            function() {
 
-        temporizadorFamilia = setTimeout(() => {
-            buscarFamilia(familia);
-        }, 250);
-    });
+                clearTimeout(
+                    temporizadorFamilia
+                );
+
+                const familia =
+                    this.value.trim();
+
+                resultadosFamilia.innerHTML =
+                    "";
+
+                receptorSeleccionado =
+                    null;
+
+                limpiarPersona();
+
+                if (!familia) return;
+
+                temporizadorFamilia =
+                    setTimeout(
+                        () => {
+                            buscarFamilia(
+                                familia
+                            );
+                        },
+                        250
+                    );
+            }
+        );
 
     async function buscarFamilia(familia) {
-        resultadosFamilia.innerHTML = `<div class="resultado">Buscando afiliados...</div>`;
+
+        resultadosFamilia.innerHTML = `
+            <div class="resultado">
+                Buscando afiliados...
+            </div>
+        `;
 
         try {
-            const { data, error } = await supabaseClient
+
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("afiliados")
-                .select("id, PersonaId, FamiliaId, Nombres, Apellidos, estado, Sitio")
-                .eq("FamiliaId", familia)
-                .ilike("estado", "Activo")
-                .order("Apellidos", { ascending: true });
+                .select(
+                    "id, PersonaId, FamiliaId, Nombres, Apellidos, estado, Sitio"
+                )
+                .eq(
+                    "FamiliaId",
+                    familia
+                )
+                .ilike(
+                    "estado",
+                    "Activo"
+                )
+                .order(
+                    "Apellidos",
+                    {
+                        ascending: true
+                    }
+                );
 
             if (error) throw error;
 
             if (!data || data.length === 0) {
-                resultadosFamilia.innerHTML = `<div class="resultado">No se encontraron afiliados activos en la familia ${escapar(familia)}.</div>`;
+
+                resultadosFamilia.innerHTML = `
+                    <div class="resultado">
+                        No se encontraron afiliados activos en la familia
+                        ${escapar(familia)}.
+                    </div>
+                `;
+
                 return;
             }
 
             let html = "";
-            data.forEach((af, idx) => {
-                html += `
-                    <div class="resultado" id="res-af-${idx}">
-                        <div class="resultado-titulo">${escapar(af.Nombres)} ${escapar(af.Apellidos)}</div>
-                        <div class="resultado-detalle">Familia: ${escapar(af.FamiliaId)} | ID Persona: ${escapar(af.PersonaId)}</div>
-                    </div>`;
-            });
-            resultadosFamilia.innerHTML = html;
 
-            data.forEach((af, idx) => {
-                document.getElementById(`res-af-${idx}`).addEventListener("click", () => {
-                    seleccionarPersona(af);
-                });
-            });
+            data.forEach(
+                (af, idx) => {
+
+                    html += `
+                        <div
+                            class="resultado"
+                            id="res-af-${idx}"
+                        >
+                            <div class="resultado-titulo">
+                                ${escapar(af.Nombres)}
+                                ${escapar(af.Apellidos)}
+                            </div>
+
+                            <div class="resultado-detalle">
+                                Familia:
+                                ${escapar(af.FamiliaId)}
+                                |
+                                ID Persona:
+                                ${escapar(af.PersonaId)}
+                            </div>
+                        </div>
+                    `;
+                }
+            );
+
+            resultadosFamilia.innerHTML =
+                html;
+
+            data.forEach(
+                (af, idx) => {
+
+                    document
+                        .getElementById(
+                            `res-af-${idx}`
+                        )
+                        .addEventListener(
+                            "click",
+                            () => {
+                                seleccionarPersona(
+                                    af
+                                );
+                            }
+                        );
+                }
+            );
 
         } catch (err) {
-            resultadosFamilia.innerHTML = `<div class="resultado" style="color:var(--rojo);">Error: ${escapar(err.message)}</div>`;
+
+            resultadosFamilia.innerHTML = `
+                <div
+                    class="resultado"
+                    style="color:var(--rojo);"
+                >
+                    Error:
+                    ${escapar(err.message)}
+                </div>
+            `;
         }
     }
 
     /* ==========================================================
-       BUSCAR COLABORADOR (TABLA: colaboradores)
+       BUSCAR COLABORADOR
     ========================================================== */
+
     let temporizadorColaborador;
-    document.getElementById("inputColaborador").addEventListener("input", function() {
-        clearTimeout(temporizadorColaborador);
-        const valor = this.value.trim();
-        resultadosColaborador.innerHTML = "";
-        receptorSeleccionado = null;
-        limpiarPersona();
 
-        if (!valor) return;
+    document
+        .getElementById("inputColaborador")
+        .addEventListener(
+            "input",
+            function() {
 
-        temporizadorColaborador = setTimeout(() => {
-            buscarColaborador(valor);
-        }, 250);
-    });
+                clearTimeout(
+                    temporizadorColaborador
+                );
+
+                const valor =
+                    this.value.trim();
+
+                resultadosColaborador.innerHTML =
+                    "";
+
+                receptorSeleccionado =
+                    null;
+
+                limpiarPersona();
+
+                if (!valor) return;
+
+                temporizadorColaborador =
+                    setTimeout(
+                        () => {
+                            buscarColaborador(
+                                valor
+                            );
+                        },
+                        250
+                    );
+            }
+        );
 
     async function buscarColaborador(busqueda) {
-        resultadosColaborador.innerHTML = `<div class="resultado">Buscando colaboradores...</div>`;
+
+        resultadosColaborador.innerHTML = `
+            <div class="resultado">
+                Buscando colaboradores...
+            </div>
+        `;
 
         try {
-            const { data, error } = await supabaseClient
+
+            const {
+                data,
+                error
+            } = await supabaseClient
                 .from("colaboradores")
-                .select("id, CodigoColaborador, Nombre, Area, estado")
-                .or(`Nombre.ilike.%${busqueda}%,CodigoColaborador.ilike.%${busqueda}%`)
-                .ilike("estado", "Activo")
-                .order("Nombre", { ascending: true });
+                .select(
+                    "id, CodigoColaborador, Nombre, Area, estado"
+                )
+                .or(
+                    `Nombre.ilike.%${busqueda}%,CodigoColaborador.ilike.%${busqueda}%`
+                )
+                .ilike(
+                    "estado",
+                    "Activo"
+                )
+                .order(
+                    "Nombre",
+                    {
+                        ascending: true
+                    }
+                );
 
             if (error) throw error;
 
             if (!data || data.length === 0) {
-                resultadosColaborador.innerHTML = `<div class="resultado">No se encontraron colaboradores activos.</div>`;
+
+                resultadosColaborador.innerHTML = `
+                    <div class="resultado">
+                        No se encontraron colaboradores activos.
+                    </div>
+                `;
+
                 return;
             }
 
             let html = "";
-            data.forEach((col, idx) => {
-                html += `
-                    <div class="resultado" id="res-col-${idx}">
-                        <div class="resultado-titulo">${escapar(col.Nombre)}</div>
-                        <div class="resultado-detalle">Código: ${escapar(col.CodigoColaborador || "-")} | Área: ${escapar(col.Area || "-")}</div>
-                    </div>`;
-            });
-            resultadosColaborador.innerHTML = html;
 
-            data.forEach((col, idx) => {
-                document.getElementById(`res-col-${idx}`).addEventListener("click", () => {
-                    seleccionarPersona(col);
-                });
-            });
+            data.forEach(
+                (col, idx) => {
+
+                    html += `
+                        <div
+                            class="resultado"
+                            id="res-col-${idx}"
+                        >
+                            <div class="resultado-titulo">
+                                ${escapar(col.Nombre)}
+                            </div>
+
+                            <div class="resultado-detalle">
+                                Código:
+                                ${escapar(
+                                    col.CodigoColaborador ||
+                                    "-"
+                                )}
+                                |
+                                Área:
+                                ${escapar(
+                                    col.Area ||
+                                    "-"
+                                )}
+                            </div>
+                        </div>
+                    `;
+                }
+            );
+
+            resultadosColaborador.innerHTML =
+                html;
+
+            data.forEach(
+                (col, idx) => {
+
+                    document
+                        .getElementById(
+                            `res-col-${idx}`
+                        )
+                        .addEventListener(
+                            "click",
+                            () => {
+                                seleccionarPersona(
+                                    col
+                                );
+                            }
+                        );
+                }
+            );
 
         } catch (err) {
-            resultadosColaborador.innerHTML = `<div class="resultado" style="color:var(--rojo);">Error: ${escapar(err.message)}</div>`;
+
+            resultadosColaborador.innerHTML = `
+                <div
+                    class="resultado"
+                    style="color:var(--rojo);"
+                >
+                    Error:
+                    ${escapar(err.message)}
+                </div>
+            `;
         }
     }
 
     function seleccionarPersona(persona) {
-        receptorSeleccionado = persona;
-        resultadosFamilia.innerHTML = "";
-        resultadosColaborador.innerHTML = "";
+
+        receptorSeleccionado =
+            persona;
+
+        resultadosFamilia.innerHTML =
+            "";
+
+        resultadosColaborador.innerHTML =
+            "";
 
         if (receptorTipo === "Afiliado") {
-            personaNombre.textContent = `${persona.Nombres || ""} ${persona.Apellidos || ""}`.trim();
-            personaDetalle.textContent = `Familia: ${persona.FamiliaId || "-"} | Persona ID: ${persona.PersonaId || "-"}`;
+
+            personaNombre.textContent =
+                `${persona.Nombres || ""} ${persona.Apellidos || ""}`.trim();
+
+            personaDetalle.textContent =
+                `Familia: ${
+                    persona.FamiliaId || "-"
+                } | Persona ID: ${
+                    persona.PersonaId || "-"
+                }`;
+
         } else {
-            personaNombre.textContent = `${persona.Nombre || ""}`.trim();
-            personaDetalle.textContent = `Código: ${persona.CodigoColaborador || "-"} | Área: ${persona.Area || "-"}`;
+
+            personaNombre.textContent =
+                `${persona.Nombre || ""}`.trim();
+
+            personaDetalle.textContent =
+                `Código: ${
+                    persona.CodigoColaborador || "-"
+                } | Área: ${
+                    persona.Area || "-"
+                }`;
         }
 
-        personaSeleccionada.classList.add("visible");
+        personaSeleccionada.classList.add(
+            "visible"
+        );
     }
 
     function limpiarPersona() {
-        personaSeleccionada.classList.remove("visible");
-        personaNombre.textContent = "";
-        personaDetalle.textContent = "";
+
+        personaSeleccionada.classList.remove(
+            "visible"
+        );
+
+        personaNombre.textContent =
+            "";
+
+        personaDetalle.textContent =
+            "";
     }
 
     /* ==========================================================
        BUSCAR MATERIALES
     ========================================================== */
+
     let temporizadorMaterial;
-    document.getElementById("inputMaterial").addEventListener("input", function() {
-        clearTimeout(temporizadorMaterial);
-        const q = this.value.trim().toLowerCase();
-        resultadosMaterial.innerHTML = "";
 
-        if (!q) return;
+    document
+        .getElementById("inputMaterial")
+        .addEventListener(
+            "input",
+            function() {
 
-        temporizadorMaterial = setTimeout(() => {
-            const filtrados = materialesDisponibles.filter(m => 
-                (m.nombre && m.nombre.toLowerCase().includes(q)) || 
-                (m.codigo && m.codigo.toLowerCase().includes(q))
-            );
+                clearTimeout(
+                    temporizadorMaterial
+                );
 
-            if (filtrados.length === 0) {
-                resultadosMaterial.innerHTML = `<div class="resultado">No se encontraron materiales activos disponibles.</div>`;
-                return;
+                const q =
+                    this.value
+                        .trim()
+                        .toLowerCase();
+
+                resultadosMaterial.innerHTML =
+                    "";
+
+                if (!q) return;
+
+                temporizadorMaterial =
+                    setTimeout(
+                        () => {
+
+                            const filtrados =
+                                materialesDisponibles.filter(
+                                    m =>
+                                        (
+                                            m.nombre &&
+                                            m.nombre
+                                                .toLowerCase()
+                                                .includes(q)
+                                        ) ||
+                                        (
+                                            m.codigo &&
+                                            m.codigo
+                                                .toLowerCase()
+                                                .includes(q)
+                                        )
+                                );
+
+                            if (
+                                filtrados.length ===
+                                0
+                            ) {
+
+                                resultadosMaterial.innerHTML = `
+                                    <div class="resultado">
+                                        No se encontraron materiales activos disponibles.
+                                    </div>
+                                `;
+
+                                return;
+                            }
+
+                            let html = "";
+
+                            filtrados.forEach(
+                                (m, idx) => {
+
+                                    html += `
+                                        <div
+                                            class="resultado"
+                                            id="res-mat-${idx}"
+                                        >
+                                            <div class="resultado-titulo">
+                                                ${escapar(m.nombre)}
+                                                (${escapar(m.codigo)})
+                                            </div>
+
+                                            <div class="resultado-detalle">
+                                                Disponible:
+                                                ${disponible(m)}
+                                                ${escapar(
+                                                    m.unidad ||
+                                                    "unidades"
+                                                )}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                            );
+
+                            resultadosMaterial.innerHTML =
+                                html;
+
+                            filtrados.forEach(
+                                (m, idx) => {
+
+                                    document
+                                        .getElementById(
+                                            `res-mat-${idx}`
+                                        )
+                                        .addEventListener(
+                                            "click",
+                                            () => {
+                                                agregarMaterialLista(
+                                                    m
+                                                );
+                                            }
+                                        );
+                                }
+                            );
+
+                        },
+                        200
+                    );
             }
-
-            let html = "";
-            filtrados.forEach((m, idx) => {
-                html += `
-                    <div class="resultado" id="res-mat-${idx}">
-                        <div class="resultado-titulo">${escapar(m.nombre)} (${escapar(m.codigo)})</div>
-                        <div class="resultado-detalle">Disponible: ${disponible(m)} ${escapar(m.unidad || 'unidades')}</div>
-                    </div>`;
-            });
-            resultadosMaterial.innerHTML = html;
-
-            filtrados.forEach((m, idx) => {
-                document.getElementById(`res-mat-${idx}`).addEventListener("click", () => {
-                    agregarMaterialLista(m);
-                });
-            });
-        }, 200);
-    });
+        );
 
     function agregarMaterialLista(material) {
-        resultadosMaterial.innerHTML = "";
-        document.getElementById("inputMaterial").value = "";
 
-        const existe = materialesSeleccionados.find(m => m.id === material.id);
+        resultadosMaterial.innerHTML =
+            "";
+
+        document.getElementById(
+            "inputMaterial"
+        ).value = "";
+
+        const existe =
+            materialesSeleccionados.find(
+                m =>
+                    m.id ===
+                    material.id
+            );
+
         if (existe) {
-            mostrarMensaje(mensajeEntrega, "El material ya está en la lista.", "info");
+
+            mostrarMensaje(
+                mensajeEntrega,
+                "El material ya está en la lista.",
+                "info"
+            );
+
             return;
         }
 
         materialesSeleccionados.push({
+
             ...material,
+
             cantidadEntrega: 1
         });
 
         renderizarListaMateriales();
-        ocultarMensaje(mensajeEntrega);
+
+        ocultarMensaje(
+            mensajeEntrega
+        );
     }
 
     function renderizarListaMateriales() {
-        if (materialesSeleccionados.length === 0) {
-            listaMateriales.innerHTML = `<div style="color:var(--texto-suave); font-size:12px; margin-top:6px;">No hay materiales agregados.</div>`;
+
+        if (
+            materialesSeleccionados.length ===
+            0
+        ) {
+
+            listaMateriales.innerHTML = `
+                <div
+                    style="
+                        color:var(--texto-suave);
+                        font-size:12px;
+                        margin-top:6px;
+                    "
+                >
+                    No hay materiales agregados.
+                </div>
+            `;
+
             return;
         }
 
         let html = "";
-        materialesSeleccionados.forEach((m, idx) => {
-            html += `
-                <div class="fila-material">
-                    <div>
-                        <div class="material-nombre">${escapar(m.nombre)} (${escapar(m.codigo)})</div>
-                        <div class="material-detalle">Disponible: ${disponible(m)}</div>
+
+        materialesSeleccionados.forEach(
+            (m, idx) => {
+
+                html += `
+                    <div class="fila-material">
+
+                        <div>
+
+                            <div class="material-nombre">
+                                ${escapar(m.nombre)}
+                                (${escapar(m.codigo)})
+                            </div>
+
+                            <div class="material-detalle">
+                                Disponible:
+                                ${disponible(m)}
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <input
+                                type="number"
+                                min="1"
+                                max="${disponible(m)}"
+                                value="${m.cantidadEntrega}"
+                                onchange="actualizarCantidad(${idx}, this.value)"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <button
+                                type="button"
+                                class="btn-quitar"
+                                onclick="quitarMaterial(${idx})"
+                            >
+                                ×
+                            </button>
+
+                        </div>
+
                     </div>
-                    <div>
-                        <input type="number" min="1" max="${disponible(m)}" value="${m.cantidadEntrega}" onchange="actualizarCantidad(${idx}, this.value)">
-                    </div>
-                    <div>
-                        <button type="button" class="btn-quitar" onclick="quitarMaterial(${idx})">×</button>
-                    </div>
-                </div>`;
-        });
-        listaMateriales.innerHTML = html;
+                `;
+            }
+        );
+
+        listaMateriales.innerHTML =
+            html;
     }
 
-    function actualizarCantidad(index, valor) {
-        const val = Number(valor);
-        const max = disponible(materialesSeleccionados[index]);
+    function actualizarCantidad(
+        index,
+        valor
+    ) {
+
+        const val =
+            Number(valor);
+
+        const max =
+            disponible(
+                materialesSeleccionados[index]
+            );
+
         if (val > max) {
-            mostrarMensaje(mensajeEntrega, `La cantidad no puede superar el disponible (${max}).`, "error");
-            materialesSeleccionados[index].cantidadEntrega = max;
+
+            mostrarMensaje(
+                mensajeEntrega,
+                `La cantidad no puede superar el disponible (${max}).`,
+                "error"
+            );
+
+            materialesSeleccionados[index]
+                .cantidadEntrega =
+                max;
+
             renderizarListaMateriales();
+
         } else if (val < 1) {
-            materialesSeleccionados[index].cantidadEntrega = 1;
+
+            materialesSeleccionados[index]
+                .cantidadEntrega =
+                1;
+
             renderizarListaMateriales();
+
         } else {
-            materialesSeleccionados[index].cantidadEntrega = val;
-            ocultarMensaje(mensajeEntrega);
+
+            materialesSeleccionados[index]
+                .cantidadEntrega =
+                val;
+
+            ocultarMensaje(
+                mensajeEntrega
+            );
         }
     }
 
     function quitarMaterial(index) {
-        materialesSeleccionados.splice(index, 1);
+
+        materialesSeleccionados.splice(
+            index,
+            1
+        );
+
         renderizarListaMateriales();
     }
 
-    document.getElementById("btnAgregarOtro").addEventListener("click", () => {
-        document.getElementById("inputMaterial").focus();
-    });
+    document
+        .getElementById("btnAgregarOtro")
+        .addEventListener(
+            "click",
+            () => {
 
-    /* ==========================================================
-       ACEPTAR Y REGISTRAR ENTREGA EN SUPABASE
-    ========================================================== */
-    document.getElementById("btnAceptar").addEventListener("click", async function() {
-        ocultarMensaje(mensajeEntrega);
-
-        if (!receptorSeleccionado) {
-            mostrarMensaje(mensajeEntrega, "Seleccione una persona receptora.", "error");
-            return;
-        }
-
-        const biblioteca = document.getElementById("selectBiblioteca").value;
-        const sitio = document.getElementById("selectSitio").value;
-        const observaciones = document.getElementById("inputObservaciones").value.trim();
-
-        if (!biblioteca) {
-            mostrarMensaje(mensajeEntrega, "Seleccione la biblioteca que entrega.", "error");
-            return;
-        }
-
-        if (!sitio) {
-            mostrarMensaje(mensajeEntrega, "Seleccione un sitio.", "error");
-            return;
-        }
-
-        if (materialesSeleccionados.length === 0) {
-            mostrarMensaje(mensajeEntrega, "Agregue al menos un material para entregar.", "error");
-            return;
-        }
-
-        this.disabled = true;
-        mostrarMensaje(mensajeEntrega, "Guardando entrega...", "info");
-
-        try {
-            const usuarioActual = await obtenerUsuarioActual();
-
-            for (const mat of materialesSeleccionados) {
-                let nombres = "";
-                let apellidos = "";
-                let personaId = null;
-                let familiaId = null;
-                let codigoColaborador = null;
-                let areaColaborador = null;
-
-                if (receptorTipo === "Afiliado") {
-                    nombres = receptorSeleccionado.Nombres || "";
-                    apellidos = receptorSeleccionado.Apellidos || "";
-                    personaId = receptorSeleccionado.PersonaId || null;
-                    familiaId = receptorSeleccionado.FamiliaId || null;
-                } else {
-                    nombres = receptorSeleccionado.Nombre || "";
-                    apellidos = "";
-                    codigoColaborador = receptorSeleccionado.CodigoColaborador || null;
-                    areaColaborador = receptorSeleccionado.Area || null;
-                }
-
-                const registro = {
-                    codigo_material: mat.codigo,
-                    material: mat.nombre,
-                    cantidad: mat.cantidadEntrega,
-                    receptor: receptorTipo,
-                    nombres: nombres,
-                    apellidos: apellidos,
-                    persona_id: personaId,
-                    familia_id: familiaId,
-                    codigo_colaborador: codigoColaborador,
-                    area_colaborador: areaColaborador,
-                    biblioteca: biblioteca,
-                    sitio: sitio,
-                    observaciones: observaciones,
-                    usuario: usuarioActual
-                };
-
-                const { error: errorIns } = await supabaseClient
-                    .from("entregas_materiales")
-                    .insert([registro]);
-
-                if (errorIns) throw errorIns;
-
-                const nuevasEntregadas = Number(mat.entregadas || 0) + mat.cantidadEntrega;
-                const { error: errorUpd } = await supabaseClient
-                    .from("materiales")
-                    .update({ entregadas: nuevasEntregadas })
-                    .eq("id", mat.id);
-
-                if (errorUpd) throw errorUpd;
+                document
+                    .getElementById(
+                        "inputMaterial"
+                    )
+                    .focus();
             }
-
-            mostrarMensaje(mensajeEntrega, "¡Entrega registrada exitosamente!", "ok");
-
-            materialesSeleccionados = [];
-            receptorSeleccionado = null;
-            limpiarPersona();
-            renderizarListaMateriales();
-            document.getElementById("inputFamilia").value = "";
-            document.getElementById("inputColaborador").value = "";
-            document.getElementById("inputObservaciones").value = "";
-
-            await cargarEstadisticas();
-            await cargarMateriales();
-            await cargarEntregados();
-
-        } catch (err) {
-            console.error("Error al registrar entrega:", err);
-            mostrarMensaje(mensajeEntrega, "Error al procesar la entrega: " + err.message, "error");
-        } finally {
-            this.disabled = false;
-        }
-    });
+        );
 
     /* ==========================================================
-       CARGA DE INFORMACIÓN (DESCARGA PLANTILLA Y SUBIDA EXCEL)
+       ACEPTAR Y REGISTRAR ENTREGA
     ========================================================== */
-    document.getElementById("btnDescargarExcel").addEventListener("click", async () => {
-        mostrarMensaje(mensajeAdmin, "Generando archivo MasterMateriales.xlsx...", "info");
 
-        try {
-            const { data: materiales, error: errMat } = await supabaseClient
-                .from("materiales")
-                .select("*")
-                .order("codigo", { ascending: true });
+    document
+        .getElementById("btnAceptar")
+        .addEventListener(
+            "click",
+            async function() {
 
-            if (errMat) throw errMat;
+                ocultarMensaje(
+                    mensajeEntrega
+                );
 
-            const { data: entregas, error: errEnt } = await supabaseClient
-                .from("entregas_materiales")
-                .select("*")
-                .order("created_at", { ascending: false });
+                if (!receptorSeleccionado) {
 
-            if (errEnt) throw errEnt;
+                    mostrarMensaje(
+                        mensajeEntrega,
+                        "Seleccione una persona receptora.",
+                        "error"
+                    );
 
-            const wb = XLSX.utils.book_new();
-
-            const wsMateriales = XLSX.utils.json_to_sheet(materiales || []);
-            const wsEntregas = XLSX.utils.json_to_sheet(entregas || []);
-
-            XLSX.utils.book_append_sheet(wb, wsMateriales, "Materiales");
-            XLSX.utils.book_append_sheet(wb, wsEntregas, "Entregas");
-
-            XLSX.writeFile(wb, "MasterMateriales.xlsx");
-            mostrarMensaje(mensajeAdmin, "Descarga completada con éxito.", "ok");
-
-        } catch (err) {
-            console.error("Error al exportar Excel:", err);
-            mostrarMensaje(mensajeAdmin, "Error al generar el Excel: " + err.message, "error");
-        }
-    });
-
-    document.getElementById("btnCargarExcel").addEventListener("click", async () => {
-        const inputArchivo = document.getElementById("archivoExcel");
-        if (!inputArchivo.files || inputArchivo.files.length === 0) {
-            mostrarMensaje(mensajeAdmin, "Por favor seleccione un archivo .xlsx para subir.", "error");
-            return;
-        }
-
-        const archivo = inputArchivo.files[0];
-        const lector = new FileReader();
-
-        mostrarMensaje(mensajeAdmin, "Procesando e importando materiales...", "info");
-
-        lector.onload = async (e) => {
-            try {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: "array" });
-
-                const nombreHoja = workbook.SheetNames.includes("Materiales") ? "Materiales" : workbook.SheetNames[0];
-                const hoja = workbook.Sheets[nombreHoja];
-                const filas = XLSX.utils.sheet_to_json(hoja);
-
-                if (!filas || filas.length === 0) {
-                    mostrarMensaje(mensajeAdmin, "La hoja de materiales está vacía.", "error");
                     return;
                 }
 
-                const { data: matsExistentes, error: errMats } = await supabaseClient
-                    .from("materiales")
-                    .select("id, codigo, entradas");
+                const biblioteca =
+                    document
+                        .getElementById(
+                            "selectBiblioteca"
+                        )
+                        .value;
 
-                if (errMats) throw errMats;
+                const sitio =
+                    document
+                        .getElementById(
+                            "selectSitio"
+                        )
+                        .value;
 
-                const mapaExistentes = new Map();
-                (matsExistentes || []).forEach(m => {
-                    mapaExistentes.set(String(m.codigo).trim().toUpperCase(), m);
-                });
+                const observaciones =
+                    document
+                        .getElementById(
+                            "inputObservaciones"
+                        )
+                        .value
+                        .trim();
 
-                let procesados = 0;
+                if (!biblioteca) {
 
-                for (const fila of filas) {
-                    const codigo = String(fila.codigo || fila.Codigo || "").trim();
-                    const nombre = String(fila.nombre || fila.Nombre || "").trim();
-                    const entradasIngresadas = Number(fila.entradas || fila.Entradas || 0);
+                    mostrarMensaje(
+                        mensajeEntrega,
+                        "Seleccione la biblioteca que entrega.",
+                        "error"
+                    );
 
-                    if (!codigo || !nombre) continue;
-
-                    const codigoKey = codigo.toUpperCase();
-
-                    if (mapaExistentes.has(codigoKey)) {
-                        const regActual = mapaExistentes.get(codigoKey);
-                        const nuevasEntradasTotal = Number(regActual.entradas || 0) + entradasIngresadas;
-
-                        const { error: errUpd } = await supabaseClient
-                            .from("materiales")
-                            .update({ entradas: nuevasEntradasTotal })
-                            .eq("id", regActual.id);
-
-                        if (errUpd) throw errUpd;
-                    } else {
-                        const nuevoReg = {
-                            codigo: codigo,
-                            nombre: nombre,
-                            categoria: fila.categoria || fila.Categoria || "",
-                            unidad: fila.unidad || fila.Unidad || "unidad",
-                            biblioteca: fila.biblioteca || fila.Biblioteca || "F",
-                            entradas: entradasIngresadas,
-                            entregadas: 0,
-                            estado: fila.estado || fila.Estado || "Activo",
-                            observaciones: fila.observaciones || fila.Observaciones || ""
-                        };
-
-                        const { error: errIns } = await supabaseClient
-                            .from("materiales")
-                            .insert([nuevoReg]);
-
-                        if (errIns) throw errIns;
-                    }
-                    procesados++;
+                    return;
                 }
 
-                mostrarMensaje(mensajeAdmin, `¡Importación completada! Se actualizaron/insertaron ${procesados} registros de materiales.`, "ok");
-                inputArchivo.value = "";
+                if (!sitio) {
 
-                await cargarEstadisticas();
-                await cargarMateriales();
-                await cargarEntregados();
+                    mostrarMensaje(
+                        mensajeEntrega,
+                        "Seleccione un sitio.",
+                        "error"
+                    );
 
-            } catch (err) {
-                console.error("Error al procesar la carga:", err);
-                mostrarMensaje(mensajeAdmin, "Error en la importación: " + err.message, "error");
-            }
-        };
+                    return;
+                }
 
-        lector.readAsArrayBuffer(archivo);
-    });
+                if (
+                    materialesSeleccionados.length ===
+                    0
+                ) {
 
-    /* ==========================================================
-       RESPALDO Y RESTAURACIÓN DE INFORMACIÓN (SOLO ADMINS)
-    ========================================================== */
-    document.getElementById("btnRespaldarInformacion").addEventListener("click", async () => {
-        mostrarMensaje(mensajeRespaldo, "Generando respaldo completo de la base de datos...", "info");
+                    mostrarMensaje(
+                        mensajeEntrega,
+                        "Agregue al menos un material para entregar.",
+                        "error"
+                    );
 
-        try {
-            const { data: materiales, error: errMat } = await supabaseClient
-                .from("materiales")
-                .select("*")
-                .order("codigo", { ascending: true });
+                    return;
+                }
 
-            if (errMat) throw errMat;
+                this.disabled = true;
 
-            const { data: entregas, error: errEnt } = await supabaseClient
-                .from("entregas_materiales")
-                .select("*")
-                .order("created_at", { ascending: false });
+                mostrarMensaje(
+                    mensajeEntrega,
+                    "Guardando entrega...",
+                    "info"
+                );
 
-            if (errEnt) throw errEnt;
-
-            const wb = XLSX.utils.book_new();
-
-            const wsMateriales = XLSX.utils.json_to_sheet(materiales || []);
-            const wsEntregas = XLSX.utils.json_to_sheet(entregas || []);
-
-            XLSX.utils.book_append_sheet(wb, wsMateriales, "Inventario_Materiales");
-            XLSX.utils.book_append_sheet(wb, wsEntregas, "Historial_Entregas");
-
-            const fechaActual = new Date().toISOString().split('T')[0];
-            const nombreArchivo = `Respaldo_Materiales_${fechaActual}.xlsx`;
-
-            XLSX.writeFile(wb, nombreArchivo);
-            mostrarMensaje(mensajeRespaldo, `¡Respaldo descargado con éxito! (${nombreArchivo})`, "ok");
-
-        } catch (err) {
-            console.error("Error al generar el respaldo:", err);
-            mostrarMensaje(mensajeRespaldo, "Error al generar respaldo: " + err.message, "error");
-        }
-    });
-
-    document.getElementById("btnRestaurarRespaldo").addEventListener("click", () => {
-        const inputArchivo = document.getElementById("archivoRespaldoExcel");
-        if (!inputArchivo.files || inputArchivo.files.length === 0) {
-            mostrarMensaje(mensajeRespaldo, "Seleccione un archivo de respaldo .xlsx para procesar.", "error");
-            return;
-        }
-
-        solicitarConfirmacionPersonalizada(
-            "¿Restaurar Respaldo de Materiales?",
-            "Esta operación procesará el archivo seleccionado e insertará/actualizará registros en la base de datos. ¿Desea continuar?",
-            async () => {
-                const archivo = inputArchivo.files[0];
-                const lector = new FileReader();
-
-                mostrarMensaje(mensajeRespaldo, "Restaurando base de datos desde respaldo...", "info");
-
-                lector.onload = async (e) => {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: "array" });
-
-                        let contadorMat = 0;
-                        let contadorEnt = 0;
-
-                        // 1. Restaurar Inventario de Materiales
-                        const hojaMatNombre = workbook.SheetNames.find(n => n.toLowerCase().includes("material"));
-                        if (hojaMatNombre) {
-                            const hojaMat = workbook.Sheets[hojaMatNombre];
-                            const filasMat = XLSX.utils.sheet_to_json(hojaMat);
-
-                            for (const fila of filasMat) {
-                                const codigo = String(fila.codigo || fila.Codigo || "").trim();
-                                if (!codigo) continue;
-
-                                const item = {
-                                    codigo: codigo,
-                                    nombre: fila.nombre || fila.Nombre || "",
-                                    categoria: fila.categoria || fila.Categoria || "",
-                                    unidad: fila.unidad || fila.Unidad || "unidad",
-                                    biblioteca: fila.biblioteca || fila.Biblioteca || "F",
-                                    entradas: Number(fila.entradas || fila.Entradas || 0),
-                                    entregadas: Number(fila.entregadas || fila.Entregadas || 0),
-                                    estado: fila.estado || fila.Estado || "Activo",
-                                    observaciones: fila.observaciones || fila.Observaciones || ""
-                                };
-
-                                const { error } = await supabaseClient
-                                    .from("materiales")
-                                    .upsert([item], { onConflict: "codigo" });
-
-                                if (!error) contadorMat++;
-                            }
-                        }
-
-                        // 2. Restaurar Historial de Entregas
-                        const hojaEntNombre = workbook.SheetNames.find(n => n.toLowerCase().includes("entrega"));
-                        if (hojaEntNombre) {
-                            const hojaEnt = workbook.Sheets[hojaEntNombre];
-                            const filasEnt = XLSX.utils.sheet_to_json(hojaEnt);
-
-                            for (const fila of filasEnt) {
-                                const regEnt = {
-                                    codigo_material: fila.codigo_material || fila.CodigoMaterial || fila.codigo || "",
-                                    material: fila.material || fila.Material || "",
-                                    cantidad: Number(fila.cantidad || fila.Cantidad || 1),
-                                    receptor: fila.receptor || fila.Receptor || "Afiliado",
-                                    nombres: fila.nombres || fila.Nombres || "",
-                                    apellidos: fila.apellidos || fila.Apellidos || "",
-                                    persona_id: fila.persona_id || fila.PersonaId || null,
-                                    familia_id: fila.familia_id || fila.FamiliaId || null,
-                                    codigo_colaborador: fila.codigo_colaborador || fila.CodigoColaborador || null,
-                                    area_colaborador: fila.area_colaborador || fila.AreaColaborador || null,
-                                    biblioteca: fila.biblioteca || fila.Biblioteca || "F",
-                                    sitio: fila.sitio || fila.Sitio || "N",
-                                    observaciones: fila.observaciones || fila.Observaciones || "",
-                                    usuario: fila.usuario || fila.Usuario || "Sistema"
-                                };
-
-                                const { error } = await supabaseClient
-                                    .from("entregas_materiales")
-                                    .insert([regEnt]);
-
-                                if (!error) contadorEnt++;
-                            }
-                        }
-
-                        mostrarMensaje(mensajeRespaldo, `¡Restauración exitosa! (${contadorMat} materiales procesados, ${contadorEnt} entregas restauradas).`, "ok");
-                        inputArchivo.value = "";
-
-                        await cargarEstadisticas();
-                        await cargarMateriales();
-                        await cargarEntregados();
-
-                    } catch (err) {
-                        console.error("Error en la restauración:", err);
-                        mostrarMensaje(mensajeRespaldo, "Error al restaurar respaldo: " + err.message, "error");
-                    }
-                };
-
-                lector.readAsArrayBuffer(archivo);
-            }
-        );
-    });
-
-    /* ==========================================================
-       ELIMINACIÓN DE DATOS (MANTENIMIENTO CON MODAL ESTILIZADO)
-    ========================================================== */
-    document.getElementById("btnEliminarMaterialesDB").addEventListener("click", () => {
-        solicitarConfirmacionPersonalizada(
-            "¿Eliminar Base de datos de Materiales?",
-            "Esta acción eliminará de forma PERMANENTE todos los materiales de la base de datos. ¿Desea continuar?",
-            async () => {
                 try {
-                    const { error } = await supabaseClient
-                        .from("materiales")
-                        .delete()
-                        .neq("id", "00000000-0000-0000-0000-000000000000");
 
-                    if (error) throw error;
+                    const usuarioActual =
+                        await obtenerUsuarioActual();
+
+                    for (
+                        const mat
+                        of materialesSeleccionados
+                    ) {
+
+                        let nombres = "";
+                        let apellidos = "";
+                        let personaId = null;
+                        let familiaId = null;
+                        let codigoColaborador = null;
+                        let areaColaborador = null;
+
+                        if (
+                            receptorTipo ===
+                            "Afiliado"
+                        ) {
+
+                            nombres =
+                                receptorSeleccionado.Nombres ||
+                                "";
+
+                            apellidos =
+                                receptorSeleccionado.Apellidos ||
+                                "";
+
+                            personaId =
+                                receptorSeleccionado.PersonaId ||
+                                null;
+
+                            familiaId =
+                                receptorSeleccionado.FamiliaId ||
+                                null;
+
+                        } else {
+
+                            nombres =
+                                receptorSeleccionado.Nombre ||
+                                "";
+
+                            apellidos =
+                                "";
+
+                            codigoColaborador =
+                                receptorSeleccionado.CodigoColaborador ||
+                                null;
+
+                            areaColaborador =
+                                receptorSeleccionado.Area ||
+                                null;
+                        }
+
+                        const registro = {
+
+                            codigo_material:
+                                mat.codigo,
+
+                            material:
+                                mat.nombre,
+
+                            cantidad:
+                                mat.cantidadEntrega,
+
+                            receptor:
+                                receptorTipo,
+
+                            nombres:
+                                nombres,
+
+                            apellidos:
+                                apellidos,
+
+                            persona_id:
+                                personaId,
+
+                            familia_id:
+                                familiaId,
+
+                            codigo_colaborador:
+                                codigoColaborador,
+
+                            area_colaborador:
+                                areaColaborador,
+
+                            biblioteca:
+                                biblioteca,
+
+                            sitio:
+                                sitio,
+
+                            observaciones:
+                                observaciones,
+
+                            usuario:
+                                usuarioActual
+                        };
+
+                        const {
+                            error: errorIns
+                        } =
+                            await supabaseClient
+                                .from(
+                                    "entregas_materiales"
+                                )
+                                .insert([
+                                    registro
+                                ]);
+
+                        if (errorIns)
+                            throw errorIns;
+
+                        const nuevasEntregadas =
+                            Number(
+                                mat.entregadas ||
+                                0
+                            ) +
+                            mat.cantidadEntrega;
+
+                        const {
+                            error: errorUpd
+                        } =
+                            await supabaseClient
+                                .from(
+                                    "materiales"
+                                )
+                                .update({
+                                    entregadas:
+                                        nuevasEntregadas
+                                })
+                                .eq(
+                                    "id",
+                                    mat.id
+                                );
+
+                        if (errorUpd)
+                            throw errorUpd;
+                    }
+
+                    mostrarMensaje(
+                        mensajeEntrega,
+                        "¡Entrega registrada exitosamente!",
+                        "ok"
+                    );
+
+                    materialesSeleccionados =
+                        [];
+
+                    receptorSeleccionado =
+                        null;
+
+                    limpiarPersona();
+
+                    renderizarListaMateriales();
+
+                    document.getElementById(
+                        "inputFamilia"
+                    ).value = "";
+
+                    document.getElementById(
+                        "inputColaborador"
+                    ).value = "";
+
+                    document.getElementById(
+                        "inputObservaciones"
+                    ).value = "";
 
                     await cargarEstadisticas();
                     await cargarMateriales();
-                } catch (err) {
-                    console.error("Error al eliminar materiales:", err);
-                }
-            }
-        );
-    });
-
-    document.getElementById("btnEliminarEntregasDB").addEventListener("click", () => {
-        solicitarConfirmacionPersonalizada(
-            "¿Eliminar Registros de Entregas?",
-            "Esta acción borra completamente el historial de entregas realizadas. ¿Está seguro de proceder?",
-            async () => {
-                try {
-                    const { error } = await supabaseClient
-                        .from("entregas_materiales")
-                        .delete()
-                        .neq("id", "00000000-0000-0000-0000-000000000000");
-
-                    if (error) throw error;
-
-                    paginaActual = 1;
-                    await cargarEstadisticas();
                     await cargarEntregados();
+
                 } catch (err) {
-                    console.error("Error al eliminar entregas:", err);
+
+                    console.error(
+                        "Error al registrar entrega:",
+                        err
+                    );
+
+                    mostrarMensaje(
+                        mensajeEntrega,
+                        "Error al procesar la entrega: " +
+                        err.message,
+                        "error"
+                    );
+
+                } finally {
+
+                    this.disabled =
+                        false;
                 }
             }
         );
-    });
+
+    /* ==========================================================
+       CARGA DE INFORMACIÓN
+    ========================================================== */
+
+    document
+        .getElementById("btnDescargarExcel")
+        .addEventListener(
+            "click",
+            async () => {
+
+                mostrarMensaje(
+                    mensajeAdmin,
+                    "Generando archivo MasterMateriales.xlsx...",
+                    "info"
+                );
+
+                try {
+
+                    const {
+                        data: materiales,
+                        error: errMat
+                    } =
+                        await supabaseClient
+                            .from("materiales")
+                            .select("*")
+                            .order(
+                                "codigo",
+                                {
+                                    ascending: true
+                                }
+                            );
+
+                    if (errMat)
+                        throw errMat;
+
+                    const {
+                        data: entregas,
+                        error: errEnt
+                    } =
+                        await supabaseClient
+                            .from(
+                                "entregas_materiales"
+                            )
+                            .select("*")
+                            .order(
+                                "created_at",
+                                {
+                                    ascending: false
+                                }
+                            );
+
+                    if (errEnt)
+                        throw errEnt;
+
+                    const wb =
+                        XLSX.utils.book_new();
+
+                    const wsMateriales =
+                        XLSX.utils.json_to_sheet(
+                            materiales || []
+                        );
+
+                    const wsEntregas =
+                        XLSX.utils.json_to_sheet(
+                            entregas || []
+                        );
+
+                    XLSX.utils.book_append_sheet(
+                        wb,
+                        wsMateriales,
+                        "Materiales"
+                    );
+
+                    XLSX.utils.book_append_sheet(
+                        wb,
+                        wsEntregas,
+                        "Entregas"
+                    );
+
+                    XLSX.writeFile(
+                        wb,
+                        "MasterMateriales.xlsx"
+                    );
+
+                    mostrarMensaje(
+                        mensajeAdmin,
+                        "Descarga completada con éxito.",
+                        "ok"
+                    );
+
+                } catch (err) {
+
+                    console.error(
+                        "Error al exportar Excel:",
+                        err
+                    );
+
+                    mostrarMensaje(
+                        mensajeAdmin,
+                        "Error al generar el Excel: " +
+                        err.message,
+                        "error"
+                    );
+                }
+            }
+        );
+
+    document
+        .getElementById("btnCargarExcel")
+        .addEventListener(
+            "click",
+            async () => {
+
+                const inputArchivo =
+                    document.getElementById(
+                        "archivoExcel"
+                    );
+
+                if (
+                    !inputArchivo.files ||
+                    inputArchivo.files.length ===
+                    0
+                ) {
+
+                    mostrarMensaje(
+                        mensajeAdmin,
+                        "Por favor seleccione un archivo .xlsx para subir.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+                const archivo =
+                    inputArchivo.files[0];
+
+                const lector =
+                    new FileReader();
+
+                mostrarMensaje(
+                    mensajeAdmin,
+                    "Procesando e importando materiales...",
+                    "info"
+                );
+
+                lector.onload =
+                    async (e) => {
+
+                        try {
+
+                            const data =
+                                new Uint8Array(
+                                    e.target.result
+                                );
+
+                            const workbook =
+                                XLSX.read(
+                                    data,
+                                    {
+                                        type: "array"
+                                    }
+                                );
+
+                            const nombreHoja =
+                                workbook.SheetNames.includes(
+                                    "Materiales"
+                                )
+                                    ? "Materiales"
+                                    : workbook.SheetNames[0];
+
+                            const hoja =
+                                workbook.Sheets[
+                                    nombreHoja
+                                ];
+
+                            const filas =
+                                XLSX.utils.sheet_to_json(
+                                    hoja
+                                );
+
+                            if (
+                                !filas ||
+                                filas.length ===
+                                0
+                            ) {
+
+                                mostrarMensaje(
+                                    mensajeAdmin,
+                                    "La hoja de materiales está vacía.",
+                                    "error"
+                                );
+
+                                return;
+                            }
+
+                            const {
+                                data: matsExistentes,
+                                error: errMats
+                            } =
+                                await supabaseClient
+                                    .from(
+                                        "materiales"
+                                    )
+                                    .select(
+                                        "id, codigo, entradas"
+                                    );
+
+                            if (errMats)
+                                throw errMats;
+
+                            const mapaExistentes =
+                                new Map();
+
+                            (
+                                matsExistentes ||
+                                []
+                            ).forEach(m => {
+
+                                mapaExistentes.set(
+                                    String(
+                                        m.codigo
+                                    )
+                                        .trim()
+                                        .toUpperCase(),
+                                    m
+                                );
+                            });
+
+                            let procesados =
+                                0;
+
+                            for (
+                                const fila
+                                of filas
+                            ) {
+
+                                const codigo =
+                                    String(
+                                        fila.codigo ||
+                                        fila.Codigo ||
+                                        ""
+                                    ).trim();
+
+                                const nombre =
+                                    String(
+                                        fila.nombre ||
+                                        fila.Nombre ||
+                                        ""
+                                    ).trim();
+
+                                const entradasIngresadas =
+                                    Number(
+                                        fila.entradas ||
+                                        fila.Entradas ||
+                                        0
+                                    );
+
+                                if (
+                                    !codigo ||
+                                    !nombre
+                                ) continue;
+
+                                const codigoKey =
+                                    codigo.toUpperCase();
+
+                                if (
+                                    mapaExistentes.has(
+                                        codigoKey
+                                    )
+                                ) {
+
+                                    const regActual =
+                                        mapaExistentes.get(
+                                            codigoKey
+                                        );
+
+                                    const nuevasEntradasTotal =
+                                        Number(
+                                            regActual.entradas ||
+                                            0
+                                        ) +
+                                        entradasIngresadas;
+
+                                    const {
+                                        error: errUpd
+                                    } =
+                                        await supabaseClient
+                                            .from(
+                                                "materiales"
+                                            )
+                                            .update({
+                                                entradas:
+                                                    nuevasEntradasTotal
+                                            })
+                                            .eq(
+                                                "id",
+                                                regActual.id
+                                            );
+
+                                    if (errUpd)
+                                        throw errUpd;
+
+                                } else {
+
+                                    const nuevoReg = {
+
+                                        codigo:
+                                            codigo,
+
+                                        nombre:
+                                            nombre,
+
+                                        categoria:
+                                            fila.categoria ||
+                                            fila.Categoria ||
+                                            "",
+
+                                        unidad:
+                                            fila.unidad ||
+                                            fila.Unidad ||
+                                            "unidad",
+
+                                        biblioteca:
+                                            fila.biblioteca ||
+                                            fila.Biblioteca ||
+                                            "F",
+
+                                        entradas:
+                                            entradasIngresadas,
+
+                                        entregadas:
+                                            0,
+
+                                        estado:
+                                            fila.estado ||
+                                            fila.Estado ||
+                                            "Activo",
+
+                                        observaciones:
+                                            fila.observaciones ||
+                                            fila.Observaciones ||
+                                            ""
+                                    };
+
+                                    const {
+                                        error: errIns
+                                    } =
+                                        await supabaseClient
+                                            .from(
+                                                "materiales"
+                                            )
+                                            .insert([
+                                                nuevoReg
+                                            ]);
+
+                                    if (errIns)
+                                        throw errIns;
+                                }
+
+                                procesados++;
+                            }
+
+                            mostrarMensaje(
+                                mensajeAdmin,
+                                `¡Importación completada! Se actualizaron/insertaron ${procesados} registros de materiales.`,
+                                "ok"
+                            );
+
+                            inputArchivo.value =
+                                "";
+
+                            await cargarEstadisticas();
+                            await cargarMateriales();
+                            await cargarEntregados();
+
+                        } catch (err) {
+
+                            console.error(
+                                "Error al procesar la carga:",
+                                err
+                            );
+
+                            mostrarMensaje(
+                                mensajeAdmin,
+                                "Error en la importación: " +
+                                err.message,
+                                "error"
+                            );
+                        }
+                    };
+
+                lector.readAsArrayBuffer(
+                    archivo
+                );
+            }
+        );
+
+    /* ==========================================================
+       RESPALDO Y RESTAURACIÓN
+    ========================================================== */
+
+    document
+        .getElementById(
+            "btnRespaldarInformacion"
+        )
+        .addEventListener(
+            "click",
+            async () => {
+
+                mostrarMensaje(
+                    mensajeRespaldo,
+                    "Generando respaldo completo de la base de datos...",
+                    "info"
+                );
+
+                try {
+
+                    const {
+                        data: materiales,
+                        error: errMat
+                    } =
+                        await supabaseClient
+                            .from(
+                                "materiales"
+                            )
+                            .select("*")
+                            .order(
+                                "codigo",
+                                {
+                                    ascending: true
+                                }
+                            );
+
+                    if (errMat)
+                        throw errMat;
+
+                    const {
+                        data: entregas,
+                        error: errEnt
+                    } =
+                        await supabaseClient
+                            .from(
+                                "entregas_materiales"
+                            )
+                            .select("*")
+                            .order(
+                                "created_at",
+                                {
+                                    ascending: false
+                                }
+                            );
+
+                    if (errEnt)
+                        throw errEnt;
+
+                    const wb =
+                        XLSX.utils.book_new();
+
+                    const wsMateriales =
+                        XLSX.utils.json_to_sheet(
+                            materiales || []
+                        );
+
+                    const wsEntregas =
+                        XLSX.utils.json_to_sheet(
+                            entregas || []
+                        );
+
+                    XLSX.utils.book_append_sheet(
+                        wb,
+                        wsMateriales,
+                        "Inventario_Materiales"
+                    );
+
+                    XLSX.utils.book_append_sheet(
+                        wb,
+                        wsEntregas,
+                        "Historial_Entregas"
+                    );
+
+                    const fechaActual =
+                        new Date()
+                            .toISOString()
+                            .split("T")[0];
+
+                    const nombreArchivo =
+                        `Respaldo_Materiales_${fechaActual}.xlsx`;
+
+                    XLSX.writeFile(
+                        wb,
+                        nombreArchivo
+                    );
+
+                    mostrarMensaje(
+                        mensajeRespaldo,
+                        `¡Respaldo descargado con éxito! (${nombreArchivo})`,
+                        "ok"
+                    );
+
+                } catch (err) {
+
+                    console.error(
+                        "Error al generar el respaldo:",
+                        err
+                    );
+
+                    mostrarMensaje(
+                        mensajeRespaldo,
+                        "Error al generar respaldo: " +
+                        err.message,
+                        "error"
+                    );
+                }
+            }
+        );
+
+    document
+        .getElementById(
+            "btnRestaurarRespaldo"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                const inputArchivo =
+                    document.getElementById(
+                        "archivoRespaldoExcel"
+                    );
+
+                if (
+                    !inputArchivo.files ||
+                    inputArchivo.files.length ===
+                    0
+                ) {
+
+                    mostrarMensaje(
+                        mensajeRespaldo,
+                        "Seleccione un archivo de respaldo .xlsx para procesar.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+                solicitarConfirmacionPersonalizada(
+
+                    "¿Restaurar Respaldo de Materiales?",
+
+                    "Esta operación procesará el archivo seleccionado e insertará/actualizará registros en la base de datos. ¿Desea continuar?",
+
+                    async () => {
+
+                        const archivo =
+                            inputArchivo.files[0];
+
+                        const lector =
+                            new FileReader();
+
+                        mostrarMensaje(
+                            mensajeRespaldo,
+                            "Restaurando base de datos desde respaldo...",
+                            "info"
+                        );
+
+                        lector.onload =
+                            async (e) => {
+
+                                try {
+
+                                    const data =
+                                        new Uint8Array(
+                                            e.target.result
+                                        );
+
+                                    const workbook =
+                                        XLSX.read(
+                                            data,
+                                            {
+                                                type: "array"
+                                            }
+                                        );
+
+                                    let contadorMat =
+                                        0;
+
+                                    let contadorEnt =
+                                        0;
+
+                                    const hojaMatNombre =
+                                        workbook.SheetNames.find(
+                                            n =>
+                                                n
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        "material"
+                                                    )
+                                        );
+
+                                    if (
+                                        hojaMatNombre
+                                    ) {
+
+                                        const hojaMat =
+                                            workbook.Sheets[
+                                                hojaMatNombre
+                                            ];
+
+                                        const filasMat =
+                                            XLSX.utils.sheet_to_json(
+                                                hojaMat
+                                            );
+
+                                        for (
+                                            const fila
+                                            of filasMat
+                                        ) {
+
+                                            const codigo =
+                                                String(
+                                                    fila.codigo ||
+                                                    fila.Codigo ||
+                                                    ""
+                                                ).trim();
+
+                                            if (!codigo)
+                                                continue;
+
+                                            const item = {
+
+                                                codigo:
+                                                    codigo,
+
+                                                nombre:
+                                                    fila.nombre ||
+                                                    fila.Nombre ||
+                                                    "",
+
+                                                categoria:
+                                                    fila.categoria ||
+                                                    fila.Categoria ||
+                                                    "",
+
+                                                unidad:
+                                                    fila.unidad ||
+                                                    fila.Unidad ||
+                                                    "unidad",
+
+                                                biblioteca:
+                                                    fila.biblioteca ||
+                                                    fila.Biblioteca ||
+                                                    "F",
+
+                                                entradas:
+                                                    Number(
+                                                        fila.entradas ||
+                                                        fila.Entradas ||
+                                                        0
+                                                    ),
+
+                                                entregadas:
+                                                    Number(
+                                                        fila.entregadas ||
+                                                        fila.Entregadas ||
+                                                        0
+                                                    ),
+
+                                                estado:
+                                                    fila.estado ||
+                                                    fila.Estado ||
+                                                    "Activo",
+
+                                                observaciones:
+                                                    fila.observaciones ||
+                                                    fila.Observaciones ||
+                                                    ""
+                                            };
+
+                                            const {
+                                                error
+                                            } =
+                                                await supabaseClient
+                                                    .from(
+                                                        "materiales"
+                                                    )
+                                                    .upsert(
+                                                        [item],
+                                                        {
+                                                            onConflict:
+                                                                "codigo"
+                                                        }
+                                                    );
+
+                                            if (!error)
+                                                contadorMat++;
+                                        }
+                                    }
+
+                                    const hojaEntNombre =
+                                        workbook.SheetNames.find(
+                                            n =>
+                                                n
+                                                    .toLowerCase()
+                                                    .includes(
+                                                        "entrega"
+                                                    )
+                                        );
+
+                                    if (
+                                        hojaEntNombre
+                                    ) {
+
+                                        const hojaEnt =
+                                            workbook.Sheets[
+                                                hojaEntNombre
+                                            ];
+
+                                        const filasEnt =
+                                            XLSX.utils.sheet_to_json(
+                                                hojaEnt
+                                            );
+
+                                        for (
+                                            const fila
+                                            of filasEnt
+                                        ) {
+
+                                            const regEnt = {
+
+                                                codigo_material:
+                                                    fila.codigo_material ||
+                                                    fila.CodigoMaterial ||
+                                                    fila.codigo ||
+                                                    "",
+
+                                                material:
+                                                    fila.material ||
+                                                    fila.Material ||
+                                                    "",
+
+                                                cantidad:
+                                                    Number(
+                                                        fila.cantidad ||
+                                                        fila.Cantidad ||
+                                                        1
+                                                    ),
+
+                                                receptor:
+                                                    fila.receptor ||
+                                                    fila.Receptor ||
+                                                    "Afiliado",
+
+                                                nombres:
+                                                    fila.nombres ||
+                                                    fila.Nombres ||
+                                                    "",
+
+                                                apellidos:
+                                                    fila.apellidos ||
+                                                    fila.Apellidos ||
+                                                    "",
+
+                                                persona_id:
+                                                    fila.persona_id ||
+                                                    fila.PersonaId ||
+                                                    null,
+
+                                                familia_id:
+                                                    fila.familia_id ||
+                                                    fila.FamiliaId ||
+                                                    null,
+
+                                                codigo_colaborador:
+                                                    fila.codigo_colaborador ||
+                                                    fila.CodigoColaborador ||
+                                                    null,
+
+                                                area_colaborador:
+                                                    fila.area_colaborador ||
+                                                    fila.AreaColaborador ||
+                                                    null,
+
+                                                biblioteca:
+                                                    fila.biblioteca ||
+                                                    fila.Biblioteca ||
+                                                    "F",
+
+                                                sitio:
+                                                    fila.sitio ||
+                                                    fila.Sitio ||
+                                                    "N",
+
+                                                observaciones:
+                                                    fila.observaciones ||
+                                                    fila.Observaciones ||
+                                                    "",
+
+                                                usuario:
+                                                    fila.usuario ||
+                                                    fila.Usuario ||
+                                                    "Sistema"
+                                            };
+
+                                            const {
+                                                error
+                                            } =
+                                                await supabaseClient
+                                                    .from(
+                                                        "entregas_materiales"
+                                                    )
+                                                    .insert([
+                                                        regEnt
+                                                    ]);
+
+                                            if (!error)
+                                                contadorEnt++;
+                                        }
+                                    }
+
+                                    mostrarMensaje(
+                                        mensajeRespaldo,
+                                        `¡Restauración exitosa! (${contadorMat} materiales procesados, ${contadorEnt} entregas restauradas).`,
+                                        "ok"
+                                    );
+
+                                    inputArchivo.value =
+                                        "";
+
+                                    await cargarEstadisticas();
+                                    await cargarMateriales();
+                                    await cargarEntregados();
+
+                                } catch (err) {
+
+                                    console.error(
+                                        "Error en la restauración:",
+                                        err
+                                    );
+
+                                    mostrarMensaje(
+                                        mensajeRespaldo,
+                                        "Error al restaurar respaldo: " +
+                                        err.message,
+                                        "error"
+                                    );
+                                }
+                            };
+
+                        lector.readAsArrayBuffer(
+                            archivo
+                        );
+                    }
+                );
+            }
+        );
+
+    /* ==========================================================
+       ELIMINACIÓN DE DATOS
+       MANTENIMIENTO CON MODAL Y MENSAJES VISIBLES
+    ========================================================== */
+
+    document
+        .getElementById(
+            "btnEliminarMaterialesDB"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                solicitarConfirmacionPersonalizada(
+
+                    "¿Eliminar Base de datos de Materiales?",
+
+                    "Esta acción eliminará de forma PERMANENTE todos los materiales registrados. Esta operación no se puede deshacer. ¿Desea continuar?",
+
+                    async () => {
+
+                        mostrarMensaje(
+                            mensajeGeneral,
+                            "Eliminando materiales de la base de datos...",
+                            "info"
+                        );
+
+                        try {
+
+                            console.log(
+                                "Iniciando eliminación de materiales..."
+                            );
+
+                            /*
+                             * Se utiliza .not("id", "is", null)
+                             * para solicitar a Supabase la eliminación
+                             * de todos los registros cuyo ID no sea nulo.
+                             */
+
+                            const {
+                                data,
+                                error
+                            } =
+                                await supabaseClient
+                                    .from(
+                                        "materiales"
+                                    )
+                                    .delete()
+                                    .not(
+                                        "id",
+                                        "is",
+                                        null
+                                    )
+                                    .select();
+
+                            if (error) {
+
+                                console.error(
+                                    "Error devuelto por Supabase al eliminar materiales:",
+                                    error
+                                );
+
+                                throw error;
+                            }
+
+                            console.log(
+                                "Materiales eliminados:",
+                                data
+                            );
+
+                            paginaActual =
+                                1;
+
+                            await cargarEstadisticas();
+                            await cargarMateriales();
+                            await cargarEntregados();
+
+                            inventarioConsolidadoCompleto =
+                                [];
+
+                            inventarioFiltrado =
+                                [];
+
+                            paginaModalActual =
+                                1;
+
+                            renderizarModalPaginado();
+
+                            mostrarMensaje(
+                                mensajeGeneral,
+                                `Eliminación completada. Se eliminaron ${
+                                    data
+                                        ? data.length
+                                        : 0
+                                } registros de materiales.`,
+                                "ok"
+                            );
+
+                            /*
+                             * Si el modal de inventario estaba abierto,
+                             * lo actualizamos.
+                             */
+
+                            if (
+                                modalInventario.classList.contains(
+                                    "visible"
+                                )
+                            ) {
+
+                                await cargarInventarioModal();
+                            }
+
+                        } catch (err) {
+
+                            console.error(
+                                "ERROR AL ELIMINAR MATERIALES:",
+                                err
+                            );
+
+                            mostrarMensaje(
+                                mensajeGeneral,
+                                "No se pudieron eliminar los materiales: " +
+                                (
+                                    err.message ||
+                                    "Error desconocido."
+                                ),
+                                "error"
+                            );
+                        }
+                    }
+                );
+            }
+        );
+
+    document
+        .getElementById(
+            "btnEliminarEntregasDB"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                solicitarConfirmacionPersonalizada(
+
+                    "¿Eliminar Registros de Entregas?",
+
+                    "Esta acción eliminará PERMANENTEMENTE todo el historial de entregas de materiales. Esta operación no se puede deshacer. ¿Está seguro de proceder?",
+
+                    async () => {
+
+                        mostrarMensaje(
+                            mensajeGeneral,
+                            "Eliminando historial de entregas...",
+                            "info"
+                        );
+
+                        try {
+
+                            console.log(
+                                "Iniciando eliminación de entregas..."
+                            );
+
+                            const {
+                                data,
+                                error
+                            } =
+                                await supabaseClient
+                                    .from(
+                                        "entregas_materiales"
+                                    )
+                                    .delete()
+                                    .not(
+                                        "id",
+                                        "is",
+                                        null
+                                    )
+                                    .select();
+
+                            if (error) {
+
+                                console.error(
+                                    "Error devuelto por Supabase al eliminar entregas:",
+                                    error
+                                );
+
+                                throw error;
+                            }
+
+                            console.log(
+                                "Entregas eliminadas:",
+                                data
+                            );
+
+                            paginaActual =
+                                1;
+
+                            await cargarEstadisticas();
+                            await cargarEntregados();
+
+                            mostrarMensaje(
+                                mensajeGeneral,
+                                `Eliminación completada. Se eliminaron ${
+                                    data
+                                        ? data.length
+                                        : 0
+                                } registros de entregas.`,
+                                "ok"
+                            );
+
+                        } catch (err) {
+
+                            console.error(
+                                "ERROR AL ELIMINAR ENTREGAS:",
+                                err
+                            );
+
+                            mostrarMensaje(
+                                mensajeGeneral,
+                                "No se pudieron eliminar las entregas: " +
+                                (
+                                    err.message ||
+                                    "Error desconocido."
+                                ),
+                                "error"
+                            );
+                        }
+                    }
+                );
+            }
+        );
 
     /* ==========================================================
        INICIALIZACIÓN
     ========================================================== */
-    document.addEventListener("DOMContentLoaded", async () => {
-        if (window.materialesAuth) {
-            await window.materialesAuth;
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        async () => {
+
+            if (window.materialesAuth) {
+                await window.materialesAuth;
+            }
+
+            verificarPermisosAdmin();
+
+            cargarEstadisticas();
+
+            cargarMateriales();
+
+            cargarEntregados();
         }
-        verificarPermisosAdmin();
-        cargarEstadisticas();
-        cargarMateriales();
-        cargarEntregados();
-    });
+    );
 </script>
 
 </body>
 </html>
+```
+
+### Importante
+
+Hay un punto que debemos distinguir: **este cambio corrige el manejo del botón y hace visible el error real de Supabase**. Si después de pegar este archivo el modal aparece, presionas **“Sí, procesar”** y aparece un mensaje como:
+
+> `new row violates row-level security policy`
+
+o
+
+> `permission denied`
+
+entonces **el problema ya no está en `materiales.html`**, sino en las políticas **RLS de Supabase** para las tablas `materiales` o `entregas_materiales`.
+
+Si al probarlo **el botón ni siquiera abre el cuadro de confirmación**, entonces el problema está en otro punto del JavaScript y habría que revisar el error que aparece en la consola del navegador.
