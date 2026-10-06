@@ -12,7 +12,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
     <script src="auth.js?v=1002"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+    <!-- XLSX CON SOPORTE PARA ESTILOS -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
 
     <!-- PROTECCIÓN DE LA PÁGINA -->
     <script>
@@ -20,6 +22,7 @@
         window.librosAuth = (async function protegerLibros() {
             try {
                 const autorizado = await window.protegerPagina();
+
                 if (!autorizado) {
                     window.location.replace("index.html");
                     return false;
@@ -996,7 +999,6 @@
                 </select>
             </div>
 
-            <!-- BOTONES -->
             <div class="acciones-busqueda">
                 <button type="button" class="btn-principal" id="btnBuscar">🔎 Buscar</button>
                 <button type="button" class="btn-secundario" id="btnLimpiarFiltros">🧹 Limpiar filtros</button>
@@ -1194,6 +1196,7 @@
 
     /* ESPERAR AUTENTICACIÓN */
     const autorizado = await window.librosAuth;
+
     if (!autorizado) return;
 
     /* VARIABLES */
@@ -1265,15 +1268,25 @@
 
     /* OCULTAR COLUMNA ACCIONES PARA USUARIO */
     if (usuario) {
-        const encabezadoAcciones = document.getElementById("encabezadoAcciones");
-        const encabezadoAccionesBajas = document.getElementById("encabezadoAccionesBajas");
 
-        if (encabezadoAcciones) encabezadoAcciones.style.display = "none";
-        if (encabezadoAccionesBajas) encabezadoAccionesBajas.style.display = "none";
+        const encabezadoAcciones =
+            document.getElementById("encabezadoAcciones");
+
+        const encabezadoAccionesBajas =
+            document.getElementById("encabezadoAccionesBajas");
+
+        if (encabezadoAcciones) {
+            encabezadoAcciones.style.display = "none";
+        }
+
+        if (encabezadoAccionesBajas) {
+            encabezadoAccionesBajas.style.display = "none";
+        }
     }
 
     /* NORMALIZAR TEXTO */
     function normalizarTexto(texto) {
+
         return String(texto ?? "")
             .toLowerCase()
             .normalize("NFD")
@@ -1283,41 +1296,63 @@
 
     /* NORMALIZAR CÓDIGO */
     function normalizarCodigo(codigo) {
-        return String(codigo ?? "").replace(/\D/g, "");
+
+        return String(codigo ?? "")
+            .replace(/\D/g, "");
     }
 
     function codigoParaComparar(codigo) {
-        const numero = normalizarCodigo(codigo);
+
+        const numero =
+            normalizarCodigo(codigo);
+
         return numero.replace(/^0+/, "") || "0";
     }
 
     function formatearCodigo(codigo) {
-        const numero = normalizarCodigo(codigo);
+
+        const numero =
+            normalizarCodigo(codigo);
+
         if (!numero) return "";
+
         return numero.padStart(8, "0");
     }
 
     /* VALIDAR CÓDIGO */
     function validarCodigo(codigo) {
-        const valor = normalizarCodigo(codigo);
+
+        const valor =
+            normalizarCodigo(codigo);
 
         if (!valor) {
+
             return {
                 valido: false,
                 mensaje: "Ingrese el código del libro."
             };
         }
 
-        if (valor.length < 1 || valor.length > 8) {
+        if (
+            valor.length < 1 ||
+            valor.length > 8
+        ) {
+
             return {
                 valido: false,
                 mensaje: "El código debe tener de 1 a 8 dígitos."
             };
         }
 
-        const numero = Number(valor);
+        const numero =
+            Number(valor);
 
-        if (!Number.isInteger(numero) || numero < 1 || numero > 88888888) {
+        if (
+            !Number.isInteger(numero) ||
+            numero < 1 ||
+            numero > 88888888
+        ) {
+
             return {
                 valido: false,
                 mensaje: "El código máximo permitido es 88888888."
@@ -1332,31 +1367,43 @@
 
     /* VALIDAR BIBLIOTECA */
     function validarBiblioteca(biblioteca) {
-        const valor = String(biblioteca || "").trim().toUpperCase();
-        const permitidas = ["F", "M", "N", "R", "Z", "NE"];
+
+        const valor =
+            String(biblioteca || "")
+                .trim()
+                .toUpperCase();
+
+        const permitidas =
+            ["F", "M", "N", "R", "Z", "NE"];
 
         return permitidas.includes(valor);
     }
 
     /* FECHA */
     function formatearFecha(fecha) {
+
         if (!fecha) return "";
 
-        const fechaObj = new Date(fecha);
+        const fechaObj =
+            new Date(fecha);
 
         if (Number.isNaN(fechaObj.getTime())) {
             return String(fecha);
         }
 
-        return fechaObj.toLocaleDateString("es-GT", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric"
-        });
+        return fechaObj.toLocaleDateString(
+            "es-GT",
+            {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            }
+        );
     }
 
     /* ESCAPAR HTML */
     function escapeHtml(texto) {
+
         return String(texto ?? "")
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -1367,16 +1414,22 @@
 
     /* MENSAJES */
     function mostrarMensaje(elemento, texto, tipo) {
+
         elemento.textContent = texto;
-        elemento.className = "mensaje " + (
-            tipo === "exito"
-                ? "mensaje-exito"
-                : "mensaje-error"
-        );
+
+        elemento.className =
+            "mensaje " +
+            (
+                tipo === "exito"
+                    ? "mensaje-exito"
+                    : "mensaje-error"
+            );
+
         elemento.style.display = "block";
     }
 
     function limpiarMensaje(elemento) {
+
         elemento.textContent = "";
         elemento.className = "mensaje";
         elemento.style.display = "none";
@@ -1384,6 +1437,7 @@
 
     /* CARGAR PRÉSTAMOS ACTIVOS */
     async function cargarPrestamosActivos() {
+
         const {
             data,
             error
@@ -1393,7 +1447,12 @@
             .eq("estado", "Prestado");
 
         if (error) {
-            console.error("Error cargando préstamos activos:", error);
+
+            console.error(
+                "Error cargando préstamos activos:",
+                error
+            );
+
             throw error;
         }
 
@@ -1402,6 +1461,7 @@
 
     /* CARGAR LIBROS */
     async function cargarLibros() {
+
         libros = [];
 
         let desde = 0;
@@ -1418,10 +1478,18 @@
                 .order("id", {
                     ascending: true
                 })
-                .range(desde, desde + cantidad - 1);
+                .range(
+                    desde,
+                    desde + cantidad - 1
+                );
 
             if (error) {
-                console.error("Error cargando libros:", error);
+
+                console.error(
+                    "Error cargando libros:",
+                    error
+                );
+
                 throw error;
             }
 
@@ -1441,19 +1509,49 @@
 
     /* CONVERTIR LIBRO */
     function convertirLibro(libro) {
+
         return {
+
             id: libro.id,
-            codigoLibro: formatearCodigo(libro.codigoLibro),
-            nombreLibro: libro.nombreLibro || "",
-            autor: libro.autor || "",
-            genero: libro.genero || "",
-            editorial: libro.editorial || "",
-            año: libro.año || "",
-            Biblioteca: String(libro.Biblioteca || "").trim().toUpperCase(),
-            estado: libro.estado || "Disponible",
-            fechaRegistro: libro.fechaRegistro || null,
-            fechaBaja: libro.fechaBaja || null,
-            fechaReactivacion: libro.fechaReactivacion || null
+
+            codigoLibro:
+                formatearCodigo(
+                    libro.codigoLibro
+                ),
+
+            nombreLibro:
+                libro.nombreLibro || "",
+
+            autor:
+                libro.autor || "",
+
+            genero:
+                libro.genero || "",
+
+            editorial:
+                libro.editorial || "",
+
+            año:
+                libro.año || "",
+
+            Biblioteca:
+                String(
+                    libro.Biblioteca || ""
+                )
+                    .trim()
+                    .toUpperCase(),
+
+            estado:
+                libro.estado || "Disponible",
+
+            fechaRegistro:
+                libro.fechaRegistro || null,
+
+            fechaBaja:
+                libro.fechaBaja || null,
+
+            fechaReactivacion:
+                libro.fechaReactivacion || null
         };
     }
 
@@ -1464,13 +1562,19 @@
             return "Baja";
         }
 
-        const codigo = codigoParaComparar(libro.codigoLibro);
+        const codigo =
+            codigoParaComparar(
+                libro.codigoLibro
+            );
 
-        const prestado = prestamos.some(
-            prestamo =>
-                codigoParaComparar(prestamo.codigoLibro) === codigo &&
-                prestamo.estado === "Prestado"
-        );
+        const prestado =
+            prestamos.some(
+                prestamo =>
+                    codigoParaComparar(
+                        prestamo.codigoLibro
+                    ) === codigo &&
+                    prestamo.estado === "Prestado"
+            );
 
         if (prestado) {
             return "Prestado";
@@ -1482,13 +1586,16 @@
     /* SINCRONIZAR ESTADOS */
     async function sincronizarEstados() {
 
-        const activos = libros.filter(
-            libro => libro.estado !== "Baja"
-        );
+        const activos =
+            libros.filter(
+                libro =>
+                    libro.estado !== "Baja"
+            );
 
         for (const libro of activos) {
 
-            const estadoReal = obtenerEstadoLibro(libro);
+            const estadoReal =
+                obtenerEstadoLibro(libro);
 
             if (libro.estado !== estadoReal) {
 
@@ -1511,17 +1618,34 @@
     /* ESTADÍSTICAS */
     function actualizarEstadisticas() {
 
-        document.getElementById("totalLibros").textContent =
+        document.getElementById(
+            "totalLibros"
+        ).textContent =
             libros.length;
 
-        document.getElementById("totalDisponibles").textContent =
-            libros.filter(l => l.estado === "Disponible").length;
+        document.getElementById(
+            "totalDisponibles"
+        ).textContent =
+            libros.filter(
+                l =>
+                    l.estado === "Disponible"
+            ).length;
 
-        document.getElementById("totalPrestados").textContent =
-            libros.filter(l => l.estado === "Prestado").length;
+        document.getElementById(
+            "totalPrestados"
+        ).textContent =
+            libros.filter(
+                l =>
+                    l.estado === "Prestado"
+            ).length;
 
-        document.getElementById("totalBaja").textContent =
-            libros.filter(l => l.estado === "Baja").length;
+        document.getElementById(
+            "totalBaja"
+        ).textContent =
+            libros.filter(
+                l =>
+                    l.estado === "Baja"
+            ).length;
     }
 
     /* CARGAR DATOS */
@@ -1534,7 +1658,10 @@
                 cargarPrestamosActivos()
             ]);
 
-            libros = libros.map(convertirLibro);
+            libros =
+                libros.map(
+                    convertirLibro
+                );
 
             await sincronizarEstados();
 
@@ -1558,11 +1685,17 @@
     /* REGISTRAR LIBRO */
     async function registrarLibro() {
 
-        limpiarMensaje(mensajeRegistro);
+        limpiarMensaje(
+            mensajeRegistro
+        );
 
-        const validacion = validarCodigo(codigoLibro.value);
+        const validacion =
+            validarCodigo(
+                codigoLibro.value
+            );
 
         if (!validacion.valido) {
+
             mostrarMensaje(
                 mensajeRegistro,
                 validacion.mensaje,
@@ -1573,11 +1706,19 @@
             return;
         }
 
-        const codigo = formatearCodigo(codigoLibro.value);
-        const codigoComparar = codigoParaComparar(codigo);
-        const nombre = nombreLibro.value.trim();
+        const codigo =
+            formatearCodigo(
+                codigoLibro.value
+            );
+
+        const codigoComparar =
+            codigoParaComparar(codigo);
+
+        const nombre =
+            nombreLibro.value.trim();
 
         if (!nombre) {
+
             mostrarMensaje(
                 mensajeRegistro,
                 "Ingrese el nombre del libro.",
@@ -1588,9 +1729,13 @@
             return;
         }
 
-        const biblioteca = bibliotecaLibro.value.trim().toUpperCase();
+        const biblioteca =
+            bibliotecaLibro.value
+                .trim()
+                .toUpperCase();
 
         if (!validarBiblioteca(biblioteca)) {
+
             mostrarMensaje(
                 mensajeRegistro,
                 "Seleccione una biblioteca válida.",
@@ -1601,12 +1746,16 @@
             return;
         }
 
-        const existente = libros.find(
-            libro =>
-                codigoParaComparar(libro.codigoLibro) === codigoComparar
-        );
+        const existente =
+            libros.find(
+                libro =>
+                    codigoParaComparar(
+                        libro.codigoLibro
+                    ) === codigoComparar
+            );
 
         if (existente) {
+
             mostrarMensaje(
                 mensajeRegistro,
                 "Ya existe un libro con ese código.",
@@ -1620,14 +1769,28 @@
         try {
 
             const nuevoLibro = {
+
                 codigoLibro: codigo,
+
                 nombreLibro: nombre,
-                autor: autorLibro.value.trim(),
-                genero: generoLibro.value.trim(),
-                editorial: editorialLibro.value.trim(),
-                año: anioLibro.value.trim(),
-                Biblioteca: biblioteca,
-                estado: "Disponible"
+
+                autor:
+                    autorLibro.value.trim(),
+
+                genero:
+                    generoLibro.value.trim(),
+
+                editorial:
+                    editorialLibro.value.trim(),
+
+                año:
+                    anioLibro.value.trim(),
+
+                Biblioteca:
+                    biblioteca,
+
+                estado:
+                    "Disponible"
             };
 
             const {
@@ -1641,7 +1804,9 @@
 
             if (error) throw error;
 
-            libros.push(convertirLibro(data));
+            libros.push(
+                convertirLibro(data)
+            );
 
             actualizarOpcionesFiltros();
             actualizarEstadisticas();
@@ -1665,7 +1830,10 @@
             mostrarMensaje(
                 mensajeRegistro,
                 "No fue posible registrar el libro: " +
-                (error.message || "error desconocido"),
+                (
+                    error.message ||
+                    "error desconocido"
+                ),
                 "error"
             );
         }
@@ -1686,76 +1854,109 @@
     /* ACTUALIZAR FILTROS DE AUTOR Y GÉNERO */
     function actualizarOpcionesFiltros() {
 
-        const autorSeleccionado = filtroAutor.value;
-        const generoSeleccionado = filtroGenero.value;
+        const autorSeleccionado =
+            filtroAutor.value;
 
-        const autores = [
-            ...new Set(
-                libros
-                    .map(l => String(l.autor || "").trim())
-                    .filter(Boolean)
-            )
-        ].sort(
-            (a, b) =>
-                a.localeCompare(
-                    b,
-                    "es",
-                    {
-                        sensitivity: "base"
-                    }
-                )
-        );
+        const generoSeleccionado =
+            filtroGenero.value;
 
-        const generos = [
-            ...new Set(
-                libros
-                    .map(l => String(l.genero || "").trim())
-                    .filter(Boolean)
-            )
-        ].sort(
-            (a, b) =>
-                a.localeCompare(
-                    b,
-                    "es",
-                    {
-                        sensitivity: "base"
-                    }
+        const autores =
+            [
+                ...new Set(
+                    libros
+                        .map(
+                            l =>
+                                String(
+                                    l.autor || ""
+                                ).trim()
+                        )
+                        .filter(Boolean)
                 )
-        );
+            ].sort(
+                (a, b) =>
+                    a.localeCompare(
+                        b,
+                        "es",
+                        {
+                            sensitivity: "base"
+                        }
+                    )
+            );
+
+        const generos =
+            [
+                ...new Set(
+                    libros
+                        .map(
+                            l =>
+                                String(
+                                    l.genero || ""
+                                ).trim()
+                        )
+                        .filter(Boolean)
+                )
+            ].sort(
+                (a, b) =>
+                    a.localeCompare(
+                        b,
+                        "es",
+                        {
+                            sensitivity: "base"
+                        }
+                    )
+            );
 
         filtroAutor.innerHTML =
             `<option value="Todos">Todos</option>`;
 
-        autores.forEach(autor => {
+        autores.forEach(
+            autor => {
 
-            const opcion = document.createElement("option");
+                const opcion =
+                    document.createElement(
+                        "option"
+                    );
 
-            opcion.value = autor;
-            opcion.textContent = autor;
+                opcion.value = autor;
+                opcion.textContent = autor;
 
-            filtroAutor.appendChild(opcion);
-        });
+                filtroAutor.appendChild(
+                    opcion
+                );
+            }
+        );
 
         filtroGenero.innerHTML =
             `<option value="Todos">Todos</option>`;
 
-        generos.forEach(genero => {
+        generos.forEach(
+            genero => {
 
-            const opcion = document.createElement("option");
+                const opcion =
+                    document.createElement(
+                        "option"
+                    );
 
-            opcion.value = genero;
-            opcion.textContent = genero;
+                opcion.value = genero;
+                opcion.textContent = genero;
 
-            filtroGenero.appendChild(opcion);
-        });
+                filtroGenero.appendChild(
+                    opcion
+                );
+            }
+        );
 
         filtroAutor.value =
-            autores.includes(autorSeleccionado)
+            autores.includes(
+                autorSeleccionado
+            )
                 ? autorSeleccionado
                 : "Todos";
 
         filtroGenero.value =
-            generos.includes(generoSeleccionado)
+            generos.includes(
+                generoSeleccionado
+            )
                 ? generoSeleccionado
                 : "Todos";
     }
@@ -1763,67 +1964,95 @@
     /* BUSCAR LIBROS */
     function buscarLibros() {
 
-        const texto = normalizarTexto(busqueda.value);
-        const autor = filtroAutor.value;
-        const genero = filtroGenero.value;
-        const estado = filtroEstado.value;
-        const biblioteca = filtroBiblioteca.value;
-
-        librosFiltrados = libros.filter(libro => {
-
-            const contenido = [
-                libro.codigoLibro,
-                libro.nombreLibro,
-                libro.autor,
-                libro.genero,
-                libro.editorial
-            ]
-                .map(normalizarTexto)
-                .join(" ");
-
-            const coincideTexto =
-                !texto || contenido.includes(texto);
-
-            const estadoLibro =
-                obtenerEstadoLibro(libro);
-
-            const coincideAutor =
-                autor === "Todos" ||
-                normalizarTexto(libro.autor) ===
-                normalizarTexto(autor);
-
-            const coincideGenero =
-                genero === "Todos" ||
-                normalizarTexto(libro.genero) ===
-                normalizarTexto(genero);
-
-            const coincideEstado =
-                estado === "Todos" ||
-                estadoLibro === estado;
-
-            const coincideBiblioteca =
-                biblioteca === "Todas" ||
-                libro.Biblioteca === biblioteca;
-
-            return (
-                coincideTexto &&
-                coincideAutor &&
-                coincideGenero &&
-                coincideEstado &&
-                coincideBiblioteca
+        const texto =
+            normalizarTexto(
+                busqueda.value
             );
-        });
 
-        paginaLibros = Math.min(
-            paginaLibros,
-            Math.max(
-                1,
-                Math.ceil(
-                    librosFiltrados.length /
-                    registrosPorPagina
+        const autor =
+            filtroAutor.value;
+
+        const genero =
+            filtroGenero.value;
+
+        const estado =
+            filtroEstado.value;
+
+        const biblioteca =
+            filtroBiblioteca.value;
+
+        librosFiltrados =
+            libros.filter(
+                libro => {
+
+                    const contenido = [
+                        libro.codigoLibro,
+                        libro.nombreLibro,
+                        libro.autor,
+                        libro.genero,
+                        libro.editorial
+                    ]
+                        .map(normalizarTexto)
+                        .join(" ");
+
+                    const coincideTexto =
+                        !texto ||
+                        contenido.includes(
+                            texto
+                        );
+
+                    const estadoLibro =
+                        obtenerEstadoLibro(
+                            libro
+                        );
+
+                    const coincideAutor =
+                        autor === "Todos" ||
+                        normalizarTexto(
+                            libro.autor
+                        ) ===
+                        normalizarTexto(
+                            autor
+                        );
+
+                    const coincideGenero =
+                        genero === "Todos" ||
+                        normalizarTexto(
+                            libro.genero
+                        ) ===
+                        normalizarTexto(
+                            genero
+                        );
+
+                    const coincideEstado =
+                        estado === "Todos" ||
+                        estadoLibro === estado;
+
+                    const coincideBiblioteca =
+                        biblioteca === "Todas" ||
+                        libro.Biblioteca === biblioteca;
+
+                    return (
+                        coincideTexto &&
+                        coincideAutor &&
+                        coincideGenero &&
+                        coincideEstado &&
+                        coincideBiblioteca
+                    );
+                }
+            );
+
+        paginaLibros =
+            Math.min(
+                paginaLibros,
+                Math.max(
+                    1,
+                    Math.ceil(
+                        librosFiltrados.length /
+                        registrosPorPagina
+                    )
                 )
-            )
-        );
+            );
 
         mostrarLibros();
     }
@@ -1847,15 +2076,17 @@
 
         tablaLibros.innerHTML = "";
 
-        const total = librosFiltrados.length;
+        const total =
+            librosFiltrados.length;
 
-        const totalPaginas = Math.max(
-            1,
-            Math.ceil(
-                total /
-                registrosPorPagina
-            )
-        );
+        const totalPaginas =
+            Math.max(
+                1,
+                Math.ceil(
+                    total /
+                    registrosPorPagina
+                )
+            );
 
         if (paginaLibros > totalPaginas) {
             paginaLibros = totalPaginas;
@@ -1877,12 +2108,16 @@
 
         if (pagina.length === 0) {
 
-            sinResultados.style.display = "block";
-            paginacionLibros.style.display = "none";
+            sinResultados.style.display =
+                "block";
+
+            paginacionLibros.style.display =
+                "none";
 
         } else {
 
-            sinResultados.style.display = "none";
+            sinResultados.style.display =
+                "none";
 
             paginacionLibros.style.display =
                 totalPaginas > 1
@@ -1890,73 +2125,81 @@
                     : "none";
         }
 
-        pagina.forEach(libro => {
+        pagina.forEach(
+            libro => {
 
-            const fila =
-                document.createElement("tr");
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
 
-            const estado =
-                obtenerEstadoLibro(libro);
+                const estado =
+                    obtenerEstadoLibro(
+                        libro
+                    );
 
-            let claseEstado =
-                "estado-disponible";
+                let claseEstado =
+                    "estado-disponible";
 
-            if (estado === "Prestado") {
-                claseEstado =
-                    "estado-prestado";
-            }
-
-            if (estado === "Baja") {
-                claseEstado =
-                    "estado-baja";
-            }
-
-            fila.innerHTML = `
-                <td>${escapeHtml(libro.codigoLibro)}</td>
-
-                <td class="texto-izquierda nombre-libro">
-                    ${escapeHtml(libro.nombreLibro)}
-                </td>
-
-                <td class="texto-izquierda autor-libro">
-                    ${escapeHtml(libro.autor)}
-                </td>
-
-                <td class="texto-izquierda genero-libro">
-                    ${escapeHtml(libro.genero)}
-                </td>
-
-                <td class="texto-izquierda editorial-libro">
-                    ${escapeHtml(libro.editorial)}
-                </td>
-
-                <td>
-                    ${escapeHtml(libro.año)}
-                </td>
-
-                <td class="biblioteca">
-                    ${escapeHtml(libro.Biblioteca)}
-                </td>
-
-                <td>
-                    <span class="estado ${claseEstado}">
-                        ${escapeHtml(estado)}
-                    </span>
-                </td>
-
-                ${
-                    administrador
-                        ? `
-                            <td class="acciones-libro">
-                                ${generarAccionesLibro(libro, estado)}
-                            </td>
-                        `
-                        : ""
+                if (estado === "Prestado") {
+                    claseEstado =
+                        "estado-prestado";
                 }
-            `;
 
-            tablaLibros.appendChild(fila);
-        });
+                if (estado === "Baja") {
+                    claseEstado =
+                        "estado-baja";
+                }
+
+                fila.innerHTML = `
+                    <td>${escapeHtml(libro.codigoLibro)}</td>
+
+                    <td class="texto-izquierda nombre-libro">
+                        ${escapeHtml(libro.nombreLibro)}
+                    </td>
+
+                    <td class="texto-izquierda autor-libro">
+                        ${escapeHtml(libro.autor)}
+                    </td>
+
+                    <td class="texto-izquierda genero-libro">
+                        ${escapeHtml(libro.genero)}
+                    </td>
+
+                    <td class="texto-izquierda editorial-libro">
+                        ${escapeHtml(libro.editorial)}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(libro.año)}
+                    </td>
+
+                    <td class="biblioteca">
+                        ${escapeHtml(libro.Biblioteca)}
+                    </td>
+
+                    <td>
+                        <span class="estado ${claseEstado}">
+                            ${escapeHtml(estado)}
+                        </span>
+                    </td>
+
+                    ${
+                        administrador
+                            ? `
+                                <td class="acciones-libro">
+                                    ${generarAccionesLibro(libro, estado)}
+                                </td>
+                            `
+                            : ""
+                    }
+                `;
+
+                tablaLibros.appendChild(
+                    fila
+                );
+            }
+        );
 
         resultadoTexto.textContent =
             total === 0
@@ -1974,7 +2217,10 @@
     }
 
     /* ACCIONES DE LIBRO */
-    function generarAccionesLibro(libro, estado) {
+    function generarAccionesLibro(
+        libro,
+        estado
+    ) {
 
         let html =
             `<button
@@ -2018,6 +2264,7 @@
             );
 
         if (apartado) {
+
             apartado.scrollIntoView({
                 behavior: "smooth",
                 block: "start"
@@ -2052,7 +2299,10 @@
                     )
                 );
 
-            if (paginaLibros >= totalPaginas) {
+            if (
+                paginaLibros >=
+                totalPaginas
+            ) {
                 return;
             }
 
@@ -2071,12 +2321,19 @@
 
         librosBaja =
             libros
-                .filter(l => l.estado === "Baja")
+                .filter(
+                    l =>
+                        l.estado === "Baja"
+                )
                 .sort(
                     (a, b) =>
-                        String(b.fechaBaja || "")
+                        String(
+                            b.fechaBaja || ""
+                        )
                             .localeCompare(
-                                String(a.fechaBaja || "")
+                                String(
+                                    a.fechaBaja || ""
+                                )
                             )
                 );
 
@@ -2110,55 +2367,61 @@
                 fin
             );
 
-        pagina.forEach(libro => {
+        pagina.forEach(
+            libro => {
 
-            const fila =
-                document.createElement("tr");
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
 
-            fila.innerHTML = `
-                <td>
-                    ${escapeHtml(libro.codigoLibro)}
-                </td>
+                fila.innerHTML = `
+                    <td>
+                        ${escapeHtml(libro.codigoLibro)}
+                    </td>
 
-                <td class="texto-izquierda nombre-libro">
-                    ${escapeHtml(libro.nombreLibro)}
-                </td>
+                    <td class="texto-izquierda nombre-libro">
+                        ${escapeHtml(libro.nombreLibro)}
+                    </td>
 
-                <td class="biblioteca">
-                    ${escapeHtml(libro.Biblioteca)}
-                </td>
+                    <td class="biblioteca">
+                        ${escapeHtml(libro.Biblioteca)}
+                    </td>
 
-                <td>
-                    ${formatearFecha(libro.fechaBaja)}
-                </td>
+                    <td>
+                        ${formatearFecha(libro.fechaBaja)}
+                    </td>
 
-                ${
-                    administrador
-                        ? `
-                            <td>
-                                <button
-                                    type="button"
-                                    class="btn-reactivar btn-pequeno"
-                                    data-accion-baja="reactivar"
-                                    data-id="${libro.id}">
-                                    Reactivar
-                                </button>
+                    ${
+                        administrador
+                            ? `
+                                <td>
+                                    <button
+                                        type="button"
+                                        class="btn-reactivar btn-pequeno"
+                                        data-accion-baja="reactivar"
+                                        data-id="${libro.id}">
+                                        Reactivar
+                                    </button>
 
-                                <button
-                                    type="button"
-                                    class="btn-eliminar btn-pequeno"
-                                    data-accion-baja="eliminar"
-                                    data-id="${libro.id}">
-                                    Eliminar
-                                </button>
-                            </td>
-                        `
-                        : ""
-                }
-            `;
+                                    <button
+                                        type="button"
+                                        class="btn-eliminar btn-pequeno"
+                                        data-accion-baja="eliminar"
+                                        data-id="${libro.id}">
+                                        Eliminar
+                                    </button>
+                                </td>
+                            `
+                            : ""
+                    }
+                `;
 
-            tablaBajas.appendChild(fila);
-        });
+                tablaBajas.appendChild(
+                    fila
+                );
+            }
+        );
 
         paginacionBajas.style.display =
             totalPaginas > 1
@@ -2187,7 +2450,9 @@
             mostrarBajas();
 
             document
-                .getElementById("seccionBajas")
+                .getElementById(
+                    "seccionBajas"
+                )
                 .scrollIntoView({
                     behavior: "smooth",
                     block: "start"
@@ -2208,7 +2473,10 @@
                     )
                 );
 
-            if (paginaBajas >= totalPaginas) {
+            if (
+                paginaBajas >=
+                totalPaginas
+            ) {
                 return;
             }
 
@@ -2217,7 +2485,9 @@
             mostrarBajas();
 
             document
-                .getElementById("seccionBajas")
+                .getElementById(
+                    "seccionBajas"
+                )
                 .scrollIntoView({
                     behavior: "smooth",
                     block: "start"
@@ -2262,7 +2532,9 @@
         editarBiblioteca.value =
             libro.Biblioteca;
 
-        limpiarMensaje(mensajeEdicion);
+        limpiarMensaje(
+            mensajeEdicion
+        );
 
         modalEditar.style.display =
             "flex";
@@ -2282,7 +2554,10 @@
 
     async function guardarEdicion() {
 
-        if (!administrador || !libroEditando) {
+        if (
+            !administrador ||
+            !libroEditando
+        ) {
             return;
         }
 
@@ -2368,13 +2643,25 @@
         try {
 
             const datosActualizados = {
+
                 codigoLibro: codigo,
+
                 nombreLibro: nombre,
-                autor: editarAutor.value.trim(),
-                genero: editarGenero.value.trim(),
-                editorial: editarEditorial.value.trim(),
-                año: editarAnio.value.trim(),
-                Biblioteca: biblioteca
+
+                autor:
+                    editarAutor.value.trim(),
+
+                genero:
+                    editarGenero.value.trim(),
+
+                editorial:
+                    editarEditorial.value.trim(),
+
+                año:
+                    editarAnio.value.trim(),
+
+                Biblioteca:
+                    biblioteca
             };
 
             const {
@@ -2383,7 +2670,10 @@
             } = await supabaseClient
                 .from("libros")
                 .update(datosActualizados)
-                .eq("id", libroEditando.id)
+                .eq(
+                    "id",
+                    libroEditando.id
+                )
                 .select()
                 .single();
 
@@ -2392,8 +2682,12 @@
             const indice =
                 libros.findIndex(
                     libro =>
-                        String(libro.id) ===
-                        String(libroEditando.id)
+                        String(
+                            libro.id
+                        ) ===
+                        String(
+                            libroEditando.id
+                        )
                 );
 
             if (indice !== -1) {
@@ -2429,7 +2723,10 @@
             mostrarMensaje(
                 mensajeEdicion,
                 "No fue posible guardar los cambios: " +
-                (error.message || "error desconocido"),
+                (
+                    error.message ||
+                    "error desconocido"
+                ),
                 "error"
             );
         }
@@ -2470,7 +2767,10 @@
                     estado: "Baja",
                     fechaBaja: fecha
                 })
-                .eq("id", libro.id);
+                .eq(
+                    "id",
+                    libro.id
+                );
 
             if (error) throw error;
 
@@ -2536,7 +2836,10 @@
                     fechaReactivacion: fecha,
                     fechaBaja: null
                 })
-                .eq("id", libro.id);
+                .eq(
+                    "id",
+                    libro.id
+                );
 
             if (error) throw error;
 
@@ -2616,15 +2919,22 @@
             } = await supabaseClient
                 .from("libros")
                 .delete()
-                .eq("id", libro.id);
+                .eq(
+                    "id",
+                    libro.id
+                );
 
             if (error) throw error;
 
             libros =
                 libros.filter(
                     item =>
-                        String(item.id) !==
-                        String(libro.id)
+                        String(
+                            item.id
+                        ) !==
+                        String(
+                            libro.id
+                        )
                 );
 
             actualizarEstadisticas();
@@ -2831,7 +3141,9 @@
                     }
 
                     const codigoComparar =
-                        codigoParaComparar(codigo);
+                        codigoParaComparar(
+                            codigo
+                        );
 
                     if (
                         existentes.has(
@@ -2863,7 +3175,8 @@
 
                     const nuevo = {
 
-                        codigoLibro: codigo,
+                        codigoLibro:
+                            codigo,
 
                         nombreLibro:
                             String(
@@ -2950,7 +3263,9 @@
             agregados.forEach(
                 libro =>
                     libros.push(
-                        convertirLibro(libro)
+                        convertirLibro(
+                            libro
+                        )
                     )
             );
 
@@ -2988,20 +3303,41 @@
             mostrarMensaje(
                 mensajeImportacion,
                 "No fue posible importar el archivo: " +
-                (error.message || "error desconocido"),
+                (
+                    error.message ||
+                    "error desconocido"
+                ),
                 "error"
             );
         }
     }
 
-    /* DESCARGAR MASTER BIBLIOTECA */
+    /* ==========================================================
+       DESCARGAR MASTER BIBLIOTECA
+       ========================================================== */
+
     function descargarMasterBiblioteca() {
 
         if (!administrador) return;
 
+        /*
+         * Estructura del Master:
+         *
+         * A = codigoLibro
+         * B = nombreLibro
+         * C = autor
+         * D = genero
+         * E = editorial
+         * F = año
+         * G = Biblioteca
+         * H = estado
+         * I = codigoBarras
+         */
+
         const datos =
             libros.map(
                 libro => ({
+
                     codigoLibro:
                         formatearCodigo(
                             libro.codigoLibro
@@ -3026,10 +3362,16 @@
                         libro.Biblioteca || "",
 
                     estado:
-                        libro.estado || ""
+                        libro.estado || "",
+
+                    codigoBarras:
+                        ""
                 })
             );
 
+        /*
+         * Crear la hoja.
+         */
         const hoja =
             XLSX.utils.json_to_sheet(
                 datos,
@@ -3042,20 +3384,231 @@
                         "editorial",
                         "año",
                         "Biblioteca",
-                        "estado"
+                        "estado",
+                        "codigoBarras"
                     ]
                 }
             );
 
+        /*
+         * Agregar fórmulas de código de barras.
+         *
+         * La columna A contiene el codigoLibro.
+         *
+         * Ejemplo:
+         *
+         * I2 = "='*'&A2&'*'"
+         *
+         * La fórmula se almacena como:
+         *
+         * ="*"&A2&"*"
+         *
+         * Code 39 utiliza los asteriscos como
+         * caracteres de inicio y final.
+         */
+
+        for (
+            let fila = 2;
+            fila <= datos.length + 1;
+            fila++
+        ) {
+
+            const referencia =
+                `I${fila}`;
+
+            hoja[referencia] = {
+
+                t: "str",
+
+                f:
+                    `="*"&A${fila}&"*"`,
+
+                s: {
+
+                    font: {
+                        name:
+                            "Archon Code 39 Barcode",
+                        sz: 24
+                    },
+
+                    alignment: {
+                        horizontal:
+                            "center",
+                        vertical:
+                            "center"
+                    }
+                }
+            };
+        }
+
+        /*
+         * Aplicar formato al codigoLibro.
+         */
+        for (
+            let fila = 2;
+            fila <= datos.length + 1;
+            fila++
+        ) {
+
+            const referencia =
+                `A${fila}`;
+
+            if (!hoja[referencia]) {
+                continue;
+            }
+
+            hoja[referencia].t = "s";
+
+            hoja[referencia].s = {
+
+                font: {
+                    name: "Arial",
+                    sz: 10
+                },
+
+                alignment: {
+                    horizontal:
+                        "center",
+                    vertical:
+                        "center"
+                }
+            };
+        }
+
+        /*
+         * Estilo de encabezados.
+         */
+        const encabezados = [
+            "A1",
+            "B1",
+            "C1",
+            "D1",
+            "E1",
+            "F1",
+            "G1",
+            "H1",
+            "I1"
+        ];
+
+        encabezados.forEach(
+            referencia => {
+
+                if (!hoja[referencia]) {
+                    return;
+                }
+
+                hoja[referencia].s = {
+
+                    font: {
+                        bold: true,
+                        name: "Arial",
+                        sz: 10
+                    },
+
+                    alignment: {
+                        horizontal:
+                            "center",
+                        vertical:
+                            "center"
+                    }
+                };
+            }
+        );
+
+        /*
+         * Anchos de las columnas.
+         */
+        hoja["!cols"] = [
+
+            {
+                wch: 15
+            },
+
+            {
+                wch: 35
+            },
+
+            {
+                wch: 25
+            },
+
+            {
+                wch: 24
+            },
+
+            {
+                wch: 24
+            },
+
+            {
+                wch: 10
+            },
+
+            {
+                wch: 13
+            },
+
+            {
+                wch: 14
+            },
+
+            {
+                wch: 30
+            }
+        ];
+
+        /*
+         * Altura de filas.
+         *
+         * Se deja espacio para visualizar
+         * correctamente el código de barras.
+         */
+        hoja["!rows"] = [];
+
+        for (
+            let fila = 0;
+            fila <= datos.length;
+            fila++
+        ) {
+
+            hoja["!rows"][fila] = {
+
+                hpt:
+                    fila === 0
+                        ? 20
+                        : 36
+            };
+        }
+
+        /*
+         * Crear el libro Excel.
+         */
         const workbook =
             XLSX.utils.book_new();
 
+        /*
+         * Configurar cálculo automático de fórmulas.
+         */
+        workbook.Workbook = {
+            CalcPr: {
+                calcMode: "auto",
+                fullCalcOnLoad: true,
+                forceFullCalc: true
+            }
+        };
+
+        /*
+         * Agregar hoja.
+         */
         XLSX.utils.book_append_sheet(
             workbook,
             hoja,
             "BD Libros"
         );
 
+        /*
+         * Descargar archivo.
+         */
         XLSX.writeFile(
             workbook,
             "MasterBiblioteca.xlsx"
@@ -3082,7 +3635,11 @@
             } = await supabaseClient
                 .from("libros")
                 .delete()
-                .not("id", "is", null);
+                .not(
+                    "id",
+                    "is",
+                    null
+                );
 
             if (error) throw error;
 
@@ -3112,15 +3669,21 @@
             mostrarMensaje(
                 mensajeAdministracion,
                 "No fue posible borrar la base de datos: " +
-                (error.message || "error desconocido"),
+                (
+                    error.message ||
+                    "error desconocido"
+                ),
                 "error"
             );
         }
     }
 
     /* EVENTOS PRINCIPALES */
+
     document
-        .getElementById("btnRegistrar")
+        .getElementById(
+            "btnRegistrar"
+        )
         .addEventListener(
             "click",
             registrarLibro
@@ -3136,7 +3699,6 @@
         }
     );
 
-    /* NUEVO BOTÓN: LIMPIAR FILTROS */
     btnLimpiarFiltros.addEventListener(
         "click",
         limpiarFiltros
@@ -3198,42 +3760,54 @@
     );
 
     document
-        .getElementById("btnCerrarModal")
+        .getElementById(
+            "btnCerrarModal"
+        )
         .addEventListener(
             "click",
             cerrarEdicion
         );
 
     document
-        .getElementById("btnCancelarEdicion")
+        .getElementById(
+            "btnCancelarEdicion"
+        )
         .addEventListener(
             "click",
             cerrarEdicion
         );
 
     document
-        .getElementById("btnGuardarEdicion")
+        .getElementById(
+            "btnGuardarEdicion"
+        )
         .addEventListener(
             "click",
             guardarEdicion
         );
 
     document
-        .getElementById("btnImportar")
+        .getElementById(
+            "btnImportar"
+        )
         .addEventListener(
             "click",
             importarExcel
         );
 
     document
-        .getElementById("btnDescargarMaster")
+        .getElementById(
+            "btnDescargarMaster"
+        )
         .addEventListener(
             "click",
             descargarMasterBiblioteca
         );
 
     document
-        .getElementById("btnBorrarBase")
+        .getElementById(
+            "btnBorrarBase"
+        )
         .addEventListener(
             "click",
             borrarBaseDatos
@@ -3244,7 +3818,10 @@
         "click",
         function (evento) {
 
-            if (evento.target === modalEditar) {
+            if (
+                evento.target ===
+                modalEditar
+            ) {
                 cerrarEdicion();
             }
         }
