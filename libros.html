@@ -1312,15 +1312,15 @@
 
             <br>
 
-            El MasterBiblioteca descargado también incluye:
-
-            <strong>codigoBarras</strong>
-            y
-            <strong>codigoQR</strong>.
+            El MasterBiblioteca descargado también incluye
+            los códigos de barras y códigos QR como
+            <strong>imágenes reales listas para imprimir.</strong>
 
             <br>
 
-            Estos valores se generan automáticamente y se almacenan en Supabase.
+            Se incluye además una hoja
+            <strong>Etiquetas</strong>
+            preparada para impresión.
 
         </div>
 
@@ -1562,6 +1562,22 @@
 
 <script src="auth.js?v=1002"></script>
 
+
+<!-- =====================================================
+     LIBRERÍAS PARA GENERAR CÓDIGOS
+===================================================== -->
+
+<!-- ExcelJS: permite insertar imágenes reales dentro del XLSX -->
+<script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+
+<!-- JsBarcode: genera códigos de barras Code 128 -->
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+
+<!-- QRCode: genera códigos QR -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+
+
+<!-- SheetJS se mantiene para IMPORTAR Excel -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 
@@ -1956,7 +1972,7 @@
 
 
     /* =====================================================
-       NUEVOS CÓDIGOS
+       CÓDIGOS
     ===================================================== */
 
     function generarCodigoBarras(
@@ -2379,10 +2395,6 @@
                 libro.fechaReactivacion ||
                 null,
 
-            /*
-             * NUEVAS COLUMNAS
-             */
-
             codigoBarras:
                 libro.codigoBarras ||
                 generarCodigoBarras(
@@ -2493,7 +2505,7 @@
 
 
     /* =====================================================
-       SINCRONIZAR NUEVAS COLUMNAS
+       SINCRONIZAR CÓDIGOS
     ===================================================== */
 
     async function sincronizarCodigos() {
@@ -2667,12 +2679,6 @@
                 );
 
 
-            /*
-             * Rellena las nuevas columnas
-             * de Supabase para los libros
-             * existentes.
-             */
-
             await sincronizarCodigos();
 
 
@@ -2832,10 +2838,6 @@
 
                 estado:
                     "Disponible",
-
-                /*
-                 * NUEVAS COLUMNAS
-                 */
 
                 codigoBarras:
                     generarCodigoBarras(
@@ -3867,10 +3869,6 @@
                 Biblioteca:
                     biblioteca,
 
-                /*
-                 * ACTUALIZAR CÓDIGOS
-                 */
-
                 codigoBarras:
                     generarCodigoBarras(
                         codigo
@@ -4546,15 +4544,6 @@
                         estado:
                             "Disponible",
 
-                        /*
-                         * IMPORTANTE:
-                         * No importamos las fórmulas
-                         * del Excel.
-                         *
-                         * Generamos nuevamente
-                         * los valores correctos.
-                         */
-
                         codigoBarras:
                             generarCodigoBarras(
                                 codigo
@@ -4682,11 +4671,156 @@
 
 
     /* =====================================================
-       MASTER BIBLIOTECA
-       VERSIÓN CORREGIDA
+       GENERAR IMAGEN DE CÓDIGO DE BARRAS
     ===================================================== */
 
-    function descargarMasterBiblioteca() {
+    async function generarImagenCodigoBarras(
+        codigo
+    ) {
+
+        return new Promise(
+            (
+                resolve,
+                reject
+            ) => {
+
+                try {
+
+                    const canvas =
+                        document.createElement(
+                            "canvas"
+                        );
+
+
+                    /*
+                     * Code 128
+                     *
+                     * El código mantiene
+                     * los ceros iniciales.
+                     */
+
+                    JsBarcode(
+                        canvas,
+                        String(codigo),
+                        {
+
+                            format:
+                                "CODE128",
+
+                            width:
+                                2.2,
+
+                            height:
+                                70,
+
+                            displayValue:
+                                true,
+
+                            font:
+                                "Arial",
+
+                            fontSize:
+                                18,
+
+                            margin:
+                                8,
+
+                            background:
+                                "#ffffff",
+
+                            lineColor:
+                                "#000000"
+
+                        }
+                    );
+
+
+                    resolve(
+                        canvas.toDataURL(
+                            "image/png"
+                        )
+                    );
+
+
+                } catch (error) {
+
+                    reject(
+                        error
+                    );
+                }
+            }
+        );
+    }
+
+
+    /* =====================================================
+       GENERAR IMAGEN QR
+    ===================================================== */
+
+    async function generarImagenQR(
+        contenido
+    ) {
+
+        try {
+
+            return await QRCode.toDataURL(
+                String(
+                    contenido
+                ),
+                {
+
+                    width:
+                        220,
+
+                    margin:
+                        1,
+
+                    errorCorrectionLevel:
+                        "M",
+
+                    color: {
+
+                        dark:
+                            "#000000",
+
+                        light:
+                            "#ffffff"
+                    }
+                }
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Error generando QR:",
+                error
+            );
+
+            throw error;
+        }
+    }
+
+
+    /* =====================================================
+       CONVERTIR DATA URL A BASE64
+    ===================================================== */
+
+    function obtenerBase64(
+        dataUrl
+    ) {
+
+        return dataUrl.split(
+            ","
+        )[1];
+    }
+
+
+    /* =====================================================
+       MASTER BIBLIOTECA
+       EXCEL CON IMÁGENES REALES
+    ===================================================== */
+
+    async function descargarMasterBiblioteca() {
 
         if (!administrador) {
 
@@ -4694,207 +4828,1179 @@
         }
 
 
-        /*
-         * IMPORTANTE:
-         *
-         * Aquí NO usamos IMAGE().
-         *
-         * SheetJS descargará valores normales.
-         *
-         * Esto evita que Excel abra el archivo
-         * con errores en codigoBarras y codigoQR.
-         */
-
-
-        const datos =
-            libros.map(
-                libro => ({
-
-                    codigoLibro:
-                        formatearCodigo(
-                            libro.codigoLibro
-                        ),
-
-                    nombreLibro:
-                        libro.nombreLibro ||
-                        "",
-
-                    autor:
-                        libro.autor ||
-                        "",
-
-                    genero:
-                        libro.genero ||
-                        "",
-
-                    editorial:
-                        libro.editorial ||
-                        "",
-
-                    año:
-                        libro.año ||
-                        "",
-
-                    Biblioteca:
-                        libro.Biblioteca ||
-                        "",
-
-                    estado:
-                        libro.estado ||
-                        "",
-
-                    /*
-                     * NUEVA COLUMNA
-                     */
-
-                    codigoBarras:
-                        libro.codigoBarras ||
-                        generarCodigoBarras(
-                            libro.codigoLibro
-                        ),
-
-                    /*
-                     * NUEVA COLUMNA
-                     */
-
-                    codigoQR:
-                        libro.codigoQR ||
-                        generarCodigoQR(
-                            libro.codigoLibro,
-                            libro.nombreLibro
-                        )
-
-                })
+        const boton =
+            document.getElementById(
+                "btnDescargarMaster"
             );
 
 
-        /*
-         * CREAR HOJA
-         */
+        const textoOriginal =
+            boton.textContent;
 
-        const hoja =
-            XLSX.utils.json_to_sheet(
-                datos,
+
+        try {
+
+            boton.disabled =
+                true;
+
+
+            boton.textContent =
+                "⏳ Generando Excel...";
+
+
+            if (
+                typeof ExcelJS ===
+                "undefined"
+            ) {
+
+                throw new Error(
+                    "No se pudo cargar ExcelJS."
+                );
+            }
+
+
+            if (
+                typeof JsBarcode ===
+                "undefined"
+            ) {
+
+                throw new Error(
+                    "No se pudo cargar JsBarcode."
+                );
+            }
+
+
+            if (
+                typeof QRCode ===
+                "undefined"
+            ) {
+
+                throw new Error(
+                    "No se pudo cargar la librería QR."
+                );
+            }
+
+
+            /*
+             * CREAR LIBRO EXCEL
+             */
+
+            const workbook =
+                new ExcelJS.Workbook();
+
+
+            workbook.creator =
+                "Sistema de Biblioteca FFdE";
+
+            workbook.lastModifiedBy =
+                "Sistema de Biblioteca FFdE";
+
+            workbook.created =
+                new Date();
+
+            workbook.modified =
+                new Date();
+
+
+            /* =================================================
+               HOJA PRINCIPAL
+            ================================================= */
+
+            const hoja =
+                workbook.addWorksheet(
+                    "BD Libros"
+                );
+
+
+            /*
+             * COLUMNAS
+             */
+
+            hoja.columns = [
+
                 {
-                    header: [
-
+                    header:
                         "codigoLibro",
+                    key:
+                        "codigoLibro",
+                    width:
+                        15
+                },
 
+                {
+                    header:
                         "nombreLibro",
+                    key:
+                        "nombreLibro",
+                    width:
+                        38
+                },
 
+                {
+                    header:
                         "autor",
+                    key:
+                        "autor",
+                    width:
+                        25
+                },
 
+                {
+                    header:
                         "genero",
+                    key:
+                        "genero",
+                    width:
+                        22
+                },
 
+                {
+                    header:
                         "editorial",
+                    key:
+                        "editorial",
+                    width:
+                        22
+                },
 
+                {
+                    header:
                         "año",
+                    key:
+                        "año",
+                    width:
+                        10
+                },
 
+                {
+                    header:
                         "Biblioteca",
+                    key:
+                        "Biblioteca",
+                    width:
+                        13
+                },
 
+                {
+                    header:
                         "estado",
+                    key:
+                        "estado",
+                    width:
+                        15
+                },
 
+                {
+                    header:
                         "codigoBarras",
+                    key:
+                        "codigoBarras",
+                    width:
+                        30
+                },
 
-                        "codigoQR"
+                {
+                    header:
+                        "codigoQR",
+                    key:
+                        "codigoQR",
+                    width:
+                        38
+                }
 
-                    ]
+            ];
+
+
+            /*
+             * ENCABEZADOS
+             */
+
+            const encabezado =
+                hoja.getRow(1);
+
+
+            encabezado.font = {
+
+                bold:
+                    true
+
+            };
+
+
+            encabezado.alignment = {
+
+                vertical:
+                    "middle",
+
+                horizontal:
+                    "center"
+
+            };
+
+
+            encabezado.height =
+                24;
+
+
+            /*
+             * LIBROS
+             */
+
+            for (
+                let indice = 0;
+                indice < libros.length;
+                indice++
+            ) {
+
+                const libro =
+                    libros[indice];
+
+
+                const codigo =
+                    formatearCodigo(
+                        libro.codigoLibro
+                    );
+
+
+                const nombre =
+                    String(
+                        libro.nombreLibro ||
+                        ""
+                    ).trim();
+
+
+                const codigoBarras =
+                    libro.codigoBarras ||
+                    generarCodigoBarras(
+                        codigo
+                    );
+
+
+                const codigoQR =
+                    libro.codigoQR ||
+                    generarCodigoQR(
+                        codigo,
+                        nombre
+                    );
+
+
+                /*
+                 * AGREGAR DATOS
+                 */
+
+                const fila =
+                    hoja.addRow({
+
+                        codigoLibro:
+                            codigo,
+
+                        nombreLibro:
+                            nombre,
+
+                        autor:
+                            libro.autor ||
+                            "",
+
+                        genero:
+                            libro.genero ||
+                            "",
+
+                        editorial:
+                            libro.editorial ||
+                            "",
+
+                        año:
+                            libro.año ||
+                            "",
+
+                        Biblioteca:
+                            libro.Biblioteca ||
+                            "",
+
+                        estado:
+                            libro.estado ||
+                            "",
+
+                        /*
+                         * Se deja el valor
+                         * textual también.
+                         */
+
+                        codigoBarras:
+                            codigoBarras,
+
+                        codigoQR:
+                            codigoQR
+
+                    });
+
+
+                /*
+                 * ALTURA PARA LAS IMÁGENES
+                 */
+
+                fila.height =
+                    75;
+
+
+                /*
+                 * GENERAR CÓDIGO DE BARRAS
+                 */
+
+                const imagenBarras =
+                    await generarImagenCodigoBarras(
+                        codigoBarras
+                    );
+
+
+                const idBarras =
+                    workbook.addImage({
+
+                        base64:
+                            imagenBarras,
+
+                        extension:
+                            "png"
+
+                    });
+
+
+                /*
+                 * COLOCAR BARRAS
+                 *
+                 * Columna I
+                 */
+
+                hoja.addImage(
+                    idBarras,
+                    {
+
+                        tl: {
+
+                            col:
+                                8,
+
+                            row:
+                                fila.number - 1
+
+                        },
+
+                        ext: {
+
+                            width:
+                                210,
+
+                            height:
+                                72
+
+                        }
+
+                    }
+                );
+
+
+                /*
+                 * GENERAR QR
+                 */
+
+                const imagenQR =
+                    await generarImagenQR(
+                        codigoQR
+                    );
+
+
+                const idQR =
+                    workbook.addImage({
+
+                        base64:
+                            imagenQR,
+
+                        extension:
+                            "png"
+
+                    });
+
+
+                /*
+                 * COLOCAR QR
+                 *
+                 * Columna J
+                 */
+
+                hoja.addImage(
+                    idQR,
+                    {
+
+                        tl: {
+
+                            col:
+                                9,
+
+                            row:
+                                fila.number - 1
+
+                        },
+
+                        ext: {
+
+                            width:
+                                78,
+
+                            height:
+                                78
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            /*
+             * FORMATO DE CELDAS
+             */
+
+            hoja.eachRow(
+                function (
+                    fila,
+                    numero
+                ) {
+
+                    fila.eachCell(
+                        function (
+                            celda
+                        ) {
+
+                            celda.alignment = {
+
+                                vertical:
+                                    "middle",
+
+                                wrapText:
+                                    true
+
+                            };
+
+
+                            if (
+                                numero > 1
+                            ) {
+
+                                celda.border = {
+
+                                    bottom: {
+
+                                        style:
+                                            "thin"
+
+                                    }
+
+                                };
+
+                            }
+
+                        }
+                    );
+
                 }
             );
 
 
-        /*
-         * ANCHOS
-         */
+            /*
+             * CONGELAR ENCABEZADO
+             */
 
-        hoja["!cols"] = [
+            hoja.views = [
 
-            {
-                wch: 15
-            },
+                {
 
-            {
-                wch: 40
-            },
+                    state:
+                        "frozen",
 
-            {
-                wch: 28
-            },
+                    ySplit:
+                        1
 
-            {
-                wch: 24
-            },
+                }
 
-            {
-                wch: 24
-            },
+            ];
 
-            {
-                wch: 10
-            },
 
-            {
-                wch: 14
-            },
+            /* =================================================
+               HOJA ETIQUETAS
+            ================================================= */
 
-            {
-                wch: 16
-            },
+            const etiquetas =
+                workbook.addWorksheet(
+                    "Etiquetas"
+                );
 
-            {
-                wch: 22
-            },
 
-            {
-                wch: 45
+            /*
+             * Configuración
+             * de impresión.
+             */
+
+            etiquetas.pageSetup = {
+
+                orientation:
+                    "portrait",
+
+                paperSize:
+                    9,
+
+                fitToPage:
+                    true,
+
+                fitToWidth:
+                    1,
+
+                fitToHeight:
+                    0,
+
+                margins: {
+
+                    left:
+                        0.25,
+
+                    right:
+                        0.25,
+
+                    top:
+                        0.35,
+
+                    bottom:
+                        0.35,
+
+                    header:
+                        0,
+
+                    footer:
+                        0
+
+                }
+
+            };
+
+
+            etiquetas.pageSetup.fitToPage =
+                true;
+
+
+            /*
+             * COLUMNAS DE ETIQUETAS
+             */
+
+            etiquetas.columns = [
+
+                {
+                    width:
+                        31
+                },
+
+                {
+                    width:
+                        31
+                },
+
+                {
+                    width:
+                        31
+                }
+
+            ];
+
+
+            /*
+             * TÍTULO
+             */
+
+            etiquetas.mergeCells(
+                "A1:C1"
+            );
+
+
+            const titulo =
+                etiquetas.getCell(
+                    "A1"
+                );
+
+
+            titulo.value =
+                "Etiquetas de libros - Biblioteca FFdE";
+
+
+            titulo.font = {
+
+                bold:
+                    true,
+
+                size:
+                    16
+
+            };
+
+
+            titulo.alignment = {
+
+                horizontal:
+                    "center",
+
+                vertical:
+                    "middle"
+
+            };
+
+
+            etiquetas.getRow(
+                1
+            ).height =
+                28;
+
+
+            /*
+             * COMENZAR ETIQUETAS
+             */
+
+            let filaEtiqueta =
+                3;
+
+
+            let columnaEtiqueta =
+                1;
+
+
+            for (
+                let indice = 0;
+                indice < libros.length;
+                indice++
+            ) {
+
+                const libro =
+                    libros[indice];
+
+
+                const codigo =
+                    formatearCodigo(
+                        libro.codigoLibro
+                    );
+
+
+                const nombre =
+                    String(
+                        libro.nombreLibro ||
+                        ""
+                    ).trim();
+
+
+                const codigoBarras =
+                    libro.codigoBarras ||
+                    generarCodigoBarras(
+                        codigo
+                    );
+
+
+                const codigoQR =
+                    libro.codigoQR ||
+                    generarCodigoQR(
+                        codigo,
+                        nombre
+                    );
+
+
+                /*
+                 * CELDA SUPERIOR
+                 */
+
+                const celdaCodigo =
+                    etiquetas.getCell(
+                        filaEtiqueta,
+                        columnaEtiqueta
+                    );
+
+
+                celdaCodigo.value =
+                    codigo;
+
+
+                celdaCodigo.font = {
+
+                    bold:
+                        true,
+
+                    size:
+                        13
+
+                };
+
+
+                celdaCodigo.alignment = {
+
+                    horizontal:
+                        "center",
+
+                    vertical:
+                        "middle"
+
+                };
+
+
+                /*
+                 * GENERAR BARRAS
+                 */
+
+                const imagenBarras =
+                    await generarImagenCodigoBarras(
+                        codigoBarras
+                    );
+
+
+                const idBarras =
+                    workbook.addImage({
+
+                        base64:
+                            imagenBarras,
+
+                        extension:
+                            "png"
+
+                    });
+
+
+                /*
+                 * GENERAR QR
+                 */
+
+                const imagenQR =
+                    await generarImagenQR(
+                        codigoQR
+                    );
+
+
+                const idQR =
+                    workbook.addImage({
+
+                        base64:
+                            imagenQR,
+
+                        extension:
+                            "png"
+
+                    });
+
+
+                /*
+                 * COORDENADAS
+                 */
+
+                const colBase =
+                    columnaEtiqueta - 1;
+
+
+                const rowBase =
+                    filaEtiqueta - 1;
+
+
+                /*
+                 * BARRAS
+                 */
+
+                etiquetas.addImage(
+                    idBarras,
+                    {
+
+                        tl: {
+
+                            col:
+                                colBase,
+
+                            row:
+                                rowBase + 0.35
+
+                        },
+
+                        ext: {
+
+                            width:
+                                180,
+
+                            height:
+                                62
+
+                        }
+
+                    }
+                );
+
+
+                /*
+                 * QR
+                 *
+                 * Se coloca a la derecha
+                 * dentro de la misma etiqueta.
+                 */
+
+                etiquetas.addImage(
+                    idQR,
+                    {
+
+                        tl: {
+
+                            col:
+                                colBase + 0.63,
+
+                            row:
+                                rowBase + 0.35
+
+                        },
+
+                        ext: {
+
+                            width:
+                                70,
+
+                            height:
+                                70
+
+                        }
+
+                    }
+                );
+
+
+                /*
+                 * NOMBRE
+                 */
+
+                const filaNombre =
+                    filaEtiqueta + 5;
+
+
+                const celdaNombre =
+                    etiquetas.getCell(
+                        filaNombre,
+                        columnaEtiqueta
+                    );
+
+
+                celdaNombre.value =
+                    nombre;
+
+
+                celdaNombre.font = {
+
+                    size:
+                        9
+
+                };
+
+
+                celdaNombre.alignment = {
+
+                    horizontal:
+                        "center",
+
+                    vertical:
+                        "middle",
+
+                    wrapText:
+                        true
+
+                };
+
+
+                /*
+                 * BIBLIOTECA
+                 */
+
+                const celdaBiblioteca =
+                    etiquetas.getCell(
+                        filaNombre + 1,
+                        columnaEtiqueta
+                    );
+
+
+                celdaBiblioteca.value =
+                    "Biblioteca: " +
+                    (
+                        libro.Biblioteca ||
+                        ""
+                    );
+
+
+                celdaBiblioteca.font = {
+
+                    size:
+                        8,
+
+                    bold:
+                        true
+
+                };
+
+
+                celdaBiblioteca.alignment = {
+
+                    horizontal:
+                        "center",
+
+                    vertical:
+                        "middle"
+
+                };
+
+
+                /*
+                 * BORDE DE ETIQUETA
+                 */
+
+                for (
+                    let f =
+                        filaEtiqueta;
+
+                    f <=
+                        filaNombre + 1;
+
+                    f++
+                ) {
+
+                    const celda =
+                        etiquetas.getCell(
+                            f,
+                            columnaEtiqueta
+                        );
+
+
+                    celda.border = {
+
+                        top: {
+
+                            style:
+                                "thin"
+
+                        },
+
+                        left: {
+
+                            style:
+                                "thin"
+
+                        },
+
+                        bottom: {
+
+                            style:
+                                "thin"
+
+                        },
+
+                        right: {
+
+                            style:
+                                "thin"
+
+                        }
+
+                    };
+
+                }
+
+
+                /*
+                 * ALTURAS
+                 */
+
+                etiquetas.getRow(
+                    filaEtiqueta
+                ).height =
+                    22;
+
+
+                for (
+                    let f =
+                        filaEtiqueta + 1;
+
+                    f <=
+                        filaNombre - 1;
+
+                    f++
+                ) {
+
+                    etiquetas.getRow(
+                        f
+                    ).height =
+                        15;
+
+                }
+
+
+                etiquetas.getRow(
+                    filaNombre
+                ).height =
+                    30;
+
+
+                etiquetas.getRow(
+                    filaNombre + 1
+                ).height =
+                    18;
+
+
+                /*
+                 * SIGUIENTE ETIQUETA
+                 */
+
+                columnaEtiqueta++;
+
+
+                /*
+                 * Tres etiquetas
+                 * por fila.
+                 */
+
+                if (
+                    columnaEtiqueta >
+                    3
+                ) {
+
+                    columnaEtiqueta =
+                        1;
+
+                    filaEtiqueta +=
+                        8;
+
+                }
+
             }
 
-        ];
+
+            /*
+             * ENCABEZADOS REPETIDOS
+             */
+
+            etiquetas.views = [
+
+                {
+
+                    state:
+                        "normal"
+
+                }
+
+            ];
 
 
-        /*
-         * CONGELAR ENCABEZADO
-         */
+            /*
+             * GENERAR ARCHIVO
+             */
 
-        hoja["!freeze"] = {
-
-            xSplit: 0,
-
-            ySplit: 1
-
-        };
+            const buffer =
+                await workbook.xlsx.writeBuffer();
 
 
-        /*
-         * CREAR ARCHIVO
-         */
+            const blob =
+                new Blob(
+                    [
+                        buffer
+                    ],
+                    {
 
-        const workbook =
-            XLSX.utils.book_new();
+                        type:
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
-
-        XLSX.utils.book_append_sheet(
-
-            workbook,
-
-            hoja,
-
-            "BD Libros"
-
-        );
+                    }
+                );
 
 
-        /*
-         * DESCARGAR
-         */
+            const url =
+                URL.createObjectURL(
+                    blob
+                );
 
-        XLSX.writeFile(
 
-            workbook,
+            const enlace =
+                document.createElement(
+                    "a"
+                );
 
-            "MasterBiblioteca.xlsx"
 
-        );
+            enlace.href =
+                url;
+
+
+            enlace.download =
+                "MasterBiblioteca.xlsx";
+
+
+            document.body.appendChild(
+                enlace
+            );
+
+
+            enlace.click();
+
+
+            document.body.removeChild(
+                enlace
+            );
+
+
+            setTimeout(
+                function () {
+
+                    URL.revokeObjectURL(
+                        url
+                    );
+
+                },
+                1000
+            );
+
+
+            /*
+             * MENSAJE
+             */
+
+            mostrarMensaje(
+                mensajeImportacion,
+
+                `MasterBiblioteca generado correctamente con ${libros.length} libros, códigos de barras y códigos QR.`,
+
+                "exito"
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Error generando MasterBiblioteca:",
+                error
+            );
+
+
+            mostrarMensaje(
+                mensajeImportacion,
+
+                "No fue posible generar el MasterBiblioteca: " +
+                (
+                    error.message ||
+                    "error desconocido"
+                ),
+
+                "error"
+            );
+
+
+        } finally {
+
+            boton.disabled =
+                false;
+
+
+            boton.textContent =
+                textoOriginal;
+
+        }
     }
 
 
